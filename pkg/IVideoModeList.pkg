@@ -1,0 +1,60 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace video
+{
+
+	//! A list of all available video modes.
+	/** You can get a list via IrrlichtDevice::getVideoModeList(). If you are confused 
+	now, because you think you have to create an Irrlicht Device with a video
+	mode before being able to get the video mode list, let me tell you that
+	there is no need to start up an Irrlicht Device with DT_DIRECTX8, DT_OPENGL or
+	DT_SOFTWARE: For this (and for lots of other reasons) the null device,
+	DT_NULL exists.*/
+	class IVideoModeList : public irr::IUnknown
+	{
+	public:
+
+		//! destructor
+		virtual ~IVideoModeList() ;
+
+		//! Gets amount of video modes in the list.
+		//! \return Returns amount of video modes.
+		virtual s32 getVideoModeCount();
+
+		//! Returns the screen size of a video mode in pixels.
+		//! \param modeNumber: zero based index of the video mode.
+		//! \return Returns size of screen in pixels of the specified video mode.
+		virtual irr::core::dimension2d<s32> getVideoModeResolution(s32 modeNumber);
+
+		//! Returns the pixel depth of a video mode in bits.
+		//! \param modeNumber: zero based index of the video mode.
+		//! \return Returns the size of each pixel of the specified video mode in bits.
+		virtual s32 getVideoModeDepth(s32 modeNumber);
+
+		//! Returns current desktop screen resolution.
+		//! \return Returns size of screen in pixels of the current desktop video mode.
+		virtual irr::core::dimension2d<s32> getDesktopResolution();
+
+		//! Returns the pixel depth of a video mode in bits.
+		//! \return Returns the size of each pixel of the current desktop video mode in bits.
+		virtual s32 getDesktopDepth();
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();		
+	};
+
+} // end namespace video
+} // end namespace irr
+
+
+

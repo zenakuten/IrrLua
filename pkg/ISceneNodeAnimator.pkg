@@ -1,0 +1,55 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace scene
+{
+	class ISceneNode;
+
+	//! Animates a scene node. Can animate position, rotation, material, and so on.
+	/** A scene node animator is able to animate a scene node in a very simple way. It may
+	change its position, rotation, scale and/or material. There are lots of animators
+	to choose from. You can create scene node animators with the ISceneManager interface.
+	*/
+	class ISceneNodeAnimator : public irr::io::IAttributeExchangingObject
+	{
+	public:
+
+		//! destructor
+		virtual ~ISceneNodeAnimator();
+
+		//! Animates a scene node.
+		//! \param node: Node to animate.
+		//! \param timeMs: Current time in milli seconds.
+		virtual void animateNode(irr::scene::ISceneNode* node, u32 timeMs);
+
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IAttributeExchangeObject
+		//////////////////////////////////////////////////////////////////////////////////////
+
+		//! Writes attributes of the object.
+		//! Implement this to expose the attributes of your scene node animator for 
+		//! scripting languages, editors, debuggers or xml serialization purposes.
+		virtual void serializeAttributes(irr::io::IAttributes* out, irr::io::SAttributeReadWriteOptions* options);
+
+		//! Reads attributes of the object.
+		//! Implement this to set the attributes of your scene node animator for 
+		//! scripting languages, editors, debuggers or xml deserialization purposes.
+		virtual void deserializeAttributes(irr::io::IAttributes* in, irr::io::SAttributeReadWriteOptions* options);
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+
+	};
+} // end namespace scene
+} // end namespace irr
+
+

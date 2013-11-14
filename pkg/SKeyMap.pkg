@@ -1,0 +1,33 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+
+	//! enumeration for key actions. Used for example in the FPS Camera.
+	enum EKEY_ACTION
+	{
+		EKA_MOVE_FORWARD = 0,
+		EKA_MOVE_BACKWARD,
+		EKA_STRAFE_LEFT,
+		EKA_STRAFE_RIGHT,
+		EKA_COUNT,
+
+		//! This value is not used. It only forces this enumeration to compile in 32 bit. 
+		EKA_FORCE_32BIT = 0x7fffffff	
+	};
+
+	//! Struct storing which key belongs to which action.
+	//struct SKeyMap
+	class SKeyMap
+	{
+		SKeyMap();
+		EKEY_ACTION Action;
+		EKEY_CODE KeyCode;
+	};
+
+} // end namespace
+
+

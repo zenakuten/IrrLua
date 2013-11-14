@@ -1,0 +1,60 @@
+
+$#include "CustomSceneNode.h"
+$pfile "../../pkg/irrTypes.pkg"
+
+namespace MyProject
+{
+class CSampleSceneNode : public scene::ISceneNode
+{
+
+public:
+
+	CSampleSceneNode(irr::scene::ISceneNode* parent, irr::scene::ISceneManager* mgr, s32 id); 
+	virtual ~CSampleSceneNode();
+
+	virtual void OnPreRender();
+	virtual void render();
+	virtual irr::core::aabbox3d<f32>& getBoundingBox();
+	virtual s32 getMaterialCount();
+	virtual irr::video::SMaterial& getMaterial(s32 i);
+
+	/*
+		 Notice we must declare inherited functions here if we want 
+		to use them from lua.  drop() is inherited from IUnknown.
+		The alternative is to call from lua:
+
+		CSampleSceneNode.__ISceneNode__.__IUnknown__:drop()
+
+		It's easier to let tolua++ simply provide drop() to lua
+		by declaring it here. 
+
+	*/
+	virtual void grab();
+	virtual bool drop();
+	virtual void addAnimator(irr::scene::ISceneNodeAnimator* animator);
+};
+
+}
+
+/* 	
+	Embedded Lua Code Example 
+ 	Here, we create a function called "CSampleSceneNode". 
+	This function works as a constructor for new sample nodes.
+   
+    It is provided here as an example of embedding 'syntactic sugar'
+	to the raw tolua++ imports.  See the 03.CustomSceneNode2.lua file 
+	for how the wrapper is used.
+*/
+
+$[
+
+function CSampleSceneNode(parent, mgr, id)
+
+	id = id or -1 
+
+	local ret = MyProject.CSampleSceneNode:new(parent, mgr, id)
+	tolua.takeownership(ret)
+	return ret
+	end
+
+$]

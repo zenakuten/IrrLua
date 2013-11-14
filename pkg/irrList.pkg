@@ -1,0 +1,46 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace core
+{
+
+//! Double linked list template.
+//template <class T>
+class list
+{
+	//TOLUA_TEMPLATE_BIND(T, f32, irr::scene::ISceneNode*, irr::scene::ISceneNodeAnimator* )
+	TOLUA_TEMPLATE_BIND(T, f32, irr::scene::ISceneNode*, irr::scene::ISceneNodeAnimator* )
+	//! List iterator.
+	class Iterator
+	{
+
+		Iterator() ;
+
+		//Iterator& operator ++();
+		//Iterator& operator --();
+		//Iterator operator ++(s32);
+  		//Iterator operator --(s32);
+
+		Iterator operator+(s32 num);
+
+		//Iterator& operator+=(s32 num);
+
+		Iterator operator-(s32 num);
+		//Iterator operator-=(s32 num) const;
+
+		bool operator ==(Iterator& other);
+		//bool operator !=(const Iterator& other) const;
+
+		//T& operator *();
+
+	};
+};
+
+
+} // end namespace core
+}// end namespace irr
+
+

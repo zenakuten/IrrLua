@@ -1,0 +1,786 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace scene
+{
+	class IMeshBuffer;
+}
+
+namespace video
+{
+	struct S3DVertex;
+	struct S3DVertex2TCoords;
+	struct S3DVertexTangents;
+
+	//! enumeration for querying features of the video driver.
+	enum E_VIDEO_DRIVER_FEATURE
+	{
+		//! Is driver able to render to a surface?
+		EVDF_RENDER_TO_TARGET = 0,	
+
+		//! Is driver able to render with a bilinear filter applied?
+		EVDF_BILINEAR_FILTER,			
+
+		//! Is hardeware transform and lighting supported?
+		EVDF_HARDWARE_TL,			
+
+		//! Can the driver handle mip maps?
+		EVDF_MIP_MAP,		
+
+		//! Are stencilbuffers switched on and does the device support stencil buffers?
+		EVDF_STENCIL_BUFFER,
+
+		//! Is Vertex Shader 1.1 supported?
+		EVDF_VERTEX_SHADER_1_1,
+
+		//! Is Vertex Shader 2.0 supported?
+		EVDF_VERTEX_SHADER_2_0,
+
+		//! Is Vertex Shader 3.0 supported?
+		EVDF_VERTEX_SHADER_3_0,
+
+		//! Is Pixel Shader 1.1 supported?
+		EVDF_PIXEL_SHADER_1_1,
+
+		//! Is Pixel Shader 1.2 supported?
+		EVDF_PIXEL_SHADER_1_2,
+
+		//! Is Pixel Shader 1.3 supported?
+		EVDF_PIXEL_SHADER_1_3,
+
+		//! Is Pixel Shader 1.4 supported?
+		EVDF_PIXEL_SHADER_1_4,
+
+		//! Is Pixel Shader 2.0 supported?
+		EVDF_PIXEL_SHADER_2_0,
+
+		//! Is Pixel Shader 3.0 supported?
+		EVDF_PIXEL_SHADER_3_0,
+
+		//! Are ARB vertex programs v1.0 supported?
+		EVDF_ARB_VERTEX_PROGRAM_1,
+
+		//! Are ARB fragment programs v1.0 supported?
+		EVDF_ARB_FRAGMENT_PROGRAM_1,
+		
+		EVDF_ARB_GLSL,
+		
+		EVDF_HLSL
+	};
+
+	//! enumeration for geometry transformation states
+	enum E_TRANSFORMATION_STATE
+	{
+		//! View transformation
+		ETS_VIEW = 0,
+		//! World transformation
+		ETS_WORLD,
+		//! Projection transformation
+		ETS_PROJECTION,
+		//! Not used
+		ETS_COUNT
+	};
+
+
+	//! Interface to driver which is able to perform 2d and 3d gfx functions.
+	/** The IVideoDriver interface is one of the most important interfaces of
+	the Irrlicht Engine: All rendering and texture manipulating is done with
+	this interface. You are able to use the Irrlicht Engine by only invoking methods
+	of this interface if you would like to, although the irr::scene::ISceneManager interface
+	provides a lot of powerful classes and methods to make the programmers life
+	easier.
+	*/
+	class IVideoDriver : public irr::IUnknown
+	{
+	public:
+
+		//! destructor
+		virtual ~IVideoDriver();
+
+		//! Applications must call this method before performing any rendering. 
+		//! \param backBuffer: Specifies if the back buffer should be cleared, which
+		//! means that the screen is filled with a color specified with the parameter color.
+		//! If this parameter is false, the back buffer will not be cleared and the color
+		//! parameter is ignored.
+		//! \param zBuffer: Speciefies if the depth or z buffer should be cleared. It is
+		//! not nesesarry to do so, if only 2d drawing is used.
+		//! \return Returns false if failed. Begin Scene can clear the back- and the z-buffer.
+		virtual bool beginScene(bool backBuffer, bool zBuffer, irr::video::SColor color);
+
+		//! Presents the rendered image on the screen.
+		//! Applications must call this method after performing any rendering. 
+		//! \return Returns false if failed and true if succeeded.
+		virtual bool endScene();
+
+		virtual bool endScene( s32 windowId, irr::core::rect<s32>* sourceRect);
+
+		//! Queries the features of the driver, returns true if a feature is available
+		//! \param feature: A feature to query.
+		//! \return Returns true if the feature is available, false if not.
+		virtual bool queryFeature(irr::video::E_VIDEO_DRIVER_FEATURE feature);
+
+		//! Sets the view, world or projection transformation. 
+		//! \param state: Transformation type to be set. Can be view, world or projection.
+		//! \param mat: Matrix describing the transformation.
+		virtual void setTransform(irr::video::E_TRANSFORMATION_STATE state, irr::core::matrix4& mat);
+
+		//! Returns the transformation set by setTransform
+		virtual irr::core::matrix4 getTransform(irr::video::E_TRANSFORMATION_STATE state);
+
+		//! Sets a material. All 3d drawing functions draw geometry now
+		//! using this material.
+		//! \param material: Material to be used from now on.
+		virtual void setMaterial(irr::video::SMaterial& material);
+
+		//! Returns a pointer to a texture. Loads the texture if it is not
+		//! already loaded, and generates mipmap levels if wished.
+		//! The texture can be in BMP, JPG, TGA, PCX and PSD format.
+		//! For loading BMP, TGA, PCX and PSD files, the engine uses its own methods.
+		//! PCX loading is based on some code by Dean P. Macri, who sent
+		//! it in for free use by the engine. It currently not supports
+		//! all .pcx formats. Also, compressed BMP's don't work correctly.
+		//! For loading JPG-Files the JPEG LIB 6b, written by 
+		//! The Independent JPEG Group is used by the engine. Thanx for such a great
+		//! library!
+		//! \param filename: Filename of the texture to be loaded.
+		//! \return Returns a pointer to the texture and NULL if the texture
+		//! could not be loaded. 
+		//! This pointer should not be dropped. See IUnknown::drop() for more information.
+		virtual irr::video::ITexture *getTexture(c8 *filename); 
+
+		//! Returns a texture by index
+		/** \param index: Index of the texture, must be smaller than getTextureCount()
+		Please note that this index would change when adding or removing textures
+		*/
+		virtual irr::video::ITexture* getTextureByIndex(s32 index);
+
+		//! Returns amount of textures currently loaded
+		virtual s32 getTextureCount();
+
+
+		//! Returns a pointer to a texture. Loads the texture if it is not
+		//! already loaded, and generates mipmap levels if wished.
+		//! The texture can be in BMP, JPG, TGA, PCX and PSD format.
+		//! For loading BMP, TGA, PCX and PSD files, the engine uses its own methods.
+		//! PCX loading is based on some code by Dean P. Macri, who sent
+		//! it in for free use by the engine. It currently not supports
+		//! all .pcx formats. Also, compressed BMP's don't work correctly.
+		//! For loading JPG-Files the JPEG LIB 6b, written by 
+		//! The Independent JPEG Group is used by the engine. Thanx for such a great
+		//! library!
+		//! \param file: Pointer to an already opened file.
+		//! \return Returns a pointer to the texture and NULL if the texture
+		//! could not be loaded. 
+		//! This pointer should not be dropped. See IUnknown::drop() for more information.
+		//virtual irr::video::ITexture* getTexture(irr::io::IReadFile* file);
+
+		//! Creates an empty Texture of specified size.
+		//! \param size: Size of the texture.
+		//! \param name: A name for the texture. Later calls of getTexture() with this name
+		//! will return this texture
+		//! \param format: Desired color format of the texture. Please note that
+		//! the driver may choose to create the texture in another color format.
+		//! \return Returns a pointer to the new created Texture. 
+		//! This pointer should not be dropped. See IUnknown::drop() for more information.
+		//! The format of the new texture will be chosen by the driver, and will in most 
+		//! cases have the ECF_A1R5G5B5 or ECF_A8R8G8B8 format.
+		virtual irr::video::ITexture *addTexture(irr::core::dimension2d<s32>& size,
+			c8 *name, ECOLOR_FORMAT format);
+
+		//! Creates a texture from a loaded IImage.
+		//! \param name: A name for the texture. Later calls of getTexture() with this name
+		//! will return this texture
+		//! \param image: Image from which the texture is created from.
+		//! \return Returns a pointer to the new created Texture. 
+		//! This pointer should not be dropped. See IUnknown::drop() for more information.
+		//! The format of the new texture will be chosen by the driver, and will in most 
+		//! cases have the ECF_A1R5G5B5 or ECF_A8R8G8B8 format.
+		virtual irr::video::ITexture *addTexture(c8 *name, IImage *image);
+
+		virtual irr::video::ITexture *createRenderTargetTexture(irr::core::dimension2d<s32> size);
+
+		//! Removes a texture from the texture cache and deletes it, freeing lot of
+		//! memory. Please note that after calling this, the pointer to the ITexture
+		//! may not be longer valid, if it was not grabbed before by other parts of 
+		//! the engine for storing it longer. So it would be a good idea to set all
+		//! materials which are using this texture to null or another texture first.
+		//! \param texture: Texture to delete from the engines cache.
+		virtual void removeTexture(irr::video::ITexture* texture);
+
+		//! Removes all texture from the texture cache and deletes them, freeing lot of
+		//! memory. Please note that after calling this, the pointer to all ITextures
+		//! may not be longer valid, if they were not grabbed before by other parts of 
+		//! the engine for storing them longer. So it would be a good idea to set all
+		//! materials which are using textures to null first.
+		virtual void removeAllTextures();
+
+		//! Creates an 1bit alpha channel of the texture based of an color key.
+		//! This makes the texture transparent at the regions where this color
+		//! key can be found when using for example draw2DImage with useAlphachannel
+		//! = true.
+		//! \param texture: Texture of which its alpha channel is modified.
+		//! \param color: Color key color. Every pixel with this color will get transparent 
+		//! like described above. Please note that the colors of a texture may get
+		//! converted when loading it, so the color values may not be exactly the same
+		//! in the engine and for example in picture edit programs. To avoid this 
+		//! problem, you could use the makeColorKeyTexture method, which takes the position
+		//! of a pixel instead a color value.
+		virtual void makeColorKeyTexture(irr::video::ITexture* texture, irr::video::SColor color);
+
+		//! Creates an 1bit alpha channel of the texture based of an color key position.
+		//! This makes the texture transparent at the regions where this color
+		//! key can be found when using for example draw2DImage with useAlphachannel
+		//! = true.
+		//! \param texture: Texture of which its alpha channel is modified.
+		//! \param colorKeyPixelPos: Position of a pixel with the color key color.
+		//! Every pixel with this color will get transparent 
+		//! like described above. 
+		virtual void makeColorKeyTexture(irr::video::ITexture* texture,
+			irr::core::position2d<s32> colorKeyPixelPos);
+
+		//! Creates a normal map from a height map texture. 
+		//! \param texture: Texture of which its alpha channel is modified.
+		//! \param amplitude: Constant value by which the height information is multiplied.
+		virtual void makeNormalMapTexture(irr::video::ITexture* texture, f32 amplitude);
+
+		//! Sets a new render target. This will only work, if the driver
+		//! supports the EVDF_RENDER_TO_TARGET feature, which can be 
+		//! queried with queryFeature().
+		//! \param texture: New render target.
+		//virtual void setRenderTarget(irr::video::ITexture* texture);
+
+		virtual void setRenderTarget(irr::video::ITexture* texture, bool clearBackBuffer, bool clearZBuffer, irr::video::SColor color);
+
+		//! Sets a new viewport. Every rendering operation is done into this
+		//! new area.
+		//! \param Rectangle defining the new area of rendering operations.
+		virtual void setViewPort(irr::core::rect<s32>& area);
+
+		//! Gets the area of the current viewport. 
+		//! \return Returns rectangle of the current vieport.
+		virtual irr::core::rect<s32>& getViewPort();
+
+		//! Draws an indexed triangle list.
+		//! Note that there may be at maximum 65536 vertices, because the
+		//! index list is a array of 16 bit values each with a maximum value 
+		//! of 65536. If there are more than 65536 vertices in the list, 
+		//! results of this operation are not defined.
+		//! \param vertices: Pointer to array of vertices.
+		//! \param vertexCount: Amount of vertices in the array.
+		//! \param indexList: Pointer to array of indizes.
+		//! \param triangleCount: amount of Triangles. Usually amount of indizes / 3.
+		virtual void drawIndexedTriangleList(irr::video::S3DVertex* vertices,
+			s32 vertexCount, u16* indexList, s32 triangleCount);
+
+		//! Draws an indexed triangle list.
+		//! Note that there may be at maximum 65536 vertices, because the
+		//! index list is a array of 16 bit values each with a maximum value 
+		//! of 65536. If there are more than 65536 vertices in the list, 
+		//! results of this operation are not defined.
+		//! \param vertices: Pointer to array of vertices.
+		//! \param vertexCount: Amount of vertices in the array.
+		//! \param indexList: Pointer to array of indizes.
+		//! \param triangleCount: amount of Triangles. Usually amount of indizes / 3.
+		//virtual void drawIndexedTriangleList(S3DVertex2TCoords* vertices,
+		//	s32 vertexCount, u16* indexList, s32 triangleCount);
+
+		//! Draws an indexed triangle list.
+		//! Note that there may be at maximum 65536 vertices, because the
+		//! index list is a array of 16 bit values each with a maximum value 
+		//! of 65536. If there are more than 65536 vertices in the list, 
+		//! results of this operation are not defined.
+		//! \param vertices: Pointer to array of vertices.
+		//! \param vertexCount: Amount of vertices in the array.
+		//! \param indexList: Pointer to array of indizes.
+		//! \param triangleCount: amount of Triangles. Usually amount of indizes / 3.
+		//virtual void drawIndexedTriangleList(const S3DVertexTangents* vertices,
+		//	s32 vertexCount, const u16* indexList, s32 triangleCount);
+
+		//! Draws an indexed triangle fan.
+		//! Note that there may be at maximum 65536 vertices, because the
+		//! index list is a array of 16 bit values each with a maximum value 
+		//! of 65536. If there are more than 65536 vertices in the list, 
+		//! results of this operation are not defined.
+		//! Please note that some of the implementation code for this method is based on 
+		//! free code sent in by Mario Gruber, lots of thanks go to him!
+		//! \param vertices: Pointer to array of vertices.
+		//! \param vertexCount: Amount of vertices in the array.
+		//! \param indexList: Pointer to array of indizes.
+		//! \param triangleCount: amount of Triangles. Usually amount of indizes - 2.
+		//virtual void drawIndexedTriangleFan(const S3DVertex* vertices,
+		//	s32 vertexCount, const u16* indexList, s32 triangleCount);
+
+		//! Draws an indexed triangle fan.
+		//! Note that there may be at maximum 65536 vertices, because the
+		//! index list is a array of 16 bit values each with a maximum value 
+		//! of 65536. If there are more than 65536 vertices in the list, 
+		//! results of this operation are not defined.
+		//! Please note that some of the implementation code for this method is based on 
+		//! free code sent in by Mario Gruber, lots of thanks go to him!
+		//! \param vertices: Pointer to array of vertices.
+		//! \param vertexCount: Amount of vertices in the array.
+		//! \param indexList: Pointer to array of indizes.
+		//! \param triangleCount: amount of Triangles. Usually amount of indizes - 2.
+		//virtual void drawIndexedTriangleFan(const S3DVertex2TCoords* vertices,
+		//	s32 vertexCount, const u16* indexList, s32 triangleCount);
+
+		//! Draws a 3d line.
+		//! This method usually simply calls drawIndexedTriangles with some 
+		//! triangles. Note that the line is drawed using the current transformation
+		//! matrix and material.
+		//! This method was created for making culling debugging easier. It works with
+		//! all drivers because it does simply a call to drawIndexedTriangleList and
+		//! hence is not very fast but it might be useful for further development. 
+		//! \param start: Start of the 3d line.
+		//! \param end: End of the 3d line.
+		//! \param color: Color of the line. 
+		virtual void draw3DLine(irr::core::vector3d<f32>& start,
+			irr::core::vector3d<f32>& end, irr::video::SColor color);
+
+		//! Draws a 3d triangle.
+		//! This method usually simply calls drawIndexedTriangles with some 
+		//! triangles. Note that the line is drawed using the current transformation
+		//! matrix and material.
+		//! This method was created for making collision debugging easier. It works with
+		//! all drivers because it does simply a call to drawIndexedTriangleList and
+		//! hence is not very fast but it might be useful for further development. 
+		//! \param triangle: The triangle to draw.
+		//! \param color: Color of the line. 
+		virtual void draw3DTriangle(irr::core::triangle3d<f32>& triangle,
+			irr::video::SColor color);
+
+		//! Draws a 3d axis aligned box.
+		//! This method usually simply calls drawIndexedTriangles with some 
+		//! triangles. Note that the line is drawed using the current transformation
+		//! matrix and material. 
+		//! This method was created for making culling debugging easier. It works with
+		//! all drivers because it does simply a call to drawIndexedTriangleList and
+		//! hence is not very fast but it might be useful for further development. 
+		//! \param box: The axis aligned box to draw
+		//! \param color: Color to use while drawing the box.
+		virtual void draw3DBox(irr::core::aabbox3d<f32> box,
+			irr::video::SColor color);
+
+		//! Simply draws an 2d image, without any special effects
+		//! \param texture: Pointer to texture to use.
+		//! \param destPos: upper left 2d destination position where the image will be drawn.
+		virtual void draw2DImage(irr::video::ITexture* texture,	irr::core::position2d<s32>& destPos);
+
+		//! Draws an 2d image, using a color (if color is other than 
+		//! Color(255,255,255,255)) and the alpha channel of the texture if wanted.
+		//! \param texture: Texture to be drawn.
+		//! \param destPos: Upper left 2d destination position where the image will be drawn.
+		//! \param sourceRect: Source rectangle in the image.
+		//! \param clipRect: Pointer to rectangle on the screen where the image is clipped to.
+		//! This pointer can be NULL. Then the image is not clipped.
+		//! \param color: Color with wich the image is colored. If the color equals 
+		//! Color(255,255,255,255), the color is ignored. Note that the alpha component
+		//! is used: If alpha is other than 255, the image will be transparent.
+		//! \param useAlphaChannelOfTexture: If true, the alpha channel of the texture is 
+		//! used to draw the image.
+		virtual void draw2DImage(irr::video::ITexture* texture, irr::core::position2d<s32>& destPos,
+			irr::core::rect<s32>& sourceRect, irr::core::rect<s32>* clipRect,
+			SColor irr::video::color, bool useAlphaChannelOfTexture);
+
+		//! Draws a part of the texture into the rectangle. Suggested and first implemented by zola.
+		//! \param texture: the texture to draw from 
+		//! \param destRect: the rectangle to draw into 
+		//! \param sourceRect: the rectangle denoting a part of the texture 
+		//! \param clipRect: cipps the destination rectangle (may be 0) 
+		//! \param colors: array of 4 colors denoting the color values of the corners of the destRect 
+		//! \param useAlphaChannelOfTexture: true if alpha channel will be blended. 
+		//virtual void draw2DImage(video::ITexture* texture, const core::rect<s32>& destRect,	const core::rect<s32>& sourceRect, const core::rect<s32>* clipRect,video::SColor* colors, bool useAlphaChannelOfTexture);
+
+		//! Draws an 2d rectangle.
+		//! \param color: Color of the rectangle to draw. The alpha component will not
+		//! be ignored and specifies how transparent the rectangle will be.
+		//! \param pos: Position of the rectangle.
+		//! \param clip: Pointer to rectangle against which the rectangle will be clipped.
+		//! If the pointer is null, no clipping will be performed.
+		virtual void draw2DRectangle(irr::video::SColor color, irr::core::rect<s32>& pos,
+			irr::core::rect<s32>* clip);
+
+		//!Draws an 2d rectangle with a gradient.
+		/** \param colorLeftUp: Color of the left upper corner to draw. 
+		The alpha component will not be ignored and specifies how transparent the rectangle will be.
+		\param colorRightUp: Color of the right upper corner to draw. 
+		The alpha component will not be ignored and specifies how transparent the rectangle will be.
+		\param colorLeftDown: Color of the left lower corner to draw. 
+		The alpha component will not be ignored and specifies how transparent the rectangle will be.
+		\param colorRightDown: Color of the right lower corner to draw. 
+		The alpha component will not be ignored and specifies how transparent the rectangle will be.
+		\param pos: Position of the rectangle.
+		\param clip: Pointer to rectangle against which the rectangle will be clipped.
+		If the pointer is null, no clipping will be performed. */
+
+		//virtual void draw2DRectangle(const core::rect<s32>& pos,
+		//	irr::video::SColor colorLeftUp, irr::video::SColor colorRightUp, irr::video::SColor colorLeftDown, irr::video::SColor colorRightDown,
+		//	irr::core::rect<s32>* clip);
+
+		//! Draws a 2d line. 
+		//! \param start: Screen coordinates of the start of the line in pixels.
+		//! \param end: Screen coordinates of the start of the line in pixels.
+		//! \param color: Color of the line to draw.
+		virtual void draw2DLine(irr::core::position2d<s32>& start,
+								irr::core::position2d<s32>& end, 
+								irr::video::SColor color);
+
+		//! Draws a non filled concyclic reqular 2d polyon. This method can be used to draw 
+		//! circles, but also triangles, tetragons, pentagons, hexagons, heptagons, octagons,
+		//! enneagons, decagons, hendecagons, dodecagon, triskaidecagons, etc. I think you'll
+		//! got it now. And all this by simply specifying the vertex count. Welcome to the 
+		//! wonders of geometry.
+		//! \param center: Position of center of circle (pixels).
+		//! \param radius: Radius of circle in pixels.
+		//! \param color: Color of the circle.
+		//! \param vertexCount: Amount of vertices of the polygon. Specify 2 to draw a line,
+		//! 3 to draw a triangle, 4 for a tetragons and a lot (>10) for nearly a circle.
+		virtual void draw2DPolygon(irr::core::position2d<s32> center, 
+			f32 radius, irr::video::SColor color, s32 vertexCount);
+
+		//! Draws a shadow volume into the stencil buffer. To draw a stencil shadow, do
+		//! this: Frist, draw all geometry. Then use this method, to draw the shadow
+		//! volume. Then, use IVideoDriver::drawStencilShadow() to visualize the shadow.
+		//! Please note that the code for the opengl version of the method is based on 
+		//! free code sent in by Philipp Dortmann, lots of thanks go to him!
+		//! \param triangles: Pointer to array of 3d vectors, specifing the shadow volume.
+		//! \param count: Amount of triangles in the array.
+		//! \param zfail: If set to true, zfail method is used, otherwise zpass.
+		virtual void drawStencilShadowVolume(irr::core::vector3d<f32>* triangles, s32 count, bool zfail);
+
+		//! Fills the stencil shadow with color. After the shadow volume has been drawn
+		//! into the stencil buffer using IVideoDriver::drawStencilShadowVolume(), use this
+		//! to draw the color of the shadow. 
+		//! Please note that the code for the opengl version of the method is based on 
+		//! free code sent in by Philipp Dortmann, lots of thanks go to him!
+		//! \param clearStencilBuffer: Set this to false, if you want to draw every shadow 
+		//! with the same color, and only want to call drawStencilShadow() once after all
+		//! shadow volumes have been drawn. Set this to true, if you want to paint every
+		//! shadow with its own color.
+		//! \param leftUpEdge: Color of the shadow in the upper left corner of screen.
+		//! \param rightUpEdge: Color of the shadow in the upper right corner of screen.
+		//! \param leftDownEdge: Color of the shadow in the lower left corner of screen.
+		//! \param rightDownEdge: Color of the shadow in the lower right corner of screen.
+		virtual void drawStencilShadow(bool clearStencilBuffer, 
+			irr::video::SColor leftUpEdge,
+			irr::video::SColor rightUpEdge,
+			irr::video::SColor leftDownEdge,
+			irr::video::SColor rightDownEdge );
+
+		//! Draws a mesh buffer
+		//! \param mb: Buffer to draw;
+		virtual void drawMeshBuffer(irr::scene::IMeshBuffer* mb);
+
+		//! Sets the fog mode. These are global values attached to each 3d object
+		//! rendered, which has the fog flag enabled in its material.
+		//! \param color: Color of the fog
+		//! \param linearFog: Set this to true for linear fog, otherwise exponential fog is applied.
+		//! \param start: Only used in linear fog mode (linearFog=true). Specifies where fog starts.
+		//! \param end: Only used in linear fog mode (linearFog=true). Specifies where fog ends.
+		//! \param density: Only used in expotential fog mode (linearFog=false). Must be a value between 0 and 1.
+		//! \param pixelFog: Set this to false for vertex fog, and true if you want pixel fog.
+		//! \param rangeFog: Set this to true to enable range-based vertex fog. The distance
+		//! from the viewer is used to compute the fog, not the z-coordinate. This is
+		//! better, but slower. This is only available with D3D and vertex fog.
+		virtual void setFog(SColor color, bool linearFog, f32 start, f32 end, 
+			f32 density, bool pixelFog, bool rangeFog);
+
+		//! Returns the size of the screen or render window.
+		//! \return Size of screen or render window.
+		irr::core::dimension2d<s32> getScreenSize();
+
+		//! Returns current frames per second value.
+		//! \return Returns amount of frames per second drawn.
+		virtual s32 getFPS();
+
+		//! Returns amount of primitives (mostly triangles) which were drawn in the last frame.
+		//! Together with getFPS() very useful method for statistics.
+		//! \return Amount of primitives drawn in the last frame.
+		virtual u32 getPrimitiveCountDrawn();
+
+		//! Deletes all dynamic lights which were previously added with addDynamicLight().
+		virtual void deleteAllDynamicLights();
+
+		//! Adds a dynamic light.
+		//! \param light: Data specifing the dynamic light.
+		virtual void addDynamicLight(irr::video::SLight& light);
+
+		//! Sets the dynamic ambient light color. The default color is
+		//! (0,0,0,0) which means it is dark.
+		//! \param color: New color of the ambient light.
+		virtual void setAmbientLight(irr::video::SColorf& color);
+
+		//! Returns the maximal amount of dynamic lights the device can handle
+		//! \return Maximal amount of dynamic lights.
+		virtual s32 getMaximalDynamicLightAmount();
+
+		//! Returns current amount of dynamic lights set
+		//! \return Current amount of dynamic lights set
+		virtual s32 getDynamicLightCount();
+
+		//! Returns light data which was previously set with IVideDriver::addDynamicLight().
+		//! \param idx: Zero based index of the light. Must be greater than 0 and smaller
+		//! than IVideoDriver()::getDynamicLightCount.
+		//! \return Light data.
+		virtual irr::video::SLight& getDynamicLight(s32 idx);
+        
+		//! \return Returns the name of the video driver. Example: In case of the DirectX8
+		//! driver, it would return "Direct3D8.1".
+		virtual wchar_t* getName();
+
+		//! Adds an external image loader to the engine. This is useful if 
+		//! the Irrlicht Engine should be able to load textures of currently 
+		//! unsupported file formats (e.g .gif). The IImageLoader only needs
+		//! to be implemented for loading this file format. A pointer to
+		//! the implementation can be passed to the engine using this method.
+		//! \param loader: Pointer to the external loader created.
+		virtual void addExternalImageLoader(irr::video::IImageLoader* loader);
+
+		//! Adds an external image writer to the engine.
+		/** This is useful if
+		the Irrlicht Engine should be able to write textures of currently
+		unsupported file formats (e.g .gif). The IImageWriter only needs
+		to be implemented for writing this file format. A pointer to
+		the implementation can be passed to the engine using this method.
+		\param writer: Pointer to the external writer created. */
+		virtual void addExternalImageWriter(irr::video::IImageWriter* writer);
+
+
+		//! Returns the maximum amount of primitives (mostly vertices) which
+		//! the device is able to render with one drawIndexedTriangleList
+		//! call.
+		virtual s32 getMaximalPrimitiveCount();
+
+		//! Enables or disables a texture creation flag. This flag defines how
+		//! textures should be created. By changing this value, you can influence
+		//! the speed of rendering a lot. But please note that the video drivers
+		//! take this value only as recommendation. It could happen that you
+		//! enable the ETCM_ALWAYS_16_BIT mode, but the driver creates 32 bit
+		//! textures.
+		//! \param flag: Texture creation flag.
+		//! \param enbabled: Specifies if the given flag should be enabled or disabled.
+		virtual void setTextureCreationFlag(irr::video::E_TEXTURE_CREATION_FLAG flag, bool enabled);
+
+		//! Returns if a texture creation flag is enabled or disabled.
+		//! You can change this value using setTextureCreationMode().
+		//! \param flag: Texture creation flag.
+		//! \return Returns the current texture creation mode.
+		virtual bool getTextureCreationFlag(irr::video::E_TEXTURE_CREATION_FLAG flag);
+
+		//! Creates a software image from a file. No hardware texture will
+		//! be created for this image. This method is useful for example if
+		//! you want to read a heightmap for a terrain renderer.
+		//! \param filename: Name of the file from which the image is created.
+		//! \return Returns the created image.
+		//! If you no longer need the image, you should call IImage::drop().
+		//! See IUnknown::drop() for more information.
+		virtual irr::video::IImage* createImageFromFile(char* filename);
+
+		//! Creates a software image from a file. No hardware texture will
+		//! be created for this image. This method is useful for example if
+		//! you want to read a heightmap for a terrain renderer.
+		//! \param file: File from which the image is created.
+		//! \return Returns the created image.
+		//! If you no longer need the image, you should call IImage::drop().
+		//! See IUnknown::drop() for more information.
+		virtual irr::video::IImage* createImageFromFile(irr::io::IReadFile* file);
+		
+		//! Writes the provided image to disk file
+		/** Requires that there is a suitable image writer
+		registered for writing the image to disk
+		\param image: Image to write to disk
+		\param filename: name of the file to write
+		\return Returns true on success */
+		virtual bool writeImageToFile(irr::video::IImage* image, c8* filename);
+
+
+
+		//! Creates a software image from a byte array. No hardware texture will
+		//! be created for this image. This method is useful for example if
+		//! you want to read a heightmap for a terrain renderer.
+		//! \param format: Desired color format of the texture
+		//! \param size: Desired the size of the image
+		//! \param data: a byte array with pixelcolor information
+		//! \param useForeignMemory: If true, the image will use the data pointer
+		//! directly and own it from now on, which means it will also try to delete [] the
+		//! data when the image will be destructed. 
+		//! If false, the memory will by copied internally.
+		//! \return Returns the created image.
+		//! If you no longer need the image, you should call IImage::drop().
+		//! See IUnknown::drop() for more information.
+		virtual irr::video::IImage* createImageFromData(irr::video::ECOLOR_FORMAT format, 
+			irr::core::dimension2d<s32>& size, void *data,
+			bool ownForeignMemory);
+
+		//! Only used by the internal engine. Used to notify the driver that
+		//! the window was resized.
+		virtual void OnResize(irr::core::dimension2d<s32>& size);
+
+		//! Adds a new material renderer to the video device. 
+		//! Use this method to extend the VideoDriver with new MaterialTypes. To extend the
+		//! engine using this method do the following:
+		//! Derive a class from IMaterialRenderer and override the methods you need. For
+		//! setting the right renderstates, you can try to get a pointer to the real rendering device
+		//! using IVideoDriver::getExposedVideoData(). Add you class with 
+		//! IVideoDriver::addMaterialRenderer() and if you want an object in the engine to be displayed
+		//! with your new material, set the MaterialType member of the SMaterial struct to the 
+		//! value returned by this method.
+		//! If you simply want to create a new material using vertex and/or pixel shaders, it would
+		//! be easier to use the video::IGPUProgrammingServices interface which you can get using
+		//! the getGPUProgrammingServices() method.
+		//! \return Returns the number of the
+		//! material type which can be set in SMaterial::MaterialType to use the renderer.
+		//! -1 is returned if an error occured. (For example if you tried to add
+		//! an material renderer to the software renderer or the null device, which do not accept
+		//! material renderers.)
+		virtual s32 addMaterialRenderer(irr::video::IMaterialRenderer* renderer, c8* filename);
+
+		//! Returns pointer to material renderer or null if not existing.
+		//! \param idx: Id of the material renderer. Can be a value of the E_MATERIAL_TYPE or a 
+		//! value which was returned by addMaterialRenderer().
+		virtual irr::video::IMaterialRenderer* getMaterialRenderer(s32 idx);
+
+		//! Returns amount of currently available material renderers.
+		virtual s32 getMaterialRendererCount();
+
+		//! Returns name of the material renderer
+		/** This string can for example be used to test if a specific renderer already has
+		been registered/created, or use this string to store data about materials: This
+		returned name will be also used when serializing Materials.
+		\param idx: Id of the material renderer. Can be a value of the E_MATERIAL_TYPE enum or a
+		value which was returned by addMaterialRenderer(). */
+		virtual  c8* getMaterialRendererName(s32 idx);
+
+		//! Sets the name of a material renderer.
+		/** Will have no effect on built-in material renderers.
+		\param idx: Id of the material renderer. Can be a value of the E_MATERIAL_TYPE enum or a
+		value which was returned by addMaterialRenderer(). */
+		virtual void setMaterialRendererName(s32 idx, c8* name);
+
+		//! Creates material attributes list from a material, usable for serialization and more.
+		/** Please note that the videodriver will use the material renderer names from
+		getMaterialRendererName() to write out the material type name, so they should be set before. */
+		virtual irr::io::IAttributes* createAttributesFromMaterial(irr::video::SMaterial& material);
+
+		//! Fills an SMaterial structure from attributes.
+		/** Please note that for setting material types of the material, the video driver
+		will need to query the material renderers for their names, so all non built-in materials must have been created before
+		calling this method. */
+		virtual void fillMaterialStructureFromAttributes(irr::video::SMaterial& outMaterial, irr::io::IAttributes* attributes);
+
+		//! Returns driver and operating system specific data about the IVideoDriver. This
+		//! method should only be used if the engine should be extended without having
+		//! to modify the source of the engine.
+		virtual irr::video::SExposedVideoData getExposedVideoData();
+
+		//! Returns type of video driver
+		virtual irr::video::E_DRIVER_TYPE getDriverType();
+
+		//! Returns pointer to the IGPUProgrammingServices interface. Returns 0 if the 
+		//! videodriver does not support this. (For example the Software and the NULL device
+		//! will always return 0)
+		virtual irr::video::IGPUProgrammingServices* getGPUProgrammingServices();
+		
+		virtual void clearZBuffer();
+
+		//! Returns an image created from the last rendered frame.
+		virtual irr::video::IImage* createScreenShot();
+
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+	};
+
+} // end namespace video
+} // end namespace irr
+
+$[
+
+
+local _getTexture = irr.video.IVideoDriver.getTexture 
+function irr.video.IVideoDriver:getTexture(texture)
+	texture = texture or ""
+	local name = irr.cast.to_c8_ptr(texture)
+	local ret = _getTexture(self, name)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+local _getName = irr.video.IVideoDriver.getName 
+function irr.video.IVideoDriver:getName()
+	return irr.cast.wchar_t_ptr_to_std_string(_getName(self))
+end
+
+local _beginScene = irr.video.IVideoDriver.beginScene 
+function irr.video.IVideoDriver:beginScene(bool1, bool2, color)
+	color = color or irr.video.SColor(0,0,0,0)
+return _beginScene(self, bool1, bool2, color)
+end
+
+local _draw2DImage = irr.video.IVideoDriver.draw2DImage
+local function _draw2DImage_1(self, texture, pos)
+	pos = pos or irr.core.position2d(0,0)
+	return _draw2DImage(self, texture, pos)
+end
+
+local function _draw2DImage_2(self, images, pos, sourceRect, destRect, color, useAlpha)
+	pos = pos or irr.core.position2d(0,0)
+	color = color or irr.video.SColor(255,255,255,255)	
+	return _draw2DImage(self, images, pos, sourceRect, destRect, color, useAlpha)	
+end
+
+function irr.video.IVideoDriver:draw2DImage(arg1, arg2, arg3, arg4, arg5, arg6)	
+	if arg3 then
+		return _draw2DImage_2(self, arg1, arg2, arg3, arg4, arg5, arg6)
+	else
+		return _draw2DImage_1(self, arg1, arg2)
+	end
+end
+
+
+local _draw2DRectangle = irr.video.IVideoDriver.draw2DRectangle
+function irr.video.IVideoDriver:draw2DRectangle(color, pos, clip)
+	color = color or irr.video.SColor(0,0,0,0)
+	pos = pos or irr.core.rect(0,0,0,0)
+	return _draw2DRectangle(self, color, pos, clip)
+end
+
+local _createRenderTargetTexture = irr.video.IVideoDriver.createRenderTargetTexture
+function irr.video.IVideoDriver:createRenderTargetTexture(size)
+	return _createRenderTargetTexture(self, irr.core.dimension2ds32(size.Width, size.Height))
+end
+	
+local _setRenderTarget = irr.video.IVideoDriver.setRenderTarget
+function irr.video.IVideoDriver:setRenderTarget(texture, clearBackBuffer, clearZBuffer, col)
+	col = col or irr.video.SColor(0,0,0,0)
+	return _setRenderTarget(self, texture, clearBackBuffer, clearZBuffer, col)
+end
+
+local _setFog = irr.video.IVideoDriver.setFog
+function irr.video.IVideoDriver:setFog(color, linearFog, Start, End, density, pixelFog, rangeFog)
+	color = color or irr.video.SColor(0,255,255,255)
+	if linearFog == nil then linearFog = true end
+	Start = Start or 50
+	End = End or 100
+	density = density or 0.01
+	pixelFog = pixelFog or false
+	rangeFog = rangeFog or false
+	return _setFog(self, color, linearFog, Start, End, density, pixelFog, rangeFog)	
+
+end
+
+function irr.video.IVideoDriver:drawIndexedTriangleList(vertices, indices)
+	return irr.video.IrrLuaDrawIndexedTriangleList(self, table.getn(vertices), vertices, table.getn(indices), indices)
+end
+
+$]
+
+

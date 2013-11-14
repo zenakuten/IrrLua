@@ -1,0 +1,62 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace io
+{
+
+	//! Interface providing write acess to a file.
+	class IWriteFile : public irr::IUnknown
+	{
+	public:
+
+		virtual ~IWriteFile();
+
+		//! Reads an amount of bytes from the file.
+		//! \param buffer: Pointer to buffer of bytes to write.
+		//! \param sizeToWrite: Amount of bytes to wrtie to the file.
+		//! \return Returns how much bytes were written.
+		virtual s32 write(void* buffer, s32 sizeToWrite);
+
+		//! Changes position in file, returns true if successful.
+		//! \param finalPos: Destination position in the file.
+		//! \param relativeMovement: If set to true, the position in the file is
+		//! changed relative to current position. Otherwise the position is changed 
+		//! from begin of file.		
+		//! \return Returns true if successful, otherwise false.
+		virtual bool seek(s32 finalPos, bool relativeMovement);
+
+		//! Returns the current position in the file.
+		//! \return Returns the current position in the file in bytes.
+		virtual s32 getPos();
+
+		//! Returns name of file.
+		//! \return Returns the file name as zero terminated character string.
+		virtual c8* getFileName();
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();		
+	};
+
+	//! Internal function, please do not use.
+	//IWriteFile* createWriteFile(c8* fileName, bool append);
+
+} // end namespace irr
+} // end namespace io
+
+
+$[
+
+local _getFileName = irr.io.IWriteFile.getFileName
+function irr.io.IWriteFile:getFileName()
+	return irr.cast.c8_ptr_to_std_string(_getFileName(self))
+end
+
+$]

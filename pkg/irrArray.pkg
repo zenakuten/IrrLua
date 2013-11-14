@@ -1,0 +1,200 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+
+namespace core
+{
+//!	Self reallocating template array (like stl vector) with additional features.
+/** Some features are: Heap sorting, binary search methods, easier debugging.
+*/
+//template <class T>
+class array
+{
+
+	TOLUA_TEMPLATE_BIND(T, f32, s32, irr::core::vector3d<f32>, irr::video::PITexture )
+
+	array();
+
+	//! Constructs a array and allocates an initial chunk of memory.
+	//! \param start_count: Amount of elements to allocate.
+	array(u32 start_count);
+
+	//! Copy constructor
+	array(array<T>& other);
+
+	//! Destructor. Frees allocated memory, if set_free_when_destroyed
+	//! was not set to false by the user before.
+	~array();
+
+	//! Reallocates the array, make it bigger or smaller.
+	//! \param new_size: New size of array.
+	void reallocate(u32 new_size);
+
+	//! Adds an element at back of array. If the array is to small to 
+	//! add this new element, the array is made bigger.
+	//! \param element: Element to add at the back of the array.
+	void push_back(T& element);
+
+	//! Adds an element at the front of the array. If the array is to small to 
+	//! add this new element, the array is made bigger. Please note that this
+	//! is slow, because the whole array needs to be copied for this.
+	//! \param element: Element to add at the back of the array.
+	void push_front(T& element);
+	
+	//! Insert item into array at specified position. Please use this
+	//! only if you know what you are doing (possible performance loss). 
+	//! The preferred method of adding elements should be push_back().
+	//! \param element: Element to be inserted
+	//! \param index: Where position to insert the new element.
+	void insert(T& element, u32 index);
+
+	//! Clears the array and deletes all allocated memory.
+	void clear();
+
+	//! Sets pointer to new array, using this as new workspace.
+	//! \param newPointer: Pointer to new array of elements.
+	//! \param size: Size of the new array.
+	void set_pointer(T* newPointer, u32 size);
+
+	//! Sets if the array should delete the memory it used.
+	//! \param f: If true, the array frees the allocated memory in its
+	//! destructor, otherwise not. The default is true.
+	void set_free_when_destroyed(bool f);
+
+
+	//! Sets the size of the array.
+	//! \param usedNow: Amount of elements now used.
+	void set_used(u32 usedNow);
+
+	//! Assignement operator
+	//void operator=(array<T>& other);
+
+
+	//! Direct access operator
+	T& operator [](unsigned int index);
+
+
+
+	//! Direct access operator
+	//T& operator [](unsigned int  index) ;
+
+    //! Gets last frame
+	T& getLast();
+
+    //! Gets last frame
+	//T& getLast();
+    
+
+	//! Returns a pointer to the array.
+	//! \return Pointer to the array.
+	T* pointer();
+
+	//! Returns a const pointer to the array.
+	//! \return Pointer to the array.
+	T* const_pointer();
+
+	//! Returns size of used array.
+	//! \return Size of elements in the array.
+	u32 size();
+
+	//! Returns amount memory allocated.
+	//! \return Returns amount of memory allocated. The amount of bytes
+	//! allocated would  be allocated_size() * sizeof(ElementsUsed);
+	u32 allocated_size();
+
+	//! Returns true if array is empty
+	//! \return True if the array is empty, false if not.
+	bool empty();
+
+	//! Sorts the array using heapsort. There is no additional memory waste and
+	//! the algorithm performs (O) n log n in worst case.
+	//void sort();
+
+	//! Performs a binary search for an element, returns -1 if not found.
+	//! The array will be sorted before the binary search if it is not
+	//! already sorted.
+	//! \param element: Element to search for.
+	//! \return Returns position of the searched element if it was found,
+	//! otherwise -1 is returned.
+	//s32 binary_search(T& element);
+
+	//! Performs a binary search for an element, returns -1 if not found.
+	//! The array will be sorted before the binary search if it is not
+	//! already sorted.
+	//! \param element: Element to search for.
+	//! \param left: First left index
+	//! \param right: Last right index.
+	//! \return Returns position of the searched element if it was found,
+	//! otherwise -1 is returned.
+	//s32 binary_search(T& element, s32 left, s32 right);
+
+
+	//! Finds an element in linear time, which is very slow. Use
+	//! binary_search for faster finding. Only works if =operator is implemented.
+	//! \param element: Element to search for.
+	//! \return Returns position of the searched element if it was found,
+	//! otherwise -1 is returned.
+	//s32 linear_search(T& element);
+
+
+	//! Finds an element in linear time, which is very slow. Use
+	//! binary_search for faster finding. Only works if =operator is implemented.
+	//! \param element: Element to search for.
+	//! \return Returns position of the searched element if it was found,
+	//! otherwise -1 is returned.
+	//s32 linear_reverse_search(T& element);
+
+
+	//! Erases an element from the array. May be slow, because all elements 
+	//! following after the erased element have to be copied.
+	//! \param index: Index of element to be erased.
+	void erase(u32 index);
+
+	//! Erases some elements from the array. may be slow, because all elements 
+	//! following after the erased element have to be copied.
+	//! \param index: Index of the first element to be erased.
+	//! \param count: Amount of elements to be erased.
+	void erase(u32 index, s32 count);
+	
+
+
+	//! Sets if the array is sorted
+	void set_sorted(bool _is_sorted);
+
+};
+
+
+} // end namespace core
+} // end namespace irr
+
+$[
+
+function irr.core.array(T)
+	local ret
+	
+	if type(T) == "table" then
+	
+		local process = function(t) return t end
+	
+		if type(T[1]) == "number" then
+			ret = irr.core.array_f32_:new()
+		elseif tolua.type(T[1]) == "irr::core::vector3d<f32>" then
+			ret = irr.core.array_irr__core__vector3d_f32___:new()
+		elseif tolua.type(T[1]) == "irr::video::ITexture" then
+			ret = irr.core.array_irr__video__PITexture_:new()
+			process = function(t) return irr.cast.to_pitexture(t) end
+		else
+			return nil
+		end
+	
+		for i = 1,table.getn(T) do ret:push_back(process(T[i])) end
+		tolua.takeownership(ret)
+	end
+	
+	return ret
+end
+
+$]

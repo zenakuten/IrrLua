@@ -1,0 +1,539 @@
+// Copyright (C) 2002-2006 Nikolaus Gebhardt
+// This file is part of the "Irrlicht Engine".
+// For conditions of distribution and use, see copyright notice in irrlicht.h
+
+namespace irr
+{
+namespace io
+{
+
+//! Types of attributes available for IAttributes
+enum E_ATTRIBUTE_TYPE
+{
+	// integer attribute
+	EAT_INT = 0,
+
+	// float attribute
+	EAT_FLOAT,
+
+	// string attribute
+	EAT_STRING,
+
+	// boolean attribute
+	EAT_BOOL,
+
+	// enumeration attribute
+	EAT_ENUM,
+
+	// color attribute
+	EAT_COLOR,
+
+	// floating point color attribute
+	EAT_COLORF,
+
+	// 3d vector attribute
+	EAT_VECTOR3D,
+
+	// binary data attribute
+	EAT_BINARY,
+
+	// texture reference attribute
+	EAT_TEXTURE,
+
+	// unknown attribute
+	EAT_UNKNOWN
+};
+
+//! Provides a generic interface for attributes and their values and the possiblity to serialize them
+class IAttributes : public irr::IUnknown
+{
+public:
+
+	//! Removes all attributes
+	virtual void clear();
+
+	//! Adds an attribute as integer
+	virtual void addInt(c8* attributeName, s32 value);
+
+	//! Adds an attribute as float
+	virtual void addFloat(c8* attributeName, f32 value);
+
+	//! Adds an attribute as string
+	virtual void addString(c8* attributeName, c8* value);
+
+	//! Adds an attribute as bool
+	virtual void addBool(c8* attributeName, bool value);
+
+	//! Adds an attribute as enum
+	virtual void addEnum(c8* attributeName,  c8* enumValue, c8** enumerationLiterals);
+
+	//! Adds an attribute as enum
+	virtual void addEnum(c8* attributeName, s32 enumValue, c8** enumerationLiterals);
+
+	//! Adds an attribute as color
+	virtual void addColor(c8* attributeName, irr::video::SColor value);
+
+	//! Adds an attribute as floating point color
+	virtual void addColorf(c8* attributeName, irr::video::SColorf value);
+
+	//! Adds an attribute as 3d vector
+	virtual void addVector3d(c8* attributeName, irr::core::vector3d<f32> value);
+
+	//! Adds an attribute as binary data
+	virtual void addBinary(c8* attributeName, void* data, s32 dataSizeInBytes);
+
+	//! Adds an attribute as texture reference
+	virtual void addTexture(c8* attributeName, irr::video::ITexture* texture);
+
+	//! Returns amount of attributes in this collection of attributes.
+	virtual s32 getAttributeCount();
+
+	//! Returns attribute name by index. 
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual c8* getAttributeName(s32 index);
+
+	//! Returns the type of an attribute
+	//! \param attributeName: Name for the attribute
+	virtual irr::io::E_ATTRIBUTE_TYPE getAttributeType(c8* attributeName);
+
+	//! Returns attribute type by index. 
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual irr::io::E_ATTRIBUTE_TYPE getAttributeType(s32 index);
+
+	//! Sets an attribute value as string. 
+	//! \param attributeName: Name for the attribute
+	//! \param value: Value for the attribute. Set this to 0 to delete the attribute
+	virtual void setAttribute(c8* attributeName, c8* value);
+
+	//! Gets an attribute as string.
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute() 
+	//! or 0 if attribute is not set.
+	virtual irr::core::stringc getAttributeAsString(c8* attributeName);
+
+	//! Gets an attribute as string.
+	//! \param attributeName: Name of the attribute to get.
+	//! \param target: Buffer where the string is copied to.
+	virtual void getAttributeAsString(c8* attributeName, c8* target);
+
+	//! Returns attribute value as string by index. 
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual irr::core::stringc getAttributeAsString(s32 index);	
+
+	//! Sets an attribute as boolean value
+	virtual void setAttribute(c8* attributeName, bool value);
+
+	//! Gets an attribute as boolean value
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute() 
+	virtual bool getAttributeAsBool(c8* attributeName);
+
+    //! Gets an attribute as boolean value
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual bool getAttributeAsBool(s32 index);
+
+	//! Sets an attribute as integer value
+	virtual void setAttribute(c8* attributeName, s32 value);
+
+	//! Gets an attribute as integer value
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute()
+	virtual s32 getAttributeAsInt(c8* attributeName);
+
+	//! Gets an attribute as integer value
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual s32 getAttributeAsInt(s32 index);
+
+	//! Sets a attribute as float value
+	virtual void setAttribute(c8* attributeName, f32 value);
+
+	//! Gets an attribute as float value
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute()
+	virtual f32 getAttributeAsFloat(c8* attributeName);
+
+	//! Gets an attribute as float value
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual f32 getAttributeAsFloat(s32 index);
+
+	//! Sets a attribute as color
+	virtual void setAttribute(c8* attributeName, irr::video::SColor color);
+
+	//! Gets an attribute as color
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute()
+	virtual irr::video::SColor getAttributeAsColor(const c8* attributeName);
+
+	//! Gets an attribute as color
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual irr::video::SColor getAttributeAsColor(s32 index);
+
+	//! Sets a attribute as floating point color
+	virtual void setAttribute(c8* attributeName, irr::video::SColorf color);
+
+	//! Gets an attribute as floating point color
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute()
+	virtual irr::video::SColorf getAttributeAsColorf(c8* attributeName);
+
+	//! Gets an attribute as floating point color
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual irr::video::SColorf getAttributeAsColorf(s32 index);
+
+	//! Sets a attribute as vector
+	virtual void setAttribute(c8* attributeName, irr::core::vector3d<f32> v);
+
+	//! Gets an attribute as floating point color
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute()
+	virtual irr::core::vector3d<f32> getAttributeAsVector3d(c8* attributeName);
+
+	//! Gets an attribute as floating point color
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual irr::core::vector3d<f32> getAttributeAsVector3d(s32 index);
+
+	//! Sets an attribute as binary data
+	virtual void setAttribute(c8* attributeName, void *data, s32 dataSizeInBytes);
+
+	//! Gets an attribute as binary data
+	//! \param attributeName: Name of the attribute to get.
+	virtual void getAttributeAsBinaryData(c8* attributeName, void *outData, s32 maxSizeInBytes);
+
+	//! Gets an attribute as binary data
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual void getAttributeAsBinaryData(s32 index, void* outData, s32 maxSizeInBytes);
+
+	//! Sets an attribute as enumeration
+	virtual void setAttribute(c8* attributeName, c8* enumValue, c8 **enumerationLiterals);
+
+	//! Gets an attribute as enumeration
+	//! \param attributeName: Name of the attribute to get.
+	//! \return Returns value of the attribute previously set by setAttribute()
+	virtual c8 *getAttributeAsEnumeration(c8* attributeName);
+
+	//! Gets an attribute as enumeration
+	//! \param attributeName: Name of the attribute to get.
+	//! \param enumerationLiteralsToUse: Use these enumeration literals to get the index value instead of the set ones.
+	//! This is useful when the attribute list maybe was read from an xml file, and only contains the enumeration string, but
+	//! no information about its index.
+	//! \return Returns value of the attribute previously set by setAttribute()
+	virtual s32 getAttributeAsEnumeration(c8* attributeName, c8 **enumerationLiteralsToUse);
+
+	//! Gets an attribute as enumeration
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual s32 getAttributeAsEnumeration(s32 index, c8 **enumerationLiteralsToUse);
+
+	//! Gets an attribute as enumeration
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual c8 *getAttributeAsEnumeration(s32 index);
+
+	//! Gets the list of enumeration literals of an enumeration attribute 
+	//! \param attributeName: Name of the attribute to get.
+	virtual void getAttributeEnumerationLiteralsOfEnumeration(c8* attributeName, irr::core::array<irr::core::stringc>& outLiterals);
+
+	//! Gets the list of enumeration literals of an enumeration attribute 
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual void getAttributeEnumerationLiteralsOfEnumeration(s32 index, irr::core::array<irr::core::stringc>& outLiterals);
+
+	//! Sets an attribute as texture reference
+	virtual void setAttribute(c8* attributeName, irr::video::ITexture* texture);
+
+	//! Gets an attribute as texture reference
+	//! \param attributeName: Name of the attribute to get.
+	virtual irr::video::ITexture* getAttributeAsTexture(c8* attributeName);
+
+	//! Gets an attribute as texture reference
+	//! \param index: Index value, must be between 0 and getAttributeCount()-1.
+	virtual irr::video::ITexture* getAttributeAsTexture(s32 index);
+
+	//! Returns if an attribute with a name exists
+	virtual bool existsAttribute(c8* attributeName);
+
+	//! Returns attribute index from name, -1 if not found
+	virtual s32 findAttribute(c8* attributeName);
+
+	//! Sets an attribute value as string. 
+	//! \param attributeName: Name for the attribute
+	virtual void setAttribute(s32 index, c8* value);
+
+	//! Sets an attribute as boolean value
+	virtual void setAttribute(s32 index, bool value);
+
+	//! Sets an attribute as integer value
+	virtual void setAttribute(s32 index, s32 value);
+
+	//! Sets an attribute as float value
+	virtual void setAttribute(s32 index, f32 value);
+
+	//! Sets an attribute as color
+	virtual void setAttribute(s32 index, irr::video::SColor color);
+
+	//! Sets an attribute as floating point color
+	virtual void setAttribute(s32 index, irr::video::SColorf color);
+
+	//! Sets an attribute as vector
+	virtual void setAttribute(s32 index, irr::core::vector3d<f32> v);
+
+	//! Sets an attribute as binary data
+	virtual void setAttribute(s32 index, void* data, s32 dataSizeInBytes );
+
+	//! Sets an attribute as enumeration
+	virtual void setAttribute(s32 index, c8* enumValue, c8 **enumerationLiterals);
+
+	//! Sets an attribute as texture reference
+	virtual void setAttribute(s32 index, irr::video::ITexture* texture);
+
+	//! Reads attributes from a xml file.
+	//! \param readCurrentElementOnly: If set to true, reading only works if current element has the name 'attributes'.
+	//! IF set to false, the first appearing list attributes are read.
+	virtual bool read(irr::io::IXMLReader* reader, bool readCurrentElementOnly);
+
+	//! Write these attributes into a xml file
+	virtual bool write(irr::io::IXMLWriter* writer);
+};
+
+} // end namespace io
+} // end namespace irr
+
+
+$[
+
+local _addInt = irr.io.IAttributes.addInt
+function irr.io.IAttributes:addInt(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addInt(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+end
+
+local _addFloat = irr.io.IAttributes.addFloat
+function irr.io.IAttributes:addFloat(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addFloat(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+end
+
+local _addString = irr.io.IAttributes.addString
+function irr.io.IAttributes:addString(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	local v = irr.cast.to_c8_ptr(value)
+	_addString(self, n, v)
+	irr.cast.delete_c8_ptr(n)
+	irr.cast.delete_c8_ptr(v)
+end
+	
+local _addBool = irr.io.IAttributes.addBool
+function irr.io.IAttributes:addBool(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addBool(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+end
+
+local _addColor = irr.io.IAttributes.addColor
+function irr.io.IAttributes:addColor(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addColor(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+end
+
+local _addColorf = irr.io.IAttributes.addColorf
+function irr.io.IAttributes:addColorf(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addColorf(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+end
+
+local _addVector3d = irr.io.IAttributes.addVector3d
+function irr.io.IAttributes:addColorf(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addVector3d(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+end
+
+local _addBinary = irr.io.IAttributes.addBinary
+function irr.io.IAttributes:addBinary(attributeName, data, dataSizeInBytes)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addBinary(self, n, data, dataSizeInBytes)
+	irr.cast.delete_c8_ptr(n)
+end
+
+local _addTexture = irr.io.IAttributes.addTexture
+function irr.io.IAttributes:addTexture(attributeName, value)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	_addTexture(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+end
+
+
+local _getAttributeName = irr.io.IAttributes.getAttributeName
+function irr.io.IAttributes:getAttributeName(index)
+	return irr.cast.c8_ptr_to_std_string(_getAttributeName(self, index))
+end
+
+
+local _getAttributeType = irr.io.IAttributes.getAttributeType
+function irr.io.IAttributes:getAttributeType(attributeName)
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeType(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	return _getAttributeType(self, attributeName)
+end
+
+local _setAttribute = irr.io.IAttributes.setAttribute
+function irr.io.IAttributes:setAttribute(attributeName, value)
+	
+	if type(value) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local v = irr.cast.to_c8_ptr(value)
+		local ret = _setAttribute(self, n, v)
+		irr.cast.delete_c8_ptr(n)
+		irr.cast.delete_c8_ptr(v)
+		return ret
+	end
+	
+	local n = irr.cast.to_c8_ptr(attributeName)
+	local ret = _setAttribute(self, n, v)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+	
+local _getAttributeAsString = irr.io.IAttributes.getAttributeAsString
+function irr.io.IAttributes:getAttributeAsString(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = irr.cast.stringc_to_std_string(_getAttributeAsString(self, n))
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return irr.cast.stringc_to_std_string(_getAttributeAsString(self, attributeName))
+end
+
+local _getAttributeAsBool = irr.io.IAttributes.getAttributeAsBool
+function irr.io.IAttributes:getAttributeAsBool(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsBool(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsBool(self, attributeName)
+end
+
+local _getAttributeAsInt = irr.io.IAttributes.getAttributeAsInt
+function irr.io.IAttributes:getAttributeAsInt(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsInt(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsInt(self, attributeName)
+end
+
+local _getAttributeAsFloat = irr.io.IAttributes.getAttributeAsFloat
+function irr.io.IAttributes:getAttributeAsInt(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsFloat(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsFloat(self, attributeName)
+end
+
+local _getAttributeAsColor = irr.io.IAttributes.getAttributeAsColor
+function irr.io.IAttributes:getAttributeAsColor(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsColor(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsColor(self, attributeName)
+end
+
+local _getAttributeAsColorf = irr.io.IAttributes.getAttributeAsColorf
+function irr.io.IAttributes:getAttributeAsColorf(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsColorf(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsColorf(self, attributeName)
+end
+
+local _getAttributeAsVector3d = irr.io.IAttributes.getAttributeAsVector3d
+function irr.io.IAttributes:getAttributeAsVector3d(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsVector3d(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsVector3d(self, attributeName)
+end
+
+
+local _getAttributeAsBinaryData = irr.io.IAttributes.getAttributeAsBinaryData
+function irr.io.IAttributes:getAttributeAsBinaryData(attributeName, outData, maxSizeInBytes)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsBinaryData(self, n, outData, maxSizeInBytes)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsVector3d(self, attributeName)
+end
+
+local _getAttributeAsTexture = irr.io.IAttributes.getAttributeAsTexture
+function irr.io.IAttributes:getAttributeAsTexture(attributeName)
+	
+	if type(attributeName) == "string" then		
+		local n = irr.cast.to_c8_ptr(attributeName)
+		local ret = _getAttributeAsTexture(self, n)
+		irr.cast.delete_c8_ptr(n)
+		return ret
+	end
+	
+	return _getAttributeAsTexture(self, attributeName)
+end
+
+local _existsAttribute = irr.io.IAttributes.existsAttribute
+function irr.io.IAttributes:existsAttribute(attributeName)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	local ret = _existsAttribute(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+	
+local _findAttribute = irr.io.IAttributes.findAttribute
+function irr.io.IAttributes:findAttribute(attributeName)
+	local n = irr.cast.to_c8_ptr(attributeName)
+	local ret = _findAttribute(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+$]
+
+

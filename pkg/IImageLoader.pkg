@@ -1,0 +1,58 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace video
+{
+
+//!	Class which is able to create a image from a file.
+/** If you want the Irrlicht Engine be able to load textures of 
+currently unsupported file formats (e.g .gif), then implement
+this and add your new Surface loader with 
+IVideoDriver::addExternalImageLoader() to the engine. */
+class IImageLoader : public irr::IUnknown
+{
+public:
+
+	//! destructor
+	virtual ~IImageLoader();
+
+	//! returns true if the file maybe is able to be loaded by this class
+	//! based on the file extension (e.g. ".tga")
+	virtual bool isALoadableFileExtension(c8* fileName);
+
+	//! returns true if the file maybe is able to be loaded by this class
+	virtual bool isALoadableFileFormat(irr::io::IReadFile* file);
+
+	//! creates a surface from the file
+	virtual irr::video::IImage* loadImage(irr::io::IReadFile* file);
+	
+	//////////////////////////////////////////////////////////////////////////////////////	
+	//IUnknown
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	virtual void grab();
+	virtual bool drop();
+	c8* getDebugName();			
+	
+};
+
+
+} // end namespace video
+} // end namespace irr
+
+
+$[
+
+local __isALoadableFileExtension = irr.video.IImageLoader.isALoadableFileExtension
+function irr.video.IImageLoader:isALoadableFileExtension(fileName)
+	local n = irr.cast.to_c8_ptr(fileName)
+	local ret = _isALoadableFileExtension(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+$]
+

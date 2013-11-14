@@ -1,0 +1,291 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace scene
+{
+
+	//! Interface for a Mesh wich can be loaded directly from a Quake3 .bsp-file.
+	/** The Mesh tries to load all textures of the map. There are currently 
+	no additional methods in this class, but maybe there will be some in later
+	releases if there are feature requests. */
+	class IQ3LevelMesh : public irr::scene::IAnimatedMesh
+	{
+	public:
+
+		//! destructor
+		virtual ~IQ3LevelMesh();
+		
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// ISceneNode
+		////////////////////////////////////////////////////////////////////////////////////////////
+
+		//! This method is called just before the rendering process of the whole scene.
+		//! Nodes may register themselves in the render pipeline during this call,
+		//! precalculate the geometry which should be renderered, and prevent their
+		//! children from being able to register them selfes if they are clipped by simply
+		//! not calling their OnPreRender-Method.
+		virtual void OnPreRender();
+
+
+		//! OnPostRender() is called just after rendering the whole scene.
+		//! Nodes may calculate or store animations here, and may do other useful things,
+		//! dependent on what they are.
+		//! \param timeMs: Current time in milli seconds.
+		virtual void OnPostRender(u32 timeMs);
+
+
+		//! Renders the node.
+		virtual void render();
+
+
+		//! Returns the name of the node.
+		//! \return Returns name as wide character string.
+		virtual c8* getName();
+
+
+		//! Sets the name of the node.
+		//! \param name: New name of the scene node.
+		virtual void setName(c8* name);
+
+
+		//! Returns the axis aligned, not transformed bounding box of this node.
+		//! This means that if this node is a animated 3d character, moving in a room,
+		//! the bounding box will always be around the origin. To get the box in
+		//! real world coordinates, just transform it with the matrix you receive with
+		//! getAbsoluteTransformation() or simply use getTransformedBoundingBox(),
+		//! which does the same.
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+
+
+		//! Returns the axis aligned, transformed and animated absolute bounding box
+		//! of this node.
+		irr::core::aabbox3d<f32> getTransformedBoundingBox();
+		
+
+		//! returns the absolute transformation of the node. Is recalculated every OnPostRender()-call.
+		irr::core::matrix4& getAbsoluteTransformation();
+
+
+		//! Returns the relative transformation of the scene node.
+		//! The relative transformation is stored internally as 3 vectors:
+		//! translation, rotation and scale. To get the relative transformation
+		//! matrix, it is calculated from these values.
+		//! \return Returns the relative transformation matrix.
+		virtual irr::core::matrix4 getRelativeTransformation();
+
+
+		//! Returns true if the node is visible. This is only an option, set by the user and has
+		//! nothing to do with geometry culling
+		virtual bool isVisible();
+
+
+		//! Sets if the node should be visible or not. All children of this node won't be visible too.
+		virtual void setVisible(bool isVisible);
+
+
+		//! Returns the id of the scene node. This id can be used to identify the node.
+		virtual s32 getID();
+
+
+		//! sets the id of the scene node. This id can be used to identify the node.
+		virtual void setID(s32 id);
+
+
+		//! Adds a child to this scene node. If the scene node already
+		//! has got a parent, it is removed from there as child.
+		virtual void addChild(irr::scene::ISceneNode* child);
+
+
+		//! Removes a child from this scene node.
+		//! \return Returns true if the child could be removed, and false if not.
+		virtual bool removeChild(irr::scene::ISceneNode* child);
+
+
+		//! Removes all children of this scene node
+		virtual void removeAll();
+		
+
+		//! Removes this scene node from the scene, deleting it.
+		virtual void remove();
+		
+
+		//! Adds an animator which should animate this node.
+		virtual void addAnimator(irr::scene::ISceneNodeAnimator* animator);
+
+
+
+		//! Removes an animator from this scene node.
+		virtual void removeAnimator(irr::scene::ISceneNodeAnimator* animator);
+		
+
+
+		//! Removes all animators from this scene node.
+		virtual void removeAnimators();
+		
+
+
+		//! Returns the material based on the zero based index i. To get the amount
+		//! of materials used by this scene node, use getMaterialCount().
+		//! This function is needed for inserting the node into the scene hirachy on a
+		//! optimal position for minimizing renderstate changes, but can also be used
+		//! to directly modify the material of a scene node.
+		//! \param i: Zero based index i. The maximal value for this may be getMaterialCount() - 1.
+		//! \return Returns the material of that index.
+		virtual irr::video::SMaterial& getMaterial(s32 i);
+
+
+		//! Returns amount of materials used by this scene node.
+		//! \return Returns current count of materials used by this scene node.
+		virtual s32 getMaterialCount();
+		
+
+		//! Sets all material flags at once to a new value. Helpful for
+		//! example, if you want to be the the whole mesh to be lighted by 
+		//! \param flag: Which flag of all materials to be set.
+		//! \param newvalue: New value of the flag.
+		void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
+		
+
+
+		//! Sets the texture of the specified layer in all materials of this
+		//! scene node to the new texture.
+		//! \param textureLayer: Layer of texture to be set. Must be a value greater or
+		//! equal than 0 and smaller than MATERIAL_MAX_TEXTURES.
+		//! \param texture: Texture to be used.
+		void setMaterialTexture(s32 textureLayer, irr::video::ITexture* texture);
+		
+
+			
+		//! Sets the material type of all materials s32 this scene node
+		//! to a new material type.
+		//! \param newType: New type of material to be set.
+		void setMaterialType(irr::video::E_MATERIAL_TYPE newType);
+			
+
+
+		//! Gets the scale of the scene node. 
+		//! \return Returns the scale of the scene node.
+		virtual irr::core::vector3d<f32> getScale();
+
+
+		//! Sets the scale of the scene node. 
+		//! \param scale: New scale of the node
+		virtual void setScale(irr::core::vector3d<f32>& scale);
+
+
+		//! Sets the rotation of the node. Note that this is
+		//! the relative rotation of the node.
+		//! \return Current relative rotation of the scene node.
+		virtual irr::core::vector3d<f32> getRotation();
+
+
+		//! Sets the rotation of the node. This only modifies
+		//! the relative rotation of the node.
+		//! \param roation: New rotation of the node in degrees.
+		//virtual void setRotation(const core::vector3df& rotation);
+		virtual void setRotation(irr::core::vector3d<f32>& rotation);
+
+
+		//! Gets the position of the node. Note that the position is
+		//! relative to the parent.
+		//! \return Returns the current position of the node relative to the parent.
+		//virtual vector3df getPosition();
+		virtual irr::core::vector3d<f32> getPosition();
+		
+
+		//! Sets the position of the node. Note that the position is
+		//! relative to the parent.
+		//! \param newpos: New relative postition of the scene node.
+		//virtual void setPosition(const core::vector3df& newpos);
+		virtual void setPosition(irr::core::vector3d<f32>& newpos);
+
+
+		//! Gets the abolute position of the node. The position is absolute.
+		//! \return Returns the current absolute position of the scene node.
+		virtual irr::core::vector3d<f32> getAbsolutePosition();
+
+
+		//! Enables or disables automatic culling based on the bounding
+		//! box. Automatic culling is enabled by default. Note that not
+		//! all SceneNodes support culling (the billboard scene node for example)
+		//! and that some nodes always cull their geometry because it is their
+		//! only reason for existance, for example the OctreeSceneNode.
+		//! \param enabled: If true, automatic culling is enabled.
+		//! If false, it is disabled.
+		void setAutomaticCulling(bool enabled);
+
+
+		//! Gets the automatic culling state. 
+		//! \return The node is culled based on its bounding box if this method
+		//! returns true, otherwise no culling is performed.
+		bool getAutomaticCulling();
+
+
+		//! Sets if debug data like bounding boxes should be drawed.
+		//! Please note that not all scene nodes support this feature.
+		void setDebugDataVisible(bool visible);
+		
+
+		//! Returns if debug data like bounding boxes are drawed.
+		bool isDebugDataVisible();
+		
+
+
+		//! Returns a const reference to the list of all children.
+		//irr::core::list<ISceneNode*>& getChildren();
+		
+
+
+		//! Changes the parent of the scene node.
+		virtual void setParent(irr::scene::ISceneNode* newParent);
+		
+
+
+		//! Returns the triangle selector attached to this scene node.
+		//! The Selector can be used by the engine for doing collision
+		//! detection. You can create a TriangleSelector with 
+		//! ISceneManager::createTriangleSelector() or 
+		//! ISceneManager::createOctTreeTriangleSelector and set it with
+		//! ISceneNode::setTriangleSelector(). If a scene node got no triangle
+		//! selector, but collision tests should be done with it, a triangle
+		//! selector is created using the bounding box of the scene node.
+		//! \return Returns a pointer to the TriangleSelector or NULL, if there
+		//! is none.
+		virtual irr::scene::ITriangleSelector* getTriangleSelector();
+		
+
+
+		//! Sets the triangle selector of the scene node. The Selector can be
+		//! used by the engine for doing collision detection. You can create a
+		//! TriangleSelector with ISceneManager::createTriangleSelector() or 
+		//! ISceneManager::createOctTreeTriangleSelector(). Some nodes may
+		//! create their own selector by default, so it would be good to
+		//! check if there is already a selector in this node by calling
+		//! ISceneNode::getTriangleSelector(). 
+		//! \param selector: New triangle selector for this scene node.
+		virtual void setTriangleSelector(irr::scene::ITriangleSelector* selector);
+		
+
+		//! updates the absolute position based on the relative and the parents position
+		virtual void updateAbsolutePosition();
+		
+		
+		//! Returns the parent of this scene node
+		irr::scene::ISceneNode* getParent();
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();			
+	};
+
+} // end namespace scene
+} // end namespace irr
+
+

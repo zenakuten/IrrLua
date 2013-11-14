@@ -1,0 +1,42 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+$#include "IrrLua.h"
+
+namespace irr
+{
+
+class IrrLuaEventReceiver : public irr::IEventReceiver {
+
+public:
+	IrrLuaEventReceiver();
+	~IrrLuaEventReceiver();
+
+	//virtual bool OnEvent(irr::SEvent event);
+	
+	//IrrLua stuff
+	void *GetProxy();
+	
+};
+}
+
+
+$[
+
+irr.__ieventreceiverproxy = {}
+
+function irr.createIEventReceiver(def)
+	local o = {}
+	for i,v in pairs(def) do o[i] = v end
+	o.__c_class = irr.IrrLuaEventReceiver:new()
+	tolua.inherit(o, o.__c_class)
+	tolua.takeownership(o)
+	o.__index = function (t, k) return rawget(t,"__c_class")[k] end	
+	setmetatable(o, o)	
+	irr.__ieventreceiverproxy[o.__c_class:GetProxy()] = o
+	return o
+end
+
+
+$]

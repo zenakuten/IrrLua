@@ -1,0 +1,38 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+
+//! The Operating system operator provides operation system specific methods and informations.
+/** Currently only 3 methods are supported. But it will be extended with more functionality
+soon. */
+class IOSOperator : public irr::IUnknown
+{
+
+	//! destructor
+	virtual ~IOSOperator();
+
+	//! returns the current operation system version as string.
+	virtual wchar_t* getOperationSystemVersion();
+
+	//! copies text to the clipboard
+	virtual void copyToClipboard(c8* text);
+
+	//! gets text from the clipboard
+	//! \return Returns 0 if no string is in there.
+	virtual c8* getTextFromClipboard();	
+	
+	///////////////////////////////////////////////////////////////////////
+	//IUnknown
+	///////////////////////////////////////////////////////////////////////
+	virtual void grab();
+	virtual bool drop();
+	virtual c8* getDebugName();		
+};
+
+} // end namespace
+
+

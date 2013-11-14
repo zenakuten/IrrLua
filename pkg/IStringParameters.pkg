@@ -1,0 +1,129 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+
+//! Provides a generic interface for parameters and their values as strings.
+class IStringParameters : public irr::IUnknown
+{
+public:
+
+	//! Sets a string parameter. 
+	//! \param parameterName: Name for the parameter
+	//! \param value: Value for the parameter. Set this to 0 to delete the parameter
+	virtual void setParameter(c8* parameterName, c8* value);
+
+	//! Gets a string parameter.
+	//! \param parameterName: Name of the parameter to get.
+	//! \return Returns value of the parameter previously set by setParameter() 
+	//! or 0 if parameter is not set.
+	virtual c8* getParameter(c8* parameterName);
+	//! Sets a parameter as boolean value
+	virtual void setParameter(c8* parameterName, bool value);
+
+	//! Gets a parameter as boolean value
+	//! \param parameterName: Name of the parameter to get.
+	//! \return Returns value of the parameter previously set by setParameter() as bool
+	//! or 0 if parameter is not set.
+	virtual bool getParameterAsBool(c8* parameterName);
+
+	//! Sets a parameter as integer value
+	virtual void setParameter(c8* parameterName, s32 value);
+
+	//! Gets a parameter as integer value
+	//! \param parameterName: Name of the parameter to get.
+	//! \return Returns value of the parameter previously set by setParameter() as integer
+	//! or 0 if parameter is not set.
+	virtual s32 getParameterAsInt(c8* parameterName);
+
+	//! Sets a parameter as float value
+	virtual void setParameter(c8* parameterName, f32 value);
+
+	//! Gets a parameter as integer value
+	//! \param parameterName: Name of the parameter to get.
+	//! \return Returns value of the parameter previously set by setParameter() as float value
+	//! or 0 if parameter is not set.
+	virtual f32 getParameterAsFloat(c8* parameterName);
+
+	//! Returns amount of string parameters set in this scene manager.
+	virtual s32 getParameterCount();
+
+	//! Returns string parameter name by index. 
+	//! \param index: Index value, must be between 0 and getParameterCount()-1.
+	virtual c8* getParameterName(s32 index);
+
+	//! Returns string parameter value by index. 
+	//! \param index: Index value, must be between 0 and getParameterCount()-1.
+	virtual c8* getParameterValue(s32 index);	
+	
+	//////////////////////////////////////////////////////////////////////////////////////	
+	//IUnknown
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	virtual void grab();
+	virtual bool drop();
+	c8* getDebugName();		
+};
+
+} // end namespace 
+
+$[
+
+local _setParameter = irr.IStringParameters.setParameter
+function irr.IStringParameters:setParameter(paramaterName, value)
+	
+	if type(value) == "string" then
+		local n = irr.cast.to_c8_ptr(parameterName)
+		local v = irr.cast.to_c8_ptr(value)
+		_setParameter(self, n, v)
+		irr.cast.delete_c8_ptr(n)
+		irr.cast.delete_c8_ptr(v)
+		return
+	end
+
+	local n = irr.cast.to_c8_ptr(parameterName)
+	_setParameter(self, n, value)
+	irr.cast.delete_c8_ptr(n)
+
+end
+
+local _getParameterAsBool = irr.IStringParameters.getParameterAsBool
+function irr.IStringParameters:getParameterAsBool(paramaterName)
+	local n = irr.cast.to_c8_ptr(parameterName)
+	local ret = _getParameterAsBool(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+local _getParameterAsInt = irr.IStringParameters.getParameterAsInt
+function irr.IStringParameters:getParameterAsInt(paramaterName)
+	local n = irr.cast.to_c8_ptr(parameterName)
+	local ret = _getParameterAsInt(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+local _getParameterAsFloat = irr.IStringParameters.getParameterAsFloat
+function irr.IStringParameters:getParameterAsFloat(paramaterName)
+	local n = irr.cast.to_c8_ptr(parameterName)
+	local ret = _getParameterAsFloat(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+local _getParameterName = irr.IStringParameters.getParameterName
+function irr.IStringParameters:getParameterName(index)
+	return irr.cast.c8_ptr_to_std_string(_getParameterName(index))
+end
+	
+local _getParameterValue = irr.IStringParameters.getParameterValue
+function irr.IStringParameters:getParameterValue(index)
+	return irr.cast.c8_ptr_to_std_string(_getParameterValue(index))
+end
+
+$]
+
+

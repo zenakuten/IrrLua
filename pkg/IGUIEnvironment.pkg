@@ -1,0 +1,442 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+
+	namespace video
+	{
+		class IVideoDriver;
+		class ITexture;
+	}
+
+namespace gui
+{
+
+//! GUI Environment. Used as factory and manager of all other GUI elements.
+class IGUIEnvironment : public irr::IUnknown
+{
+public:
+
+	//! destructor
+	virtual ~IGUIEnvironment();
+
+	//! Draws all gui elements.
+	virtual void drawAll();
+
+	//! Sets the focus to an element.
+	virtual void setFocus(irr::gui::IGUIElement* element);
+
+	//! Removes the focus from an element.
+	virtual void removeFocus(irr::gui::IGUIElement* element);
+
+	//! Returns if the element has focus
+	virtual bool hasFocus(irr::gui::IGUIElement* element);
+
+	//! Returns the current video driver.
+	virtual video::IVideoDriver* getVideoDriver();
+
+	//! Posts an input event to the environment. Usually you do not have to
+	//! use this method, it is used by the internal engine.
+	virtual bool postEventFromUser(irr::SEvent event);
+
+	//! This sets a new event receiver for gui events. Usually you do not have to
+	//! use this method, it is used by the internal engine.
+	virtual void setUserEventReceiver(irr::IEventReceiver* evr);
+
+	//! Returns pointer to the current gui skin.
+	virtual irr::gui::IGUISkin* getSkin();
+
+	//! Sets the gui skin
+	virtual void setSkin(irr::gui::IGUISkin *skin);
+
+	//! create skin based on template
+	virtual irr::gui::IGUISkin *createSkin(irr::gui::EGUI_SKIN_TYPE type);
+
+	//! Returns pointer to the font with the specified file name. Loads the font if 
+	//! it was not loaded before. Returns 0 if the font could not be loaded.
+	//! \return
+	//! returns a pointer to the font.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIFont* getFont(c8* filename);
+
+	//! Returns the default built-in font.
+	virtual irr::gui::IGUIFont* getBuiltInFont();
+
+	//! Returns the root gui element. This is the first gui element, parent of all other
+	//! gui elements. You'll never need to use this method, unless you are not creating 
+	//! your own gui elements, trying to add them to the gui elements without a parent.
+	//! The returned pointer should not be dropped. See IUnknown::drop() for more information.
+    virtual irr::gui::IGUIElement* getRootGUIElement();
+
+	//! Adds an button element. 
+	//! \return
+	//! Returns a pointer to the created button. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIButton* addButton(irr::core::rect<s32>& rectangle,
+		irr::gui::IGUIElement* parent, s32 id,wchar_t* text);
+
+	//! Adds an empty window element. 
+	//! \param modal: Defines if the dialog is modal. This means, that all other
+	//! gui elements which were created before the message box cannot be used
+	//! until this messagebox is removed.
+	//! \return
+	//! Returns a pointer to the created window. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIWindow* addWindow(irr::core::rect<s32>& rectangle, bool modal , 
+		wchar_t* text, irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a message box.
+	//! \param caption: Text to be displayed the title of the message box.
+	//! \param text: Text to be displayed in the body of the message box.
+	//! \param modal: Defines if the dialog is modal. This means, that all other
+	//! gui elements which were created before the message box cannot be used
+	//! until this messagebox is removed.
+	//! \param flags: Flags specifying the layout of the message box. For example
+	//! to create a message box with an OK and a CANCEL button on it, set this
+	//! to (EMBF_OK | EMBF_CANCEL).
+	//! \param parent: Parent gui element of the message box.
+	//! \param id: Id with which the gui element can be identified.
+	//! \return
+	//! Returns a pointer to the created message box. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIWindow* addMessageBox(wchar_t* caption, wchar_t* text,
+		bool modal , s32 flags , irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a scrollbar. 
+	//! \return
+	//! Returns a pointer to the created scrollbar. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIScrollBar* addScrollBar(bool horizontal, irr::core::rect<s32>& rectangle, irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds an image element. 
+	//! \param image: Image to be displayed.
+	//! \param pos: Position of the image. The width and height of the image is taken
+	//! from the image.
+	//! \param useAlphaChannel: Sets if the image should use the alpha channel of the texture
+	//! to draw itself.
+	//! \return
+	//! Returns a pointer to the created image element. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual IGUIImage* addImage(irr::video::ITexture* image, irr::core::position2d<s32> pos,
+		bool useAlphaChannel, irr::gui::IGUIElement* parent, s32 id, wchar_t* text);
+
+	//! Adds an image element. Use IGUIImage::setImage later to set the image to be displayed.
+	//! \return
+	//! Returns a pointer to the created image element. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual IGUIImage* addImage(irr::core::rect<s32>& rectangle,
+		irr::gui::IGUIElement* parent, s32 id, wchar_t* text);
+
+	//! Adds a checkbox element.
+	//! \return
+	//! Returns a pointer to the created check box. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUICheckBox* addCheckBox(bool checked, irr::core::rect<s32>& rectangle, irr::gui::IGUIElement* parent, s32 id, wchar_t* text);
+
+	//! Adds a list box element.
+	//! \return
+	//! Returns a pointer to the created list box. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIListBox* addListBox(irr::core::rect<s32>& rectangle, 
+		irr::gui::IGUIElement* parent, s32 id, bool drawBackground);
+
+	//! Adds an mesh viewer. Not 100% implemented yet.
+	//! \return
+	//! Returns a pointer to the created mesh viewer. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIMeshViewer* addMeshViewer(irr::core::rect<s32>& rectangle, irr::gui::IGUIElement* parent, s32 id, wchar_t* text);
+
+	//! Adds a file open dialog.
+	//! \param modal: Defines if the dialog is modal. This means, that all other
+	//! gui elements which were created before the message box cannot be used
+	//! until this messagebox is removed.
+	//! \return
+	//! Returns a pointer to the created file open dialog. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIFileOpenDialog* addFileOpenDialog(wchar_t* title, bool modal, irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a static text. The returned pointer must not be dropped.
+	//! \param text is the text to be displayed. Can be altered after creation with SetText().
+	//! \param rectangle is the position of the static text.
+	//! \param border has to be set to true if the static text should have a 3d border.
+	//! \param wordWrap specifyes, if the text should be wrapped into multiple lines.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the fader directly in the environment.
+	//! \param id is a s32 to identify the static text element.
+	//! \return
+	//! Returns a pointer to the created static text. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIStaticText* addStaticText(wchar_t* text, irr::core::rect<s32>& rectangle, 
+		bool border, bool wordWrap, IGUIElement* parent, s32 id, bool fillBackground);
+
+	//! Adds an edit box. Supports unicode input from every keyboard around the world, 
+	//! scrolling, copying and pasting (exchanging data with the clipboard directly), maximum 
+	//! character amount, marking and all shortcuts like ctrl+X, ctrl+V, ctrg+C, 
+	//! shift+Left, shift+Right, Home, End, and so on. 
+	//! \param text is the text to be displayed. Can be altered after creation with SetText().
+	//! \param rectangle is the position of the edit box.
+	//! \param border has to be set to true if the edit box should have a 3d border.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the edit box directly in the environment.
+	//! \param id is a s32 to identify the edit box.
+	//! \return
+	//! Returns a pointer to the created static text. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIEditBox* addEditBox(wchar_t* text, irr::core::rect<s32>& rectangle, 
+		bool border, irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds an element for fading in or out.
+	//! \param rectangle: Pointer to rectangle specifing the borders of the element.
+	//! If the pointer is NULL, the whole screen is used.
+	//! \param parent: Parent item of the element. E.g. a window. Set it to 0 to place the static text directly in the environment.
+	//! \param id: A s32 to identify the text.
+	//! \return
+	//! Returns a pointer to the created in-out-fader. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUIInOutFader* addInOutFader(irr::core::rect<s32>* rectangle, irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a tab control to the environment.
+	//! \param rectangle is the position of the tab control.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the tab control directly in the environment.
+	//! \param fillbackground specifies if the background of the tab control should be drawn to.
+	//! \param border specifiys if a flat 3d border should be drawn.
+	//! This is usually not necesarry unless you don't place the control directly into the environment without a window as parent.
+	//! \param id is a s32 to identify the tab control.
+	//! \return
+	//! Returns a pointer to the created tab control element. Returns 0 if an error occured.
+	//! This pointer should not be dropped. See IUnknown::drop() for more information.
+	virtual irr::gui::IGUITabControl* addTabControl(irr::core::rect<s32>& rectangle,
+		irr::gui::IGUIElement* parent, bool fillbackground,
+		bool border, s32 id);
+
+	//! Adds tab to the environment. You can use this element to group
+	//! other elements. This is not used for creating tabs on tab controls,
+	//! please use IGUITabControl::addTab() for this instead.
+	//! \param rectangle is the position of the tab.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the tab directly in the environment.
+	//! \param id is a s32 to identify the tab.
+	virtual irr::gui::IGUITab* addTab(irr::core::rect<s32>& rectangle,
+		irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a context menu to the environment.
+	//! \param rectangle is the position of the menu. Note that the menu is 
+	//! resizing itself based on what items you add.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the menu directly in the environment.
+	//! \param id is a s32 to identify the menu.
+	virtual irr::gui::IGUIContextMenu* addContextMenu(irr::core::rect<s32>& rectangle,
+		irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a menu to the environment. This is like the menu you can find on top
+	//! of most windows in modern graphical user interfaces.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the menu directly in the environment.
+	//! \param id is a s32 to identify the menu.
+	virtual irr::gui::IGUIContextMenu* addMenu(irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a toolbar to the environment. It is like a menu is always placed on top
+	//! in its parent, and contains buttons.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the tool bar directly in the environment.
+	//! \param id is a s32 to identify the tool bar.
+	virtual irr::gui::IGUIToolBar* addToolBar(irr::gui::IGUIElement* parent, s32 id);
+
+	//! Adds a combo box to the environment.
+	//! \param parent is the parent item of the element. E.g. a window. Set it to 0 to place the combo box directly in the environment.
+	//! \param id is a s32 to identify the combo box.
+	virtual IGUIComboBox* addComboBox(irr::core::rect<s32>& rectangle,
+		irr::gui::IGUIElement* parent, s32 id);
+		
+	//////////////////////////////////////////////////////////////////////////////////////	
+	//IUnknown
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	virtual void grab();
+	virtual bool drop();
+	c8* getDebugName();		
+};
+
+
+} // end namespace gui
+} // end namespace irr
+
+$[
+
+local _addStaticText = irr.gui.IGUIEnvironment.addStaticText 
+function irr.gui.IGUIEnvironment:addStaticText(text, rect, bool1, bool2, root, id, bool3 ) 
+	id = id or -1
+	text = text or ""
+	rect = rect or irr.core.rect(0,0,0,0)
+	root = root or self:getRootGUIElement()
+
+	local name = irr.cast.to_wchar_t_ptr(text)
+	local ret  = _addStaticText(self, name, rect, bool1, bool2, root, id , bool3) 
+	irr.cast.delete_wchar_t_ptr(name)
+	return ret
+end
+
+local _addButton = irr.gui.IGUIEnvironment.addButton 
+function irr.gui.IGUIEnvironment:addButton(rect, parent, id, text ) 
+	id = id or -1
+	text = text or ""
+	rect = rect or irr.core.rect(0,0,0,0)
+
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret  = _addButton(self, rect, parent, id, txt ) 
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+
+local _getFont = irr.gui.IGUIEnvironment.getFont 
+function irr.gui.IGUIEnvironment:getFont(name)
+	name = name or ""
+	local n = irr.cast.to_c8_ptr(name)
+	local ret =  _getFont(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+local _addImage = irr.gui.IGUIEnvironment.addImage 
+local function _addImage1(guienv, image, pos, useAlphaChannel, parent, id, text) 
+	id = id or -1
+	text = text or ""
+	pos = pos or irr.core.position2d(0,0)
+	useAlphaChannel = useAlphaChannel or true
+
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret = _addImage(guienv, image, pos, useAlphaChannel, parent, id, txt ) 
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+
+local function _addImage2(guienv, rectangle, parent, id, text)
+	rectangle = rectangle or irr.core.rect(0,0,0,0)
+	id = id or -1
+	text = text or ""
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret = _addImage(guienv, rectangle, parent, id, txt)
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+	
+function irr.gui.IGUIEnvironment:addImage(a,b,c,d,e,f)
+	if tolua.type(a) == "irr::core::rect<s32>" then
+		return _addImage2(self,a,b,c,d)
+	else
+		return _addImage1(self,a,b,c,d,e,f)
+	end
+end
+
+local _addWindow = irr.gui.IGUIEnvironment.addWindow 
+function irr.gui.IGUIEnvironment:addWindow(rect, modal, text, parent, id ) 
+	id = id or -1
+	text = text or ""
+	rect = rect or irr.core.rect(0,0,0,0)
+	modal = modal or false
+
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret = _addWindow(self, rect, modal, txt, parent, id ) 
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+	
+	
+local _addFileOpenDialog = irr.gui.IGUIEnvironment.addFileOpenDialog 
+function irr.gui.IGUIEnvironment:addFileOpenDialog(text, modal,  parent, id ) 
+	id = id or -1
+	text = text or ""
+	modal = modal or true
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret = _addFileOpenDialog(self, txt, modal, parent, id ) 
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+	
+
+local _addEditBox = irr.gui.IGUIEnvironment.addEditBox 
+function irr.gui.IGUIEnvironment:addEditBox(text, rectangle, border, parent, id ) 
+	text = text or ""
+	id = id or -1
+	border = border or true
+	parent = parent or nil
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret =  _addEditBox(self, txt, rectangle, border, parent, id )
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+
+
+local _addMessageBox = irr.gui.IGUIEnvironment.addMessageBox 
+function irr.gui.IGUIEnvironment:addMessageBox(caption, text, modal, flags, parent, id ) 
+	text = text or ""
+	caption = caption or ""
+	id = id or -1
+	modal = modal or true
+	flags = flags or irr.gui.EMBF_OK
+	parent = parent or nil
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local cap = irr.cast.to_wchar_t_ptr(caption)
+	local ret =  _addMessageBox(self, cap, txt,  modal, flags, parent, id)
+	irr.cast.delete_wchar_t_ptr(txt)
+	irr.cast.delete_wchar_t_ptr(cap)
+	return ret
+end
+	
+local _addCheckBox = irr.gui.IGUIEnvironment.addCheckBox
+function irr.gui.IGUIEnvironment:addCheckBox(checked, rectangle, parent, id, text ) 
+	text = text or ""
+	id = id or -1
+	parent = parent or nil
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret =  _addCheckBox(self, checked, rectangle, parent, id, txt)
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+
+
+local _addListBox = irr.gui.IGUIEnvironment.addListBox
+function irr.gui.IGUIEnvironment:addListBox(rectangle, parent, id, drawBackground)
+	parent = parent or nil
+	id = id or -1
+	drawBackground = drawBackground or false
+	return _addListBox(self, rectangle, parent, id, drawBackground)
+end
+
+local _addMenu = irr.gui.IGUIEnvironment.addMenu
+function irr.gui.IGUIEnvironment:addMenu(parent, id)
+	id = id or -1
+	return _addMenu(self, parent, id)
+end
+
+local _addToolBar = irr.gui.IGUIEnvironment.addToolBar
+function irr.gui.IGUIEnvironment:addToolBar(parent, id)
+	id = id or -1
+	return _addToolBar(self, parent, id)
+end
+
+local _addComboBox = irr.gui.IGUIEnvironment.addComboBox
+function irr.gui.IGUIEnvironment:addComboBox(rect,parent, id)
+	id = id or -1
+	return _addComboBox(self, rect, parent, id)
+end
+
+local _addTabControl = irr.gui.IGUIEnvironment.addTabControl
+function irr.gui.IGUIEnvironment:addTabControl(rect, parent, fillbackground, border, id)
+	id = id or -1
+	if fillbackground == nil then fillbackground = true end
+	if border == nil then border = true end
+	return _addTabControl(self, rect, parent, fillbackground, border, id)
+end
+
+local _addTab = irr.gui.IGUIEnvironment.addTab
+function irr.gui.IGUIEnvironment:addTab(rect, parent, id)
+	id = id or -1
+	return _addTab(self, rect, parent, id)
+end
+
+local _addInOutFader = irr.gui.IGUIEnvironment.addInOutFader
+function irr.gui.IGUIEnvironment:addInOutFader(rect, parent, id)
+	id = id or -1
+	return _addInOutFader(self, rect, parent, id)
+end
+
+$]
+

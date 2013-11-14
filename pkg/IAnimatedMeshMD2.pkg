@@ -1,0 +1,135 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace scene
+{
+
+	//! Types of standard md2 animations
+	enum EMD2_ANIMATION_TYPE
+	{
+		EMAT_STAND = 0,
+		EMAT_RUN,
+		EMAT_ATTACK,
+		EMAT_PAIN_A,
+		EMAT_PAIN_B,
+		EMAT_PAIN_C,
+		EMAT_JUMP,
+		EMAT_FLIP,
+		EMAT_SALUTE,
+		EMAT_FALLBACK,
+		EMAT_WAVE,
+		EMAT_POINT,
+		EMAT_CROUCH_STAND,
+		EMAT_CROUCH_WALK,
+		EMAT_CROUCH_ATTACK,
+		EMAT_CROUCH_PAIN,
+		EMAT_CROUCH_DEATH,
+		EMAT_DEATH_FALLBACK,
+		EMAT_DEATH_FALLFORWARD,
+		EMAT_DEATH_FALLBACKSLOW,
+		EMAT_BOOM,
+
+		//! Not an animation, but amount of animation types.
+		EMAT_COUNT
+	};
+
+	//! Interface for using some special functions of MD2 meshes
+	class IAnimatedMeshMD2 : public irr::scene::IAnimatedMesh
+	{
+	public:
+
+		//! Returns frame loop data for a default MD2 animation type.
+		//! \Returns Returns the beginframe, endframe and frames per 
+		//! second for a default MD2 animation type.
+		virtual void getFrameLoop(irr::scene::EMD2_ANIMATION_TYPE l, s32& outBegin,
+			s32& outEnd, s32& outFPS) ;
+
+		//! Returns frame loop data for a special MD2 animation type, identified
+		//! by a string.
+		//! \Returns Returns the beginframe, endframe and frames per 
+		//! second for a special MD2 animation type.
+		virtual bool getFrameLoop(c8* name, s32& outBegin, s32& outEnd, s32& outFps) ;
+
+		//! Returns amount of md2 animations in this file.
+		virtual s32 getAnimationCount() ;
+
+		//! Returns name of md2 animation. 
+		//! \param nr: Zero based index of animation. 
+		virtual c8* getAnimationName(s32 nr) ; 
+		
+		///////////////////////////////////////////////////////////////
+		// IAnimatedMesh
+		///////////////////////////////////////////////////////////////
+		//! Gets the frame count of the animated mesh.
+		//! \return Returns the amount of frames. If the amount is 1, it is a static, non animated mesh.
+		virtual s32 getFrameCount();
+
+		//! Returns the IMesh interface for a frame.
+		//! \param frame: Frame number as zero based index. The maximum frame number is
+		//! getFrameCount() - 1;
+		//! \param detailLevel: Level of detail. 0 is the lowest,
+		//! 255 the highest level of detail. Most meshes will ignore the detail level.
+		//! \param startFrameLoop: Because some animated meshes (.MD2) are blended between 2
+		//! static frames, and maybe animated in a loop, the startFrameLoop and the endFrameLoop
+		//! have to be defined, to prevent the animation to be blended between frames which are
+		//! outside of this loop. 
+		//! If startFrameLoop and endFrameLoop are both -1, they are ignored.
+		//! \param endFrameLoop: see startFrameLoop.
+		//! \return Returns the animated mesh based on a detail level. 
+		virtual irr::scene::IMesh* getMesh(s32 frame, s32 detailLevel, s32 startFrameLoop, s32 endFrameLoop);
+
+		//! Returns an axis aligned bounding box of the mesh.
+		//! \return A bounding box of this mesh is returned.
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+
+		//! Returns the type of the animated mesh.
+		//! In most cases it is not neccessary to use this method.
+		//! This is useful for making a save downcast, for example
+		//! if getMeshType() returns EAMT_MD2, its save to cast the
+		//! IAnimatedMesh to IAnimatedMeshMD2.
+		//! \returns Type of the mesh.
+		virtual irr::scene::E_ANIMATED_MESH_TYPE getMeshType();				
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+
+	};
+
+} // end namespace scene
+} // end namespace irr
+
+
+$[
+
+local _getFrameLoop = irr.scene.IAnimatedMeshMD2.getFrameLoop
+function irr.scene.IAnimatedMeshMD2:getFrameLoop(arg)
+	if tolua.type(arg) == "number" then
+		local outBegin, outEnd, outFPS = 0,0,0
+		outBegin, outEnd, outFPS = _getFrameLoop(self, arg, outBegin, outEnd, outFPS)
+		return outBegin, outEnd, outFPS
+	else
+		local boolRet, outBegin, outEnd, outFPS = false,0,0,0
+		local nm = irr.cast.to_c8_ptr(arg)
+		boolRet, outBegin, outEnd, outFPS = _getFrameLoop(self, nm, outBegin, outEnd, outFPS)
+		irr.cast.delete_c8_ptr(nm)
+		return boolRet, outBegin, outEnd, outFPS
+	end
+end
+
+local _getAnimationName = irr.scene.IAnimatedMeshMD2.getAnimationName
+function irr.scene.IAnimatedMeshMD2:getAnimationName(nr)
+	return irr.cast.c8_ptr_to_std_string(_getAnimationName(self, nr))
+end
+
+irr.scene.IAnimatedMeshMD2.getDebugName = irr.IUnknown.getDebugName
+irr.scene.IAnimatedMeshMD2.getMesh = irr.scene.IAnimatedMesh.getMesh
+
+$]
+

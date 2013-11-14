@@ -1,0 +1,34 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+$#include "IrrLuaCast.h"
+$#include <string>
+
+namespace irr {
+
+namespace cast {
+	
+			irr::video::PITexture to_pitexture(irr::video::ITexture *p);
+			irr::core::stringw to_stringw(std::string s);
+
+			wchar_t* to_wchar_t_ptr(std::string s);
+			const wchar_t* to_const_wchar_t_ptr(std::string s);
+
+			const c8* to_const_c8_ptr(std::string s);
+			c8* to_c8_ptr(std::string s);
+			
+			std::string c8_ptr_to_std_string(c8 *s);
+			std::string const_wchar_t_ptr_to_std_string(wchar_t *w);
+			std::string wchar_t_ptr_to_std_string(wchar_t *w);
+			
+
+			void delete_wchar_t_ptr(wchar_t *w);
+			void delete_const_wchar_t_ptr(const wchar_t *w);
+
+			void delete_c8_ptr(c8 *c);
+			void delete_const_c8_ptr(const c8 *c);
+			//inline s32 void_to_Number(void *num);
+
+}
+}

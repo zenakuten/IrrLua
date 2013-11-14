@@ -1,0 +1,239 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace gui
+{
+
+	//! GUI Context menu interface.
+	class IGUIContextMenu : public irr::gui::IGUIElement
+	{
+	public:
+
+		//! constructor
+		//IGUIContextMenu(IGUIEnvironment* environment, IGUIElement* parent, s32 id, core::rect<s32> rectangle);
+
+		//! destructor
+		~IGUIContextMenu();
+
+		//! Returns amount of menu items
+		virtual s32 getItemCount() ;
+
+		//! Adds a menu item.
+		//! \param text: Text of menu item. Set this to 0 to create
+		//! an separator instead of a real item, which is the same like
+		//! calling addSeparator();
+		//! \param commandId: Command id of menu item, a simple id you may 
+		//! set to whatever you want.
+		//! \param enabled: Specifies if the menu item should be enabled.
+		//! \param hasSubMenu: Set this to true if there should be a submenu
+		//! at this item. You can acess this submenu via getSubMenu().
+		//! \return Returns the index of the new item
+		virtual s32 addItem(wchar_t* text, s32 commandId, bool enabled,
+			bool hasSubMenu);
+
+		//! Adds a separator item to the menu
+		virtual void addSeparator();
+
+		//! Returns text of the menu item.
+		//! \param idx: Zero based index of the menu item
+		virtual wchar_t* getItemText(s32 idx);
+
+		//! Sets text of the menu item.
+		//! \param idx: Zero based index of the menu item
+		//! \param text: New text of the item.
+		virtual void setItemText(s32 idx, wchar_t* text);
+
+		//! Returns if a menu item is enabled
+		//! \param idx: Zero based index of the menu item
+		virtual bool isItemEnabled(s32 idx);
+
+		//! Sets if the menu item should be enabled.
+		//! \param idx: Zero based index of the menu item
+		//! \param enabled: True if it is enabled, otherwise false.
+		virtual void setItemEnabled(s32 idx, bool enabled);
+
+		//! Removes a menu item
+		//! \param idx: Zero based index of the menu item
+		virtual void removeItem(s32 idx);
+
+		//! Removes all menu items
+		virtual void removeAllItems();
+
+		//! Returns the selected item in the menu
+		//! \return Index of the selected item, -1 if none selected.
+		virtual s32 getSelectedItem();
+
+		//! Returns command id of a menu item
+		//! \param idx: Zero based index of the menu item
+		virtual s32 getItemCommandId(s32 idx);
+
+		//! Sets the command id of a menu item
+		//! \param idx: Zero based index of the menu item
+		//! \param id: Command id of menu item, a simple id you may 
+		//! set to whatever you want.
+		virtual void setItemCommandId(s32 idx, s32 id);
+
+		//! \return Returns a pointer to the submenu of an item. 
+		//! 0 is returned if there is no submenu
+		//! \param idx: Zero based index of the menu item
+		virtual irr::gui::IGUIContextMenu* getSubMenu(s32 idx);
+		/////////////////////////////////////////////////////////
+		/// IGUIElement
+		/////////////////////////////////////////////////////////
+		
+		//! Returns parent of this element.
+		irr::gui::IGUIElement* getParent();
+
+
+		//! Returns the relative rectangle of this element.
+		irr::core::rect<s32> getRelativePosition();
+		
+
+
+		//! Sets the relative rectangle of this element.
+		void setRelativePosition(irr::core::rect<s32>& r);
+
+
+		//! Returns the absolute rectangle of element.
+		irr::core::rect<s32> getAbsolutePosition();
+
+
+		//! Updates the absolute position.
+		virtual void updateAbsolutePosition();
+		
+
+
+		//! Returns the child element, which is at the position of the point.
+		irr::gui::IGUIElement* getElementFromPoint(irr::core::position2d<s32>& point);
+		
+
+
+		//! Adds a GUI element as new child of this element.
+		virtual void addChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes a child.
+		virtual void removeChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes this element.
+		virtual void remove();
+		
+
+
+		//! Draws the element and its children.
+		virtual void draw();
+		
+
+
+		//! Moves this element.
+		virtual void move(irr::core::position2d<s32> absoluteMovement);
+		
+
+
+		//! Returns true if element is visible.
+		virtual bool isVisible();
+		
+
+
+
+		//! Sets the visible state of this element.
+		virtual void setVisible(bool visible);
+		
+
+
+		//! Returns true if element is enabled.
+		virtual bool isEnabled();
+		
+
+
+		//! Sets the enabled state of this element.
+		virtual void setEnabled(bool enabled);
+		
+
+
+		//! Sets the new caption of this element.
+		virtual void setText(wchar_t* text);
+		
+
+
+		//! Returns caption of this element.
+		virtual wchar_t* getText();
+		
+
+
+		//! Returns id. Can be used to identify the element.
+		virtual s32 getID();
+		
+
+		//! Sets the id of this element
+		virtual void setID(s32 id);
+		
+
+
+		//! Called if an event happened.
+		virtual bool OnEvent(irr::SEvent event);
+		
+
+
+		//! Brings a child to front
+		//! \return Returns true if successful, false if not.
+		virtual bool bringToFront(irr::gui::IGUIElement* element);
+		
+
+		//! Returns list with children of this element
+		//virtual irr::core::list<IGUIElement*>& getChildren();
+		
+
+		//! Finds the first element with the given id.
+		//! \param id: Id to search for.
+		//! \param searchchildren: Set this to true, if also children of this 
+		//! element may contain the element with the searched id and they 
+		//! should be searched too.
+		//! \return Returns the first element with the given id. If no element
+		//! with this id was found, 0 is returned.
+		virtual irr::gui::IGUIElement* getElementFromId(s32 id, bool searchchildren) ;
+		
+		irr::gui::EGUI_ELEMENT_TYPE getType();
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();		
+		
+	};
+
+} // end namespace gui
+} // end namespace irr
+
+$[
+
+local _addItem = irr.gui.IGUIContextMenu.addItem
+function irr.gui.IGUIContextMenu:addItem(text, commandId,  enabled,  hasSubMenu)
+	commandId = commandId or -1
+	enabled = enabled or true
+	hasSubMenu = hasSubMenu or false
+	text = text or ""
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	local ret = _addItem(self, txt, commandId, enabled, hasSubMenu)
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+
+local _getItemText = irr.gui.IGUIContextMenu.getItemText
+function irr.gui.IGUIContextMenu:getItemText(idx)
+	return irr.cast.wchar_t_ptr_to_std_string(_getItemText(self, idx))
+end
+
+irr.gui.IGUIContextMenu.setText = irr.gui.IGUIElement.setText
+irr.gui.IGUIContextMenu.getText = irr.gui.IGUIElement.getText
+
+$]
+

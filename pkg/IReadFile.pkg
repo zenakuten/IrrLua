@@ -1,0 +1,70 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace io
+{
+
+	//! Interface providing read acess to a file.
+	class IReadFile : public irr::IUnknown
+	{
+	public:
+
+		virtual ~IReadFile();
+
+		//! Reads an amount of bytes from the file.
+		//! \param buffer: Pointer to buffer where to read bytes will be written to.
+		//! \param sizeToRead: Amount of bytes to read from the file.
+		//! \return Returns how much bytes were read.
+		virtual s32 read(void* buffer, s32 sizeToRead);
+
+		//! Changes position in file, returns true if successful.
+		//! \param finalPos: Destination position in the file.
+		//! \param relativeMovement: If set to true, the position in the file is
+		//! changed relative to current position. Otherwise the position is changed 
+		//! from begin of file.		
+		//! \return Returns true if successful, otherwise false.
+		virtual bool seek(s32 finalPos, bool relativeMovement);
+
+		//! Returns size of file.
+		//! \return Returns the size of the file in bytes.
+		virtual s32 getSize();
+
+		//! Returns the current position in the file.
+		//! \return Returns the current position in the file in bytes.
+		virtual s32 getPos();
+
+		//! Returns name of file.
+		//! \return Returns the file name as zero terminated character string.
+		virtual c8* getFileName();
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();				
+	};
+
+	//! Internal function, please do not use.
+	//IReadFile* createReadFile(c8* fileName);
+	//! Internal function, please do not use.
+	//IReadFile* createLimitReadFile(c8* fileName, IReadFile* alreadyOpenedFile, s32 areaSize);
+	//! Internal function, please do not use.
+	//IReadFile* createMemoryReadFile(void* memory, s32 size, c8* fileName, bool deleteMemoryWhenDropped);
+
+} // end namespace irr
+} // end namespace io
+
+$[
+
+local _getFileName = irr.io.IReadFile.getFileName
+function irr.io.IReadFile:getFileName()
+	return irr.cast.c8_ptr_to_std_string(_getFileName(self))
+end
+
+$]

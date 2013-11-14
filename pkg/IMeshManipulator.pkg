@@ -1,0 +1,102 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace scene
+{
+
+	class IMesh;
+	class IAnimatedMesh;
+	struct SMesh;
+
+
+	//! An interface for easily manipulate meshes.
+	/** Scale, set alpha value, flip surfaces, and so on. This exists for fixing problems 
+	with wrong imported or exported meshes quickly after loading. It is not intended for doing mesh
+	modifications and/or animations during runtime.
+	*/
+	class IMeshManipulator : public irr::IUnknown
+	{
+
+		//! destructor
+		virtual ~IMeshManipulator() ;
+
+		//! Flips the direction of surfaces. Changes backfacing triangles to frontfacing
+		//! triangles and vice versa.
+		//! \param mesh: Mesh on which the operation is performed.
+		virtual void flipSurfaces(irr::scene::IMesh* mesh) ;
+
+		//! Sets the alpha vertex color value of the whole mesh to a new value
+		//! \param mesh: Mesh on which the operation is performed.
+		//! \param alpha: New alpha value. Must be a value between 0 and 255.
+		virtual void setVertexColorAlpha(irr::scene::IMesh* mesh, s32 alpha) ;
+
+		virtual void setVertexColors(irr::scene::IMesh* mesh, irr::video::SColor color) ;
+
+		//! Recalculates all normals of the mesh.
+		//! \param mesh: Mesh on which the operation is performed.
+		virtual void recalculateNormals(irr::scene::IMesh* mesh) ;
+		virtual void recalculateNormals(irr::scene::IMesh* mesh, bool smooth);
+
+		virtual void recalculateNormals(irr::scene::IMeshBuffer *buffer);
+		virtual void recalculateNormals(irr::scene::IMeshBuffer *buffer, bool smooth);
+
+		//! Scales the whole mesh.
+		//! \param mesh: Mesh on which the operation is performed.
+		//! \param scale: Scale factor.
+		virtual void scaleMesh(irr::scene::IMesh* mesh, irr::core::vector3d<f32>& scale) ;
+
+		//! Clones a static IMesh into a modifyable SMesh. All meshbuffers in the SMesh
+		//! are of type SMeshBuffer or SMeshBufferLightMap.
+		//! \param mesh: Mesh to copy.
+		//! \return Returns the cloned mesh.
+		//! If you no longer need the cloned mesh, you should call SMesh::drop().
+		//! See IUnknown::drop() for more information.
+		virtual irr::scene::SMesh* createMeshCopy(irr::scene::IMesh* mesh) ;
+
+		//! Creates a planar texture mapping on the mesh
+		//! \param mesh: Mesh on which the operation is performed.
+		//! \param resolution: resolution of the planar mapping. This is the value
+		//! specifying which is the relation between world space and 
+		//! texture coordinate space.
+		virtual void makePlanarTextureMapping(irr::scene::IMesh* mesh, f32 resolution) ;
+
+		//! Creates a copy of the mesh, which will only consist of S3DVertexTangents vertices.
+        //! This is useful if you want to draw tangent space normal mapped geometry because
+		//! it calculates the tangent and binormal data which is needed there.
+		//! \param mesh: Input mesh
+		//! \return Mesh consiting only of S3DVertexTangents vertices.
+		//! If you no longer need the cloned mesh, you should call IMesh::drop().
+		//! See IUnknown::drop() for more information.
+		virtual irr::scene::IMesh* createMeshWithTangents(irr::scene::IMesh* mesh) ;
+
+		//! Recalculates the bounding box for a meshbuffer
+		virtual void recalculateBoundingBox(irr::scene::IMeshBuffer* buffer) ;
+
+		//! Unweld vertices
+		virtual irr::scene::IMesh* createMeshUniquePrimitives(irr::scene::IMesh* mesh);
+
+		//! Returns amount of polygons in mesh.
+		virtual s32 getPolyCount(irr::scene::IMesh* mesh) ;
+
+		//! Returns amount of polygons in mesh.
+		virtual s32 getPolyCount(irr::scene::IAnimatedMesh* mesh) ;
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();				
+	};
+
+} // end namespace scene
+} // end namespace irr
+
+
+
+

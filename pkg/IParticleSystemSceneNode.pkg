@@ -1,0 +1,454 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace scene
+{
+
+class IParticleSystemSceneNode : public irr::scene::ISceneNode
+{
+public:
+
+	//! constructor
+	//IParticleSystemSceneNode(ISceneNode* parent, ISceneManager* mgr, s32 id, core::vector3d<f32>& position, core::vector3d<f32>& rotation, core::vector3d<f32>& scale);
+
+	//! Sets the size of all particles.
+	virtual void setParticleSize(irr::core::dimension2d<f32> &size);
+
+	//! Sets if the particles should be global. If it is, the particles are affected by 
+	//! the movement of the particle system scene node too, otherwise they completely 
+	//! ignore it. Default is true.
+	virtual void setParticlesAreGlobal(bool global);
+
+	//! Sets the particle emitter, which creates the particles.
+	//! A particle emitter can be created using one of the 
+	//! methods. For example to create and use a simple PointEmitter,
+	//! call IParticleEmitter* p = createPointEmitter(); setEmitter(p); p->drop();
+	//! \param emitter: Sets the particle emitter. You can set this to 0
+	//! for removing the current emitter and stopping the particle system
+	//! emitting new particles.
+	virtual void setEmitter(irr::scene::IParticleEmitter* emitter);
+
+	//! Adds new particle effector to the particle system. A particle
+	//! affector modifies the particles. For example, the FadeOut
+	//! affector lets all particles fade out after some time. It is created
+	//! and used in this way: IParticleAffector* p = createFadeOutParticleAffector();
+	//! addAffector(p); p->drop();
+	//! Please note that a affector is not necessary for the particle
+	//! system to work.
+	//! \param affector: New affector.
+	virtual void addAffector(irr::scene::IParticleAffector* affector);
+
+	//! Removes all particle affectors in the particle system.
+	virtual void removeAllAffectors();
+
+	//! Creates a point particle emitter.
+	//! \param direction: Direction and speed of particle emission.
+	//! \param minParticlesPerSecond: Minimal amount of particles emitted
+	//! per second.
+	//! \param maxParticlesPerSecond: Maximal amount of particles emitted
+	//! per second.
+	//! \param minStartColor: Minimal initial start color of a particle. 
+	//! The real color of every particle is calculated as random interpolation
+	//! between minStartColor and maxStartColor.
+	//! \param maxStartColor: Maximal initial start color of a particle. 
+	//! The real color of every particle is calculated as random interpolation
+	//! between minStartColor and maxStartColor.
+	//! \param lifetimeMin: Minimal lifetime of a particle, in milliseconds.
+	//! \param lifetimeMax: Maximal lifetime of a particle, in milliseconds.
+	//! \param maxAngleDegrees: Maximal angle in degrees, the emitting direction
+	//! of the particle will differ from the orignial direction.
+	//! \return Returns a pointer to the created particle emitter.
+	//! To set this emitter as new emitter of this particle system,
+	//! just call setEmitter(). Note that you'll have to drop() the
+	//! returned pointer, after you don't need it any more, see
+	//! IUnknown::drop() for more informations.
+	virtual irr::scene::IParticleEmitter* createPointEmitter(
+		irr::core::vector3d<f32> direction, 
+		u32 minParticlesPerSecond,
+		u32 maxParticlePerSecond,
+		irr::video::SColor minStartColor,
+		irr::video::SColor maxStartColor,
+		u32 lifeTimeMin, u32 lifeTimeMax,
+		s32 maxAngleDegrees);
+
+	//! Creates a box particle emitter.
+	//! \param direction: Direction and speed of particle emission.
+	//! \param minParticlesPerSecond: Minimal amount of particles emitted
+	//! per second.
+	//! \param maxParticlesPerSecond: Maximal amount of particles emitted
+	//! per second.
+	//! \param minStartColor: Minimal initial start color of a particle. 
+	//! The real color of every particle is calculated as random interpolation
+	//! between minStartColor and maxStartColor.
+	//! \param maxStartColor: Maximal initial start color of a particle. 
+	//! The real color of every particle is calculated as random interpolation
+	//! between minStartColor and maxStartColor.
+	//! \param lifetimeMin: Minimal lifetime of a particle, in milliseconds.
+	//! \param lifetimeMax: Maximal lifetime of a particle, in milliseconds.
+	//! \param maxAngleDegrees: Maximal angle in degrees, the emitting direction
+	//! of the particle will differ from the orignial direction.
+	//! \return Returns a pointer to the created particle emitter.
+	//! To set this emitter as new emitter of this particle system,
+	//! just call setEmitter(). Note that you'll have to drop() the
+	//! returned pointer, after you don't need it any more, see
+	//! IUnknown::drop() for more informations.
+	virtual irr::scene::IParticleEmitter* createBoxEmitter( irr::core::aabbox3d<f32> box, irr::core::vector3d<f32> direction, u32 minParticlesPerSecond, u32 maxParticlePerSecond, irr::video::SColor minStartColor, irr::video::SColor maxStartColor, u32 lifeTimeMin, u32 lifeTimeMax, s32 maxAngleDegrees);
+
+	//! Creates a fade out particle affector. This affector modifies
+	//! the color of every particle and and reaches the final color
+	//! when the particle dies.
+	//! This affector looks really good, if the EMT_TRANSPARENT_VERTEX_ALPHA
+	//! material is used and the targetColor is video::SColor(0,0,0,0):
+	//! Particles are fading out into void with this setting.
+	//! \param targetColor: Color whereto the color of the particle is changed.
+	//! \param timeNeededToFadeOut: How much time in milli seconds 
+	//! should the affector need to change the color to the targetColor. 
+	//! \return Returns a pointer to the created particle affector.
+	//! To add this affector as new affector of this particle system,
+	//! just call addAffector(). Note that you'll have to drop() the
+	//! returned pointer, after you don't need it any more, see
+	//! IUnknown::drop() for more informations.
+	virtual irr::scene::IParticleAffector* createFadeOutParticleAffector(
+		irr::video::SColor targetColor,
+		u32 timeNeededToFadeOut);
+
+	//! Creates a gravity affector. This affector modifies the direction
+	//! of the particle. It assumes that the particle is fired out of the
+	//! emitter with huge force, but is loosing this after some time
+	//! and is catched by the gravity then. This affector is ideal for
+	//! creating things like fountains.
+	//! \param gravity: Direction and force of gravity.
+    //! \param timeForceList: Time in milli seconds when the force 
+	//! of the emitter is totally lost and the particle does not move any more.
+	//! This is the time where gravity fully affects the particle.
+	//! \return Returns a pointer to the created particle affector.
+	//! To add this affector as new affector of this particle system,
+	//! just call addAffector(). Note that you'll have to drop() the
+	//! returned pointer, after you don't need it any more, see
+	//! IUnknown::drop() for more informations.
+	virtual irr::scene::IParticleAffector* createGravityAffector( irr::core::vector3d<f32> gravity, u32 timeForceLost);
+
+
+		////////////////////////////////////////////////////////////////////////////////////////////
+		// ISceneNode
+		////////////////////////////////////////////////////////////////////////////////////////////
+
+		//! This method is called just before the rendering process of the whole scene.
+		//! Nodes may register themselves in the render pipeline during this call,
+		//! precalculate the geometry which should be renderered, and prevent their
+		//! children from being able to register them selfes if they are clipped by simply
+		//! not calling their OnPreRender-Method.
+		virtual void OnPreRender();
+
+
+		//! OnPostRender() is called just after rendering the whole scene.
+		//! Nodes may calculate or store animations here, and may do other useful things,
+		//! dependent on what they are.
+		//! \param timeMs: Current time in milli seconds.
+		virtual void OnPostRender(u32 timeMs);
+
+
+		//! Renders the node.
+		virtual void render();
+
+
+		//! Returns the name of the node.
+		//! \return Returns name as wide character string.
+		virtual c8* getName();
+
+
+		//! Sets the name of the node.
+		//! \param name: New name of the scene node.
+		virtual void setName(c8* name);
+
+
+		//! Returns the axis aligned, not transformed bounding box of this node.
+		//! This means that if this node is a animated 3d character, moving in a room,
+		//! the bounding box will always be around the origin. To get the box in
+		//! real world coordinates, just transform it with the matrix you receive with
+		//! getAbsoluteTransformation() or simply use getTransformedBoundingBox(),
+		//! which does the same.
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+
+
+		//! Returns the axis aligned, transformed and animated absolute bounding box
+		//! of this node.
+		irr::core::aabbox3d<f32> getTransformedBoundingBox();
+		
+
+		//! returns the absolute transformation of the node. Is recalculated every OnPostRender()-call.
+		irr::core::matrix4& getAbsoluteTransformation();
+
+
+		//! Returns the relative transformation of the scene node.
+		//! The relative transformation is stored internally as 3 vectors:
+		//! translation, rotation and scale. To get the relative transformation
+		//! matrix, it is calculated from these values.
+		//! \return Returns the relative transformation matrix.
+		virtual irr::core::matrix4 getRelativeTransformation();
+
+
+		//! Returns true if the node is visible. This is only an option, set by the user and has
+		//! nothing to do with geometry culling
+		virtual bool isVisible();
+
+
+		//! Sets if the node should be visible or not. All children of this node won't be visible too.
+		virtual void setVisible(bool isVisible);
+
+
+		//! Returns the id of the scene node. This id can be used to identify the node.
+		virtual s32 getID();
+
+
+		//! sets the id of the scene node. This id can be used to identify the node.
+		virtual void setID(s32 id);
+
+
+		//! Adds a child to this scene node. If the scene node already
+		//! has got a parent, it is removed from there as child.
+		virtual void addChild(irr::scene::ISceneNode* child);
+
+
+		//! Removes a child from this scene node.
+		//! \return Returns true if the child could be removed, and false if not.
+		virtual bool removeChild(irr::scene::ISceneNode* child);
+
+
+		//! Removes all children of this scene node
+		virtual void removeAll();
+		
+
+		//! Removes this scene node from the scene, deleting it.
+		virtual void remove();
+		
+
+		//! Adds an animator which should animate this node.
+		virtual void addAnimator(irr::scene::ISceneNodeAnimator* animator);
+
+
+
+		//! Removes an animator from this scene node.
+		virtual void removeAnimator(irr::scene::ISceneNodeAnimator* animator);
+		
+
+
+		//! Removes all animators from this scene node.
+		virtual void removeAnimators();
+		
+
+
+		//! Returns the material based on the zero based index i. To get the amount
+		//! of materials used by this scene node, use getMaterialCount().
+		//! This function is needed for inserting the node into the scene hirachy on a
+		//! optimal position for minimizing renderstate changes, but can also be used
+		//! to directly modify the material of a scene node.
+		//! \param i: Zero based index i. The maximal value for this may be getMaterialCount() - 1.
+		//! \return Returns the material of that index.
+		virtual irr::video::SMaterial& getMaterial(s32 i);
+
+
+		//! Returns amount of materials used by this scene node.
+		//! \return Returns current count of materials used by this scene node.
+		virtual s32 getMaterialCount();
+		
+
+		//! Sets all material flags at once to a new value. Helpful for
+		//! example, if you want to be the the whole mesh to be lighted by 
+		//! \param flag: Which flag of all materials to be set.
+		//! \param newvalue: New value of the flag.
+		void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
+		
+
+
+		//! Sets the texture of the specified layer in all materials of this
+		//! scene node to the new texture.
+		//! \param textureLayer: Layer of texture to be set. Must be a value greater or
+		//! equal than 0 and smaller than MATERIAL_MAX_TEXTURES.
+		//! \param texture: Texture to be used.
+		void setMaterialTexture(s32 textureLayer, irr::video::ITexture* texture);
+		
+
+			
+		//! Sets the material type of all materials s32 this scene node
+		//! to a new material type.
+		//! \param newType: New type of material to be set.
+		void setMaterialType(irr::video::E_MATERIAL_TYPE newType);
+			
+
+
+		//! Gets the scale of the scene node. 
+		//! \return Returns the scale of the scene node.
+		virtual irr::core::vector3d<f32> getScale();
+
+
+		//! Sets the scale of the scene node. 
+		//! \param scale: New scale of the node
+		virtual void setScale(irr::core::vector3d<f32>& scale);
+
+
+		//! Sets the rotation of the node. Note that this is
+		//! the relative rotation of the node.
+		//! \return Current relative rotation of the scene node.
+		virtual irr::core::vector3d<f32> getRotation();
+
+
+		//! Sets the rotation of the node. This only modifies
+		//! the relative rotation of the node.
+		//! \param roation: New rotation of the node in degrees.
+		//virtual void setRotation(const core::vector3df& rotation);
+		virtual void setRotation(irr::core::vector3d<f32>& rotation);
+
+
+		//! Gets the position of the node. Note that the position is
+		//! relative to the parent.
+		//! \return Returns the current position of the node relative to the parent.
+		//virtual vector3df getPosition();
+		virtual irr::core::vector3d<f32> getPosition();
+		
+
+		//! Sets the position of the node. Note that the position is
+		//! relative to the parent.
+		//! \param newpos: New relative postition of the scene node.
+		//virtual void setPosition(const core::vector3df& newpos);
+		virtual void setPosition(irr::core::vector3d<f32>& newpos);
+
+
+		//! Gets the abolute position of the node. The position is absolute.
+		//! \return Returns the current absolute position of the scene node.
+		virtual irr::core::vector3d<f32> getAbsolutePosition();
+
+
+		//! Enables or disables automatic culling based on the bounding
+		//! box. Automatic culling is enabled by default. Note that not
+		//! all SceneNodes support culling (the billboard scene node for example)
+		//! and that some nodes always cull their geometry because it is their
+		//! only reason for existance, for example the OctreeSceneNode.
+		//! \param enabled: If true, automatic culling is enabled.
+		//! If false, it is disabled.
+		void setAutomaticCulling(bool enabled);
+
+
+		//! Gets the automatic culling state. 
+		//! \return The node is culled based on its bounding box if this method
+		//! returns true, otherwise no culling is performed.
+		bool getAutomaticCulling();
+
+
+		//! Sets if debug data like bounding boxes should be drawed.
+		//! Please note that not all scene nodes support this feature.
+		void setDebugDataVisible(bool visible);
+		
+
+		//! Returns if debug data like bounding boxes are drawed.
+		bool isDebugDataVisible();
+		
+
+
+		//! Returns a const reference to the list of all children.
+		//irr::core::list<ISceneNode*>& getChildren();
+		
+
+
+		//! Changes the parent of the scene node.
+		virtual void setParent(irr::scene::ISceneNode* newParent);
+		
+
+
+		//! Returns the triangle selector attached to this scene node.
+		//! The Selector can be used by the engine for doing collision
+		//! detection. You can create a TriangleSelector with 
+		//! ISceneManager::createTriangleSelector() or 
+		//! ISceneManager::createOctTreeTriangleSelector and set it with
+		//! ISceneNode::setTriangleSelector(). If a scene node got no triangle
+		//! selector, but collision tests should be done with it, a triangle
+		//! selector is created using the bounding box of the scene node.
+		//! \return Returns a pointer to the TriangleSelector or NULL, if there
+		//! is none.
+		virtual irr::scene::ITriangleSelector* getTriangleSelector();
+		
+
+
+		//! Sets the triangle selector of the scene node. The Selector can be
+		//! used by the engine for doing collision detection. You can create a
+		//! TriangleSelector with ISceneManager::createTriangleSelector() or 
+		//! ISceneManager::createOctTreeTriangleSelector(). Some nodes may
+		//! create their own selector by default, so it would be good to
+		//! check if there is already a selector in this node by calling
+		//! ISceneNode::getTriangleSelector(). 
+		//! \param selector: New triangle selector for this scene node.
+		virtual void setTriangleSelector(irr::scene::ITriangleSelector* selector);
+		
+
+		//! updates the absolute position based on the relative and the parents position
+		virtual void updateAbsolutePosition();
+		
+		
+		//! Returns the parent of this scene node
+		irr::scene::ISceneNode* getParent();
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+	
+};
+
+} // end namespace scene
+} // end namespace irr
+
+
+
+$[
+
+local _createBoxEmitter = irr.scene.IParticleSystemSceneNode.createBoxEmitter
+function irr.scene.IParticleSystemSceneNode:createBoxEmitter(box, direction, minParticlesPerSecond, 
+															maxParticlesPerSecond, minStartColor, maxStartColor, 
+															lifeTimeMin, lifeTimeMax, maxAngleDegrees)
+
+	box = box or irr.core.aabbox3d(-10,28,-10,10,30,10)
+	direction = direction or irr.core.vector3d(0,0.3, 0)
+	minParticlesPerSecond = minParticlesPerSecond or 5
+	maxParticlesPerSecond = maxParticlesPerSecond or 10
+
+	minStartColor = minStartColor or irr.video.SColor(255,0,0,0)
+	maxStartColor = maxStartColor or irr.video.SColor(255,255,255,255)	
+		
+	lifeTimeMin = lifeTimeMin or 2000
+	lifeTimeMax = lifeTimeMax or 4000
+	maxAngleDegrees = maxAngleDegrees or 0
+
+	return _createBoxEmitter(self, box, direction, minParticlesPerSecond, 
+							maxParticlesPerSecond, minStartColor, maxStartColor, 
+							lifeTimeMin, lifeTimeMax, 
+							maxAngleDegrees)
+end
+	
+
+
+local _createFadeOutParticleAffector = irr.scene.IParticleSystemSceneNode.createFadeOutParticleAffector
+function irr.scene.IParticleSystemSceneNode:createFadeOutParticleAffector(targetColor, timeNeededToFadeOut)
+
+	targetColor = targetColor or irr.video.SColor(0,0,0,0)
+	timeNeededToFadeOut = TimeNeededToFadeOut or 1000
+
+	return _createFadeOutParticleAffector(self, targetColor, timeNeededToFadeOut)
+end
+
+
+local _setParticleSize = irr.scene.IParticleSystemSceneNode.setParticleSize
+function irr.scene.IParticleSystemSceneNode:setParticleSize(size)	
+	return _setParticleSize(self, size)
+end
+	
+
+
+$]
+
+

@@ -1,0 +1,75 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+
+//! Interface for getting the current time
+class ITimer : public irr::IUnknown
+{
+public:
+
+	//! destructor
+	virtual ~ITimer();
+
+	//! Returns current real time in milliseconds of the system. 
+	/** This value does not start with 0 when the application starts.
+	For example in one implementation the value returned could be the 
+	amount of milliseconds which have elapsed since the system was started. */
+	virtual u32 getRealTime();
+
+	//! returns current time in milliseconds. This value does not start
+	//! with 0 when the application starts. For example in one implementation
+	//! the value returne could be the amount of milliseconds which
+	//! have elapsed since the system was started.
+	virtual u32 getTime();
+	
+	//! sets current virtual time
+	virtual void setTime(u32 time);
+
+	//! Stops the virtual timer. 
+	/** The timer is reference counted, which means everything which calls 
+	stop() will also have to call start(), otherwise the timer may not start/stop
+	corretly again. */
+	virtual void stop();
+
+	//! Starts the virtual timer.
+	/** The timer is reference counted, which means everything which calls 
+	stop() will also have to call start(), otherwise the timer may not start/stop
+	corretly again. */
+	virtual void start();
+
+	//! Sets the speed of the timer
+	/** The speed is the factor with which the time is running faster or slower then the
+	real system time. */
+	virtual void setSpeed(f32 speed);
+
+	//! Returns current speed of the timer
+	/** The speed is the factor with which the time is running faster or slower then the
+	real system time. */
+	virtual f32 getSpeed();
+
+	//! Returns if the virtual timer is currently stopped
+	virtual bool isStopped();
+
+	//! Advances the virtual time
+	/** Makes the virtual timer update the time value based on the real time. This is
+	called automaticly when calling IrrlichtDevice::run(), but you can call it manually
+	if you don't use this method. */
+	virtual void tick();
+	
+	//////////////////////////////////////////////////////////////////////////////////////	
+	//IUnknown
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	virtual void grab();
+	virtual bool drop();
+	c8* getDebugName();	
+
+	
+};
+
+} // end namespace
+

@@ -1,0 +1,36 @@
+// Copyright (C) 2002-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the "Irrlicht Engine".
+// For conditions of distribution and use, see copyright notice in irrlicht.h
+
+namespace irr
+{
+namespace scene
+{
+
+//! A scene node displaying a static mesh
+class IMeshSceneNode : public irr::scene::ISceneNode
+{
+public:
+
+	//! constructor
+	//IMeshSceneNode(ISceneNode* parent, ISceneManager* mgr, s32 id, 
+	//	irr::core::vector3d<f32>& position, irr::core::vector3d<f32>& rotation,
+	//		irr::core::vector3d<f32>& scale);
+
+	//! Sets a new mesh to display
+	virtual void setMesh(irr::scene::IMesh* mesh);
+
+	//! Sets if the scene node should not copy the materials of the mesh but use them in a read only style.
+	/* In this way it is possible to change the materials a mesh causing all mesh scene nodes 
+	referencing this mesh to change too. */
+	virtual void setReadOnlyMaterials(bool readonly);
+
+	//! Returns if the scene node should not copy the materials of the mesh but use them in a read only style
+	virtual bool isReadOnlyMaterials();
+};
+
+} // end namespace scene
+} // end namespace irr
+
+
+

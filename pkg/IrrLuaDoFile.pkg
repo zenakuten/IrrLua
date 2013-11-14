@@ -1,0 +1,11 @@
+
+//dofile with IReadFile param
+
+namespace irr
+{
+namespace io
+{
+	void dofile(irr::io::IReadFile *File); 
+}
+}
+

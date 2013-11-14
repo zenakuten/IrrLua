@@ -1,0 +1,67 @@
+// Copyright (C) 2002-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the "Irrlicht Engine".
+// For conditions of distribution and use, see copyright notice in irrlicht.h
+
+namespace irr
+{
+namespace scene
+{
+	//! Interface for using some special functions of B3d meshes
+	class IAnimatedMeshB3d : public irr::scene::IAnimatedMesh
+	{
+	public:
+
+		//! Returns a pointer to a transformation matrix of a part of the
+		//! mesh based on a frame time. This is used for being able to attach
+		//! objects to parts of animated meshes. For example a weapon to an animated
+		//! hand.
+		//! \param jointNumber: Zero based index of joint. The last joint has the number
+		//! IAnimatedMeshMS3D::getJointCount()-1;
+		//! \param frame: Frame of the animation.
+		//! \return Returns a pointer to the matrix of the mesh part or
+		//! null if an error occured.
+		irr::core::matrix4* getMatrixOfJoint(s32 jointNumber, s32 frame);
+
+		//! Returns a pointer to a matrix of a part of the mesh unanimated
+		irr::core::matrix4* getMatrixOfJointUnanimated(s32 jointNumber);
+
+		//! Set a Matrix to be multiplied by the animated joint's matrix each frame
+		//! For example a turning a meshes head
+		void AddMatrixToJoint(s32 jointNumber, irr::core::matrix4* matrix);
+
+		//! Gets joint count.
+		//! \return Returns amount of joints in the skeletal animated mesh.
+		s32 getJointCount();
+
+		//! Gets the name of a joint.
+		//! \param number: Zero based index of joint. The last joint has the number
+		//! IAnimatedMeshMS3D::getJointCount()-1;
+		//! \return Returns name of joint and null if an error happened.
+		c8* getJointName(s32 number);
+
+		//! Gets a joint number from its name
+		//! \param name: Name of the joint.
+		//! \return Returns the number of the joint or -1 if not found.
+		s32 getJointNumber(const c8* name);
+	};
+
+} // end namespace scene
+} // end namespace irr
+
+$[
+
+local _getJointName = irr.scene.IAnimatedMeshB3d.getJointName
+function irr.scene.IAnimatedMeshB3d:getJointName(n)
+	return irr.cast.c8_ptr_to_std_string(_getJointName(self, n))
+end
+
+local _getJointNumber = irr.scene.IAnimatedMeshB3d.getJointNumber
+function irr.scene.IAnimatedMeshB3d:getJointNumber(n)
+	local name = irr.cast.to_c8_ptr(n)
+	local ret = _getJointNumber(self, name)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+$]
+

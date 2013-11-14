@@ -1,0 +1,42 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace scene
+{
+	//! Struct for holding particle data
+	struct SParticle
+	{
+		//! Position of the particle
+		irr::core::vector3d<f32> pos;
+
+		//! Direction and speed of the particle
+		irr::core::vector3d<f32> vector;
+
+		//! Start life time of the particle
+		u32 startTime;
+
+		//! End life time of the particle
+		u32 endTime;
+
+		//! Current color of the particle
+		irr::video::SColor color;
+
+		//! Original color of the particle. That's the color
+		//! of the particle it had when it was emitted.
+		irr::video::SColor startColor;
+
+		//! Original direction and speed of the particle, 
+		//! the direction and speed the particle had when
+		//! it was emitted.
+		irr::core::vector3d<f32> startVector;
+	};
+
+
+} // end namespace scene
+} // end namespace irr
+
+

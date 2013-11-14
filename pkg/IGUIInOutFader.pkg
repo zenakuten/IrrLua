@@ -1,0 +1,197 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace gui
+{
+
+	//! Element for fading out or in
+	/**	Here is a small example on how the class is used. In this example we fade
+	in from a total red screen in the beginning. As you can see, the fader is not
+	only useful for dramatic in and out fading, but also to show that the player
+	is hit in a first person shooter game for example.
+	\code
+	gui::IGUIInOutFader* fader = device->getGUIEnvironment()->addInOutFader();
+	fader->setColor(video::SColor(0,255,0,0));
+	fader->fadeIn(4000);
+	\endcode
+	*/
+	class IGUIInOutFader : public irr::gui::IGUIElement
+	{
+	public:
+
+		//! constructor
+		//IGUIInOutFader(IGUIEnvironment* environment, IGUIElement* parent, s32 id, core::rect<s32> rectangle);
+
+		//! destructor
+		~IGUIInOutFader();
+
+		//! Gets the color to fade out to or to fade in from.
+		virtual irr::video::SColor getColor() ;
+
+		//! Sets the color to fade out to or to fade in from.
+		//! \param color: Color to where it is faded out od from it is faded in.
+		virtual void setColor(irr::video::SColor color);
+
+		//! Starts the fade in process. In the beginning the whole rect is drawn by
+		//! the set color (black by default) and at the end of the overgiven
+		//! time the color has faded out.
+		//! \param time: Time specifing how long it should need to fade in,
+		//! in milliseconds.
+		virtual void fadeIn(u32 time);
+
+		//! Starts the fade out process. In the beginning everything is visible,
+		//! and at the end of the time only the set color (black by the fault)
+		//! will be drawn.
+		//! \param time: Time specifing how long it should need to fade out,
+		//! in milliseconds.
+		virtual void fadeOut(u32 time);
+
+		//! Returns if the fade in or out process is done.
+		virtual bool isReady() ;
+		
+				/////////////////////////////////////////////////////////
+		/// IGUIElement
+		/////////////////////////////////////////////////////////
+		
+		//! Returns parent of this element.
+		irr::gui::IGUIElement* getParent();
+
+
+		//! Returns the relative rectangle of this element.
+		irr::core::rect<s32> getRelativePosition();
+		
+
+
+		//! Sets the relative rectangle of this element.
+		void setRelativePosition(irr::core::rect<s32>& r);
+
+
+		//! Returns the absolute rectangle of element.
+		irr::core::rect<s32> getAbsolutePosition();
+
+
+		//! Updates the absolute position.
+		virtual void updateAbsolutePosition();
+		
+
+
+		//! Returns the child element, which is at the position of the point.
+		irr::gui::IGUIElement* getElementFromPoint(irr::core::position2d<s32>& point);
+		
+
+
+		//! Adds a GUI element as new child of this element.
+		virtual void addChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes a child.
+		virtual void removeChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes this element.
+		virtual void remove();
+		
+
+
+		//! Draws the element and its children.
+		virtual void draw();
+		
+
+
+		//! Moves this element.
+		virtual void move(irr::core::position2d<s32> absoluteMovement);
+		
+
+
+		//! Returns true if element is visible.
+		virtual bool isVisible();
+		
+
+
+
+		//! Sets the visible state of this element.
+		virtual void setVisible(bool visible);
+		
+
+
+		//! Returns true if element is enabled.
+		virtual bool isEnabled();
+		
+
+
+		//! Sets the enabled state of this element.
+		virtual void setEnabled(bool enabled);
+		
+
+
+		//! Sets the new caption of this element.
+		virtual void setText(wchar_t* text);
+		
+
+
+		//! Returns caption of this element.
+		virtual wchar_t* getText();
+		
+
+
+		//! Returns id. Can be used to identify the element.
+		virtual s32 getID();
+		
+
+		//! Sets the id of this element
+		virtual void setID(s32 id);
+		
+
+
+		//! Called if an event happened.
+		virtual bool OnEvent(irr::SEvent event);
+		
+
+
+		//! Brings a child to front
+		//! \return Returns true if successful, false if not.
+		virtual bool bringToFront(irr::gui::IGUIElement* element);
+		
+
+		//! Returns list with children of this element
+		//virtual irr::core::list<IGUIElement*>& getChildren();
+		
+
+		//! Finds the first element with the given id.
+		//! \param id: Id to search for.
+		//! \param searchchildren: Set this to true, if also children of this 
+		//! element may contain the element with the searched id and they 
+		//! should be searched too.
+		//! \return Returns the first element with the given id. If no element
+		//! with this id was found, 0 is returned.
+		virtual irr::gui::IGUIElement* getElementFromId(s32 id, bool searchchildren) ;
+		
+		irr::gui::EGUI_ELEMENT_TYPE getType();
+
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();		
+		
+
+	};
+
+
+} // end namespace gui
+} // end namespace irr
+
+
+$[
+
+irr.gui.IGUIInOutFader.setText = irr.gui.IGUIElement.setText
+irr.gui.IGUIInOutFader.getText = irr.gui.IGUIElement.getText
+
+$]

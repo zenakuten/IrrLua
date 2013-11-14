@@ -1,0 +1,54 @@
+// Copyright (C) 2005-2006 Josh Turpen
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace scene
+{
+
+class IrrLuaIParticleAffector : public IParticleAffector
+{
+public:
+	IrrLuaIParticleAffector();
+	~IrrLuaIParticleAffector();
+
+	virtual void affect(u32 now, irr::scene::SParticle* particlearray, u32 count);
+	
+	virtual irr::scene::E_PARTICLE_AFFECTOR_TYPE getType();
+	
+	//////////////////////
+	//IUnknown
+	virtual void grab();
+	virtual bool drop();
+
+	/////////////////////
+	// IrrLua stuff
+
+	void *GetProxy();
+
+};
+
+} // end namespace scene
+} // end namespace irr
+
+$[
+
+irr.__iparticleaffectorproxy = {}
+
+function irr.scene.createIParticleAffector(def)
+	local o = {}
+	for i,v in pairs(def) do o[i] = v end
+	o.__c_class = irr.scene.IrrLuaIParticleAffector:new()
+	tolua.inherit(o, o.__c_class)
+	tolua.takeownership(o)
+	o.__index = function (t, k) return rawget(t,"__c_class")[k] end	
+	setmetatable(o, o)	
+	irr.__iparticleaffectorproxy[o.__c_class:GetProxy()] = o
+	return o 
+end
+
+$]
+
+

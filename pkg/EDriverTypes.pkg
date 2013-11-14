@@ -1,0 +1,24 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace video  
+{
+	enum E_DRIVER_TYPE
+	{
+		EDT_NULL,     
+		EDT_SOFTWARE, 
+		EDT_SOFTWARE2, 
+		EDT_DIRECT3D8, 
+		EDT_DIRECT3D9,
+		EDT_OPENGL    
+	};
+
+} 
+} 
+
+
+

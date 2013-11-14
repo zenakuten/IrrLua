@@ -1,0 +1,73 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace io
+{
+
+//! The Filelist lists all files in a directory.
+class IFileList : public irr::IUnknown
+{
+public:
+
+	//! destructor
+	virtual ~IFileList();
+
+	//! Returns the amount of files in the filelist.
+	//! \return
+	//! Returns the amount of files and directories in the file list.
+	virtual s32 getFileCount();
+
+	//! Gets the name of a file in the list, based on an index.
+	//! The path is not included in this name. Use getFullFileName for this.
+	//! \param index is the zero based index of the file which name should
+	//!   be returned. The index has to be smaller than the amount getFileCount() returns.
+	//! \return
+	//! Returns the file name of the file. Returns 0, if an error occured.
+	virtual c8* getFileName(s32 index);
+
+	//! Gets the full name of a file in the list, path included, based on an index.
+	//! \param index is the zero based index of the file which name should
+	//!   be returned. The index has to be smaller than the amount getFileCount() returns.
+	//! \return
+	//! Returns the file name of the file. Returns 0, if an error occured.
+	virtual c8* getFullFileName(s32 index);
+
+	//! Returns of the file is a directory
+	//! \param
+	//! index is the zero based index of the file which name should
+	//!   be returned. The index has to be smaller than the amount getFileCount() returns.
+	//! \return
+	//! Returns true, if the file is a directory, and false, if it is not.
+	//!  If an error occurs, the result is undefined.
+	virtual bool isDirectory(s32 index);
+	
+	//////////////////////////////////////////////////////////////////////////////////////	
+	//IUnknown
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	virtual void grab();
+	virtual bool drop();
+	c8* getDebugName();
+};
+
+} // end namespace irr
+} // end namespace io
+
+
+$[
+
+local _getFileName = irr.io.IFileList.getFileName
+function irr.io.IFileList:getFileName()
+	return irr.cast.c8_ptr_to_std_string(_getFileName(self))
+end
+
+local _getFullFileName = irr.io.IFileList.getFullFileName
+function irr.io.IFileList:getFullFileName()
+	return irr.cast.c8_ptr_to_std_string(_getFullFileName(self))
+end
+
+
+$]

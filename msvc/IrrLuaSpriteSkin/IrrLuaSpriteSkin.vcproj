@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="IrrLuaSpriteSkin"
+	ProjectGUID="{124DD51C-2AE0-41EB-9F66-9C69BF064399}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua5.1\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib;..\..\src\AnimatedSpriteSkin"
+				PreprocessorDefinitions="IRRLUASPRITESKIN_EXPORTS=1"
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"
+				DisableSpecificWarnings="4275, 4251"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="AnimatedSpriteSkin.lib tolua++.lib lua5.1.lib"
+				OutputFile="../../bin/IrrLuaSpriteSkin.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\lib;..\..\lua5.1\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/IrrLuaSpriteSkin.pdb"
+				SubSystem="2"
+				ImportLibrary="$(OutDir)/IrrLuaSpriteSkin.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua5.1\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib;..\..\src\AnimatedSpriteSkin"
+				PreprocessorDefinitions="IRRLUASPRITESKIN_EXPORTS=1"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4275, 4251"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="AnimatedSpriteSkin.lib tolua++.lib lua5.1.lib"
+				OutputFile="../../bin/IrrLuaSpriteSkin.dll"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib;..\..\lua5.1\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/IrrLuaSpriteSkin.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release - LuaBinaries 5.1|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua5.1\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib;..\..\src\AnimatedSpriteSkin"
+				PreprocessorDefinitions="IRRLUASPRITESKIN_EXPORTS=1"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4275, 4251"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="AnimatedSpriteSkin.lib tolua++.lib lua5.1.lib "
+				OutputFile="..\..\lib\LuaBinaries\5.1\IrrLuaSpriteSkin.dll"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib;..\..\lib\LuaBinaries\5.1;..\..\lua5.1\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="../../lib/LuaBinaries/5.1/IrrLuaSpriteSkin.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release - LuaBinaries 5.0.r2|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua50\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib;..\..\src\AnimatedSpriteSkin"
+				PreprocessorDefinitions="IRRLUASPRITESKIN_EXPORTS=1"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"
+				DisableSpecificWarnings="4275, 4251"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="AnimatedSpriteSkin.lib tolua++.lib lua50.lib"
+				OutputFile="..\..\lib\LuaBinaries\5.0.r2\IrrLuaSpriteSkin.dll"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib;..\..\lib\LuaBinaries\5.0.r2;..\..\lua50\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="../../lib/LuaBinaries/5.0.r2/IrrLuaSpriteSkin.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="">
+			<File
+				RelativePath="..\..\src\IrrLuaSpriteSkin\IrrLuaSpriteSkin.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\..\src\IrrLuaSpriteSkin\IrrLuaSpriteSkin.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Resource Files"
+			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
+			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+		</Filter>
+		<Filter
+			Name="Pkg"
+			Filter="">
+			<File
+				RelativePath="..\..\src\IrrLuaSpriteSkin\IrrLuaSpriteSkin.pkg">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cd ..\..\src\IrrLuaSpriteSkin
+..\..\tolua++\bin\tolua++ -1 -H IrrLuaSpriteSkin_imp.h -o IrrLuaSpriteSkin_imp.cpp IrrLuaSpriteSkin.pkg
+"
+						AdditionalDependencies=""
+						Outputs="..\..\src\IrrLuaSpriteSkin\IrrLuaSpriteSkin_imp.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cd ..\..\src\IrrLuaSpriteSkin
+..\..\tolua++\bin\tolua++ -1 -H IrrLuaSpriteSkin_imp.h -o IrrLuaSpriteSkin_imp.cpp IrrLuaSpriteSkin.pkg
+"
+						AdditionalDependencies=""
+						Outputs="..\..\src\IrrLuaSpriteSkin\IrrLuaSpriteSkin_imp.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release - LuaBinaries 5.1|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cd ..\..\src\IrrLuaSpriteSkin
+..\..\tolua++\bin\tolua++ -1 -H IrrLuaSpriteSkin_imp.h -o IrrLuaSpriteSkin_imp.cpp IrrLuaSpriteSkin.pkg
+"
+						AdditionalDependencies=""
+						Outputs="..\..\src\IrrLuaSpriteSkin\IrrLuaSpriteSkin_imp.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release - LuaBinaries 5.0.r2|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cd ..\..\src\IrrLuaSpriteSkin
+..\..\tolua++\bin\tolua++ -1 -H IrrLuaSpriteSkin_imp.h -o IrrLuaSpriteSkin_imp.cpp IrrLuaSpriteSkin.pkg
+"
+						AdditionalDependencies=""
+						Outputs="..\..\src\IrrLuaSpriteSkin\IrrLuaSpriteSkin_imp.cpp"/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

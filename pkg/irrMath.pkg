@@ -1,0 +1,40 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace core
+{
+	//! Rounding error constant often used when comparing f32 values.
+	//const f32 ROUNDING_ERROR	= 0.0001f;
+	#define  ROUNDING_ERROR	 0.0001f
+
+	//! Constant for PI.
+	//const f32 PI				= 3.14159f;
+	#define PI	 3.14159f
+
+	//! Constant for converting bettween degrees and radiants.
+	//const f64 GRAD_PI		= 180.0 / 3.1415926535897932384626433832795;
+	#define GRAD_PI		 57.295779513082320876798154814105
+
+	//! Constant for converting bettween degrees and radiants.
+	//const f64 GRAD_PI2		= 3.1415926535897932384626433832795 / 180.0;
+	#define GRAD_PI2		 0.017453292519943295769236907684886
+
+	//! returns minimum of two values. Own implementation to get rid of the STL.
+	//template<class T>
+	
+	inline const f32 min_(const f32 a, const f32 b);
+	
+	//! returns minimum of two values. Own implementation to get rid of the STL
+	//template<class T>
+	inline f32 max_(const f32 a, const f32 b);
+
+	inline bool equals(const f32 a, const f32 b);
+
+} // end namespace core
+}// end namespace irr
+
+

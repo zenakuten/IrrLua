@@ -1,0 +1,351 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace gui
+{
+	//! A tab, onto which other gui elements could be added.
+	class IGUITab : public irr::gui::IGUIElement
+	{
+	public:
+
+		//! constructor
+		//IGUITab(IGUIEnvironment* environment, IGUIElement* parent, s32 id, core::rect<s32> rectangle);
+
+		//! destructor
+		virtual ~IGUITab();
+
+		//! Returns number of tab if in tabcontrol. Can be accessed
+		//! later IGUITabControl::getTab() by this number.
+		virtual s32 getNumber();
+
+		//! sets if the tab should draw its background
+		virtual void setDrawBackground(bool draw);
+
+		//! sets the color of the background, if it should be drawn.
+		virtual void setBackgroundColor(irr::video::SColor c);
+		
+		/////////////////////////////////////////////////////////
+		/// IGUIElement
+		/////////////////////////////////////////////////////////
+		
+		//! Returns parent of this element.
+		irr::gui::IGUIElement* getParent();
+
+
+		//! Returns the relative rectangle of this element.
+		irr::core::rect<s32> getRelativePosition();
+		
+
+
+		//! Sets the relative rectangle of this element.
+		void setRelativePosition(irr::core::rect<s32>& r);
+
+
+		//! Returns the absolute rectangle of element.
+		irr::core::rect<s32> getAbsolutePosition();
+
+
+		//! Updates the absolute position.
+		virtual void updateAbsolutePosition();
+		
+
+
+		//! Returns the child element, which is at the position of the point.
+		irr::gui::IGUIElement* getElementFromPoint(irr::core::position2d<s32>& point);
+		
+
+
+		//! Adds a GUI element as new child of this element.
+		virtual void addChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes a child.
+		virtual void removeChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes this element.
+		virtual void remove();
+		
+
+
+		//! Draws the element and its children.
+		virtual void draw();
+		
+
+
+		//! Moves this element.
+		virtual void move(irr::core::position2d<s32> absoluteMovement);
+		
+
+
+		//! Returns true if element is visible.
+		virtual bool isVisible();
+		
+
+
+
+		//! Sets the visible state of this element.
+		virtual void setVisible(bool visible);
+		
+
+
+		//! Returns true if element is enabled.
+		virtual bool isEnabled();
+		
+
+
+		//! Sets the enabled state of this element.
+		virtual void setEnabled(bool enabled);
+		
+
+
+		//! Sets the new caption of this element.
+		virtual void setText(wchar_t* text);
+		
+
+
+		//! Returns caption of this element.
+		virtual wchar_t* getText();
+		
+
+
+		//! Returns id. Can be used to identify the element.
+		virtual s32 getID();
+		
+
+		//! Sets the id of this element
+		virtual void setID(s32 id);
+		
+
+
+		//! Called if an event happened.
+		virtual bool OnEvent(irr::SEvent event);
+		
+
+
+		//! Brings a child to front
+		//! \return Returns true if successful, false if not.
+		virtual bool bringToFront(irr::gui::IGUIElement* element);
+		
+
+		//! Returns list with children of this element
+		//virtual irr::core::list<IGUIElement*>& getChildren();
+		
+
+		//! Finds the first element with the given id.
+		//! \param id: Id to search for.
+		//! \param searchchildren: Set this to true, if also children of this 
+		//! element may contain the element with the searched id and they 
+		//! should be searched too.
+		//! \return Returns the first element with the given id. If no element
+		//! with this id was found, 0 is returned.
+		virtual irr::gui::IGUIElement* getElementFromId(s32 id, bool searchchildren) ;
+		
+		irr::gui::EGUI_ELEMENT_TYPE getType();
+
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();		
+		
+	};
+
+	//! A standard tab control
+	class IGUITabControl : public irr::gui::IGUIElement
+	{
+	public:
+
+		//! constructor
+		//IGUITabControl(IGUIEnvironment* environment, IGUIElement* parent, s32 id, core::rect<s32> rectangle);
+
+		//! destructor
+		virtual ~IGUITabControl();
+
+		//! Adds a tab
+		virtual IGUITab* addTab(wchar_t* caption, s32 id);
+
+		//! Returns amount of tabs in the tabcontrol
+		virtual s32 getTabcount();
+
+		//! Returns a tab based on zero based index
+		//! \param idx: zero based index of tab. Is a value betwenn 0
+		//! and getTabcount()-1;
+		//! \return Returns pointer to the Tab. Returns 0 if no tab
+		//! is corresponding to this tab.
+		virtual irr::gui::IGUITab* getTab(s32 idx);
+
+		//! Brings a tab to front.
+		//! \param idx: number of the tab.
+		//! \return Returns true if successful.
+		virtual bool setActiveTab(s32 idx);
+
+		//! Returns which tab is currently active
+		virtual s32 getActiveTab();
+		
+				/////////////////////////////////////////////////////////
+		/// IGUIElement
+		/////////////////////////////////////////////////////////
+		
+		//! Returns parent of this element.
+		irr::gui::IGUIElement* getParent();
+
+
+		//! Returns the relative rectangle of this element.
+		irr::core::rect<s32> getRelativePosition();
+		
+
+
+		//! Sets the relative rectangle of this element.
+		void setRelativePosition(irr::core::rect<s32>& r);
+
+
+		//! Returns the absolute rectangle of element.
+		irr::core::rect<s32> getAbsolutePosition();
+
+
+		//! Updates the absolute position.
+		virtual void updateAbsolutePosition();
+		
+
+
+		//! Returns the child element, which is at the position of the point.
+		irr::gui::IGUIElement* getElementFromPoint(irr::core::position2d<s32>& point);
+		
+
+
+		//! Adds a GUI element as new child of this element.
+		virtual void addChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes a child.
+		virtual void removeChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes this element.
+		virtual void remove();
+		
+
+
+		//! Draws the element and its children.
+		virtual void draw();
+		
+
+
+		//! Moves this element.
+		virtual void move(irr::core::position2d<s32> absoluteMovement);
+		
+
+
+		//! Returns true if element is visible.
+		virtual bool isVisible();
+		
+
+
+
+		//! Sets the visible state of this element.
+		virtual void setVisible(bool visible);
+		
+
+
+		//! Returns true if element is enabled.
+		virtual bool isEnabled();
+		
+
+
+		//! Sets the enabled state of this element.
+		virtual void setEnabled(bool enabled);
+		
+
+
+		//! Sets the new caption of this element.
+		virtual void setText(wchar_t* text);
+		
+
+
+		//! Returns caption of this element.
+		virtual wchar_t* getText();
+		
+
+
+		//! Returns id. Can be used to identify the element.
+		virtual s32 getID();
+		
+
+		//! Sets the id of this element
+		virtual void setID(s32 id);
+		
+
+
+		//! Called if an event happened.
+		virtual bool OnEvent(irr::SEvent event);
+		
+
+
+		//! Brings a child to front
+		//! \return Returns true if successful, false if not.
+		virtual bool bringToFront(irr::gui::IGUIElement* element);
+		
+
+		//! Returns list with children of this element
+		//virtual irr::core::list<IGUIElement*>& getChildren();
+		
+
+		//! Finds the first element with the given id.
+		//! \param id: Id to search for.
+		//! \param searchchildren: Set this to true, if also children of this 
+		//! element may contain the element with the searched id and they 
+		//! should be searched too.
+		//! \return Returns the first element with the given id. If no element
+		//! with this id was found, 0 is returned.
+		virtual irr::gui::IGUIElement* getElementFromId(s32 id, bool searchchildren) ;
+		
+		irr::gui::EGUI_ELEMENT_TYPE getType();
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();				
+
+	};
+
+
+} // end namespace gui
+} // end namespace irr
+
+
+
+
+$[
+
+local _addTab = irr.gui.IGUITabControl.addTab
+function irr.gui.IGUITabControl:addTab(caption, id)
+	id = id or -1
+	local txt = irr.cast.to_wchar_t_ptr(caption)
+	local ret = _addTab(self, txt, id)
+	irr.cast.delete_wchar_t_ptr(txt)
+	return ret
+end
+
+irr.gui.IGUITab.setText = irr.gui.IGUIElement.setText
+irr.gui.IGUITab.getText = irr.gui.IGUIElement.getText
+
+irr.gui.IGUITabControl.setText = irr.gui.IGUIElement.setText
+irr.gui.IGUITabControl.getText = irr.gui.IGUIElement.getText
+
+	
+$]
+

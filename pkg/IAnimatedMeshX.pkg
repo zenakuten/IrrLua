@@ -1,0 +1,149 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace scene
+{
+	//! Interface for using some special functions of X meshes
+	class IAnimatedMeshX : public irr::scene::IAnimatedMesh
+	{
+	public:
+
+		//! Returns a pointer to a transformation matrix of a part of the 
+		//! mesh based on a frame time. This is used for being able to attach
+		//! objects to parts of animated meshes. For example a weapon to an animated 
+		//! hand. 
+		//! \param jointNumber: Zero based index of joint. The last joint has the number
+		//! IAnimatedMeshX::getJointCount()-1;
+		//! \param frame: Frame of the animation.
+		//! \return Returns a pointer to the matrix of the mesh part or 
+		//! null if an error occured.
+		virtual irr::core::matrix4* getMatrixOfJoint(s32 jointNumber, s32 frame);
+
+		//! Gets joint count.
+		//! \return Returns amount of joints in the skeletal animated mesh.
+		virtual s32 getJointCount() ;
+
+		//! Gets the name of a joint.
+		//! \param number: Zero based index of joint. The last joint has the number
+		//! IAnimatedMeshX::getJointCount()-1;
+		//! \return Returns name of joint and null if an error happened.
+		virtual c8* getJointName(s32 number) ;
+
+		//! Gets a joint number from its name
+		//! \param name: Name of the joint.
+		//! \return Returns the number of the joint or -1 if not found.
+		virtual s32 getJointNumber(c8* name) ;
+
+		//! Returns a pointer to list of points containing the skeleton.
+		//! Draw a line between point 1 and 2, and 3 and 4 and 5 and 6
+		//! and so on to visualize this. Only for debug purposes. If you
+		//! use an .x-File with the IAnimatedMeshSceneNode and turn DebugDataVisible
+		//! to true, the Scene node will visualize the skeleton using this
+		//! method.
+		virtual irr::core::array<core::vector3d<f32> >* getDrawableSkeleton(s32 frame);
+
+		//! Returns amount of animations in .X-file.
+		virtual s32 getAnimationCount() ;
+
+		//! Returns the name of an animation. 
+		//! \param idx: Zero based Index of the animation. Must be a value between
+		//! 0 and getAnimationCount()-1;
+		//! \return Returns pointer to the string of the name of the animation. 
+		//! Returns 0 if an animation with this index does not exist.
+		virtual c8* getAnimationName(s32 idx) ;
+
+		//! Sets an animation as animation to play back.
+		//! \param idx: Zero based Index of the animation. Must be a value between
+		//! 0 and getAnimationCount()-1;
+		virtual void setCurrentAnimation(s32 idx);
+
+		//! Sets an animation as animation to play back.
+		//! \param name: Name of the animtion. 
+		//! \return Returns true if successful, and false if the specified animation
+		//! does not exist.
+		virtual bool setCurrentAnimation(c8* name);
+		
+				///////////////////////////////////////////////////////////////
+		// IAnimatedMesh
+		///////////////////////////////////////////////////////////////
+		//! Gets the frame count of the animated mesh.
+		//! \return Returns the amount of frames. If the amount is 1, it is a static, non animated mesh.
+		virtual s32 getFrameCount();
+
+		//! Returns the IMesh interface for a frame.
+		//! \param frame: Frame number as zero based index. The maximum frame number is
+		//! getFrameCount() - 1;
+		//! \param detailLevel: Level of detail. 0 is the lowest,
+		//! 255 the highest level of detail. Most meshes will ignore the detail level.
+		//! \param startFrameLoop: Because some animated meshes (.MD2) are blended between 2
+		//! static frames, and maybe animated in a loop, the startFrameLoop and the endFrameLoop
+		//! have to be defined, to prevent the animation to be blended between frames which are
+		//! outside of this loop. 
+		//! If startFrameLoop and endFrameLoop are both -1, they are ignored.
+		//! \param endFrameLoop: see startFrameLoop.
+		//! \return Returns the animated mesh based on a detail level. 
+		virtual irr::scene::IMesh* getMesh(s32 frame, s32 detailLevel, s32 startFrameLoop, s32 endFrameLoop);
+
+		//! Returns an axis aligned bounding box of the mesh.
+		//! \return A bounding box of this mesh is returned.
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+
+		//! Returns the type of the animated mesh.
+		//! In most cases it is not neccessary to use this method.
+		//! This is useful for making a save downcast, for example
+		//! if getMeshType() returns EAMT_MD2, its save to cast the
+		//! IAnimatedMesh to IAnimatedMeshMD2.
+		//! \returns Type of the mesh.
+		virtual irr::scene::E_ANIMATED_MESH_TYPE getMeshType();				
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+	};
+
+} // end namespace scene
+} // end namespace irr
+
+
+$[
+
+local _getAnimationName = irr.scene.IAnimatedMeshX.getAnimationName
+function irr.scene.IAnimatedMeshX:getAnimationName(nr)
+	return irr.cast.c8_ptr_to_std_string(_getAnimationName(self, nr))
+end
+
+local _getJointName = irr.scene.IAnimatedMeshX.getJointName
+function irr.scene.IAnimatedMeshX:getJointName(num)
+	return irr.cast.c8_ptr_to_std_string(_getJointName(self, num))
+end
+
+local _getJointNumber = irr.scene.IAnimatedMeshX.getJointNumber
+function irr.scene.IAnimatedMeshX:getJointNumber(name)
+	local nm = irr.cast.to_c8_ptr(name)
+	local ret = _getJointNumber(self, nm)
+	irr.cast.delete_c8_ptr(nm)
+	return ret
+end
+
+local _setCurrentAnimation = irr.scene.IAnimatedMeshX.setCurrentAnimation
+function irr.scene.IAnimatedMeshX:setCurrentAnimation(arg)
+	if tolua.type(arg) == "string" then
+		local nm = irr.cast.to_c8_ptr(arg)
+		local ret = _setCurrentAnimation(self, nm)
+		irr.cast.delete_c8_ptr(nm)
+		return ret
+	else
+		return _setCurrentAnimation(self, arg)
+	end
+end
+
+irr.scene.IAnimatedMeshX.getDebugName = irr.IUnknown.getDebugName
+irr.scene.IAnimatedMeshX.getMesh = irr.scene.IAnimatedMesh.getMesh
+
+$]

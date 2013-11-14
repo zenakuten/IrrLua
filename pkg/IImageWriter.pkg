@@ -1,0 +1,43 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace video
+{
+	class IImage;
+
+
+//! Interface for writing software image data.
+class IImageWriter : public irr::IUnknown
+{
+public:
+	//! constructor
+	//IImageWriter();
+
+	//! destructor
+	virtual ~IImageWriter();
+
+	//! return true if this writer can write a file with the given extension
+	virtual bool isAWriteableFileExtension(c8* fileName);
+
+	//! write image to file
+	virtual bool writeImage(irr::io::IWriteFile *file, irr::video::IImage *image);
+};
+
+}; // namespace video
+}; // namespace irr
+
+$[
+
+local __isAWriteableFileExtension = irr.video.IImageWriter.isAWriteableFileExtension
+function irr.video.IImageWriter:isAWriteableFileExtension(fileName)
+	local n = irr.cast.to_c8_ptr(fileName)
+	local ret = _isAWriteableFileExtension(self, n)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+$]
+

@@ -1,0 +1,14 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace video
+{
+
+		void IrrLuaDrawIndexedTriangleList(irr::video::IVideoDriver *drv, s32 vertexCount, irr::video::S3DVertex vertices[vertexCount], s32 triangleCount, s16 indexList[triangleCount]);
+	
+}
+}
+

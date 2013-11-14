@@ -1,0 +1,89 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+
+namespace irr
+{
+namespace scene
+{
+
+	//! Defines the view frustrum. Thats the space viewed by the camera.
+	/** The view frustrum is enclosed by 6 planes. These six planes share
+	four points. A bounding box around these four points is also stored in
+	this structure.
+	*/
+	//struct SViewFrustrum
+	class SViewFrustrum
+	{
+		enum VFPLANES
+		{
+			//! Far plane of the frustrum. Thats the plane farest away from the eye.
+			VF_FAR_PLANE = 0,
+			//! Near plane of the frustrum. Thats the plane nearest to the eye.
+			VF_NEAR_PLANE,
+			//! Left plane of the frustrum.
+			VF_LEFT_PLANE,
+			//! Right plane of the frustrum.
+			VF_RIGHT_PLANE,
+			//! Bottom plane of the frustrum.
+			VF_BOTTOM_PLANE,
+			//! Top plane of the frustrum.
+			VF_TOP_PLANE,
+
+			//! Amount of planes enclosing the view frustum. Should be 6.
+			VF_PLANE_COUNT
+		};
+
+		//! Default Constructor
+		SViewFrustrum();
+		~SViewFrustrum();
+
+		//! This constructor creates a view frustrum based on a projection and/or
+		//! view matrix.
+		SViewFrustrum(irr::core::matrix4& mat);
+
+		//! the position of the camera
+		irr::core::vector3d<f32> cameraPosition;
+
+		//! all planes enclosing the view frustrum.
+		//irr::core::plane3d<f32> planes[VF_PLANE_COUNT];
+
+		//! bouding box around the view frustrum
+		irr::core::aabbox3d<f32> boundingBox;
+
+		//! transforms the furstum by the matrix
+		//! \param Matrix by which the view frustrum is transformed.
+		void transform(irr::core::matrix4 &mat);
+
+		//! returns the point which is on the far left upper corner inside the
+		//! the view frustrum.
+		irr::core::vector3d<f32> getFarLeftUp() ;
+
+		//! returns the point which is on the far left bottom corner inside the
+		//! the view frustrum.
+		irr::core::vector3d<f32> getFarLeftDown() ;
+
+		//! returns the point which is on the far right top corner inside the
+		//! the view frustrum.
+		irr::core::vector3d<f32> getFarRightUp() ;
+
+		//! returns the point which is on the far right bottom corner inside the
+		//! the view frustrum.
+		irr::core::vector3d<f32> getFarRightDown() ;
+
+		//! returns a bounding box enclosing the whole view frustrum
+		irr::core::aabbox3d<f32> getBoundingBox() ;
+
+		//! recalculates the bounding box member based on the planes
+		void recalculateBoundingBox();
+		
+		
+	};
+
+
+} // end namespace scene
+} // end namespace irr
+
+

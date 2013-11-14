@@ -1,0 +1,192 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace gui
+{
+	class IGUIFont;
+
+	//! Single line edit box for editing simple text.
+	class IGUIEditBox : public irr::gui::IGUIElement
+	{
+	public:
+
+		//! constructor
+		//IGUIEditBox(IGUIEnvironment* environment, IGUIElement* parent, s32 id, core::rect<s32> rectangle);
+
+		//! destructor
+		~IGUIEditBox();
+
+		//! Sets another skin independent font.
+		//! If this is set to zero, the button uses the font of the skin.
+		//! \param font: New font to set.
+		virtual void setOverrideFont(irr::gui::IGUIFont* font);
+
+		//! Sets another color for the text.
+		//! If set, the edit box does not use the EGDC_BUTTON_TEXT color defined
+        //! in the skin, but the set color instead. You don't need to call 
+		//! IGUIEditBox::enableOverrrideColor(true) after this, this is done
+		//! by this function.
+		//! If you set a color, and you want the text displayed with the color
+		//! of the skin again, call IGUIEditBox::enableOverrideColor(false);
+		//! \param color: New color of the text.
+		virtual void setOverrideColor(irr::video::SColor color);
+
+		//! Sets if the text should use the overide color or the
+		//! color in the gui skin.
+		//! \param enable: If set to true, the override color, which can be set
+		//! with IGUIEditBox::setOverrideColor is used, otherwise the
+		//! EGDC_BUTTON_TEXT color of the skin.
+		virtual void enableOverrideColor(bool enable);
+
+		//! Sets the maximum amount of characters which may be entered in the box.
+		//! \param max: Maximum amount of characters. If 0, the character amount is 
+		//! infinity.
+		virtual void setMax(s32 max);
+
+		//! Returns maximum amount of characters, previously set by setMax();
+		virtual s32 getMax();
+		
+				/////////////////////////////////////////////////////////
+		/// IGUIElement
+		/////////////////////////////////////////////////////////
+		
+		//! Returns parent of this element.
+		irr::gui::IGUIElement* getParent();
+
+
+		//! Returns the relative rectangle of this element.
+		irr::core::rect<s32> getRelativePosition();
+		
+
+
+		//! Sets the relative rectangle of this element.
+		void setRelativePosition(irr::core::rect<s32>& r);
+
+
+		//! Returns the absolute rectangle of element.
+		irr::core::rect<s32> getAbsolutePosition();
+
+
+		//! Updates the absolute position.
+		virtual void updateAbsolutePosition();
+		
+
+
+		//! Returns the child element, which is at the position of the point.
+		irr::gui::IGUIElement* getElementFromPoint(irr::core::position2d<s32>& point);
+		
+
+
+		//! Adds a GUI element as new child of this element.
+		virtual void addChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes a child.
+		virtual void removeChild(irr::gui::IGUIElement* child);
+		
+
+
+		//! Removes this element.
+		virtual void remove();
+		
+
+
+		//! Draws the element and its children.
+		virtual void draw();
+		
+
+
+		//! Moves this element.
+		virtual void move(irr::core::position2d<s32> absoluteMovement);
+		
+
+
+		//! Returns true if element is visible.
+		virtual bool isVisible();
+		
+
+
+
+		//! Sets the visible state of this element.
+		virtual void setVisible(bool visible);
+		
+
+
+		//! Returns true if element is enabled.
+		virtual bool isEnabled();
+		
+
+
+		//! Sets the enabled state of this element.
+		virtual void setEnabled(bool enabled);
+		
+
+
+		//! Sets the new caption of this element.
+		virtual void setText(wchar_t* text);
+		
+
+
+		//! Returns caption of this element.
+		virtual wchar_t* getText();
+		
+
+
+		//! Returns id. Can be used to identify the element.
+		virtual s32 getID();
+		
+
+		//! Sets the id of this element
+		virtual void setID(s32 id);
+		
+
+
+		//! Called if an event happened.
+		virtual bool OnEvent(irr::SEvent event);
+		
+
+
+		//! Brings a child to front
+		//! \return Returns true if successful, false if not.
+		virtual bool bringToFront(irr::gui::IGUIElement* element);
+		
+
+		//! Returns list with children of this element
+		//virtual irr::core::list<IGUIElement*>& getChildren();
+		
+
+		//! Finds the first element with the given id.
+		//! \param id: Id to search for.
+		//! \param searchchildren: Set this to true, if also children of this 
+		//! element may contain the element with the searched id and they 
+		//! should be searched too.
+		//! \return Returns the first element with the given id. If no element
+		//! with this id was found, 0 is returned.
+		virtual irr::gui::IGUIElement* getElementFromId(s32 id, bool searchchildren) ;
+		
+		irr::gui::EGUI_ELEMENT_TYPE getType();
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+
+	};
+
+
+} // end namespace gui
+} // end namespace irr
+
+$[
+
+irr.gui.IGUIEditBox.setText = irr.gui.IGUIElement.setText
+irr.gui.IGUIEditBox.getText = irr.gui.IGUIElement.getText
+
+$]
+

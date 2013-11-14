@@ -1,0 +1,66 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace scene
+{
+	//! Struct for holding a mesh with a single material
+	/** SMeshBuffer is a simple implementation of a MeshBuffer. */
+	class IMeshBuffer : public irr::IUnknown
+	{
+	public:
+
+		//! destructor
+		virtual ~IMeshBuffer();
+
+        //! returns the material of this meshbuffer
+        virtual irr::video::SMaterial& getMaterial();
+
+		//! returns the material of this meshbuffer
+        virtual  irr::video::SMaterial& getMaterial() ;
+
+		//! returns which type of vertex data is stored.
+		virtual irr::video::E_VERTEX_TYPE getVertexType() ;
+
+		//! returns pointer to vertex data. The data is a array of vertices. Which vertex
+		//! type is used can be determinated with getVertexType().
+		virtual  void* getVertices() ; 
+
+		//! returns pointer to vertex data. The data is a array of vertices. Which vertex
+		//! type is used can be determinated with getVertexType().
+		virtual void* getVertices(); 
+
+		//! returns amount of vertices
+		virtual s32 getVertexCount() ;
+
+		//! returns pointer to Indices
+		virtual  u16* getIndices() ;
+
+		//! returns pointer to Indices
+		virtual u16* getIndices();
+
+		//! returns amount of indices
+		virtual s32 getIndexCount() ;
+
+		//! returns an axis aligned bounding box
+		virtual  irr::core::aabbox3d<f32>& getBoundingBox() ;
+
+		//! returns an axis aligned bounding box
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+
+	};
+
+} // end namespace scene
+} // end namespace irr
+
+

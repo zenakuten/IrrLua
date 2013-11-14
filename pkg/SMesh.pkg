@@ -1,0 +1,92 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace scene
+{
+	//! Simple implementation of the IMesh interface.
+	//struct SMesh : public IMesh
+	class SMesh : public irr::scene::IMesh
+	{
+		//! constructor
+		SMesh();
+
+		//! destructor
+		~SMesh();
+
+
+		//! returns amount of mesh buffers.
+		virtual s32 getMeshBufferCount();
+		
+
+		//! returns pointer to a mesh buffer
+		virtual irr::scene::IMeshBuffer* getMeshBuffer(s32 nr);
+		
+
+		//! returns an axis aligned bounding box
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+		
+
+		//! Returns an axis aligned bounding box of the mesh.
+		//! \return A bounding box of this mesh is returned.
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+		
+
+		//! recalculates the bounding box
+		void recalculateBoundingBox();
+		
+
+		//! adds a MeshBuffer
+		void addMeshBuffer(irr::scene::IMeshBuffer* buf);
+		
+
+		//! sets a flag of all contained materials to a new value
+		virtual void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
+		
+
+		irr::core::array<IMeshBuffer*> MeshBuffers;
+		irr::core::aabbox3d<f32> BoundingBox;
+		
+		
+		//! Returns the amount of mesh buffers.
+		//! \return Returns the amount of mesh buffers (IMeshBuffer) in this mesh.
+		virtual s32 getMeshBufferCount();
+
+		//! Returns pointer to a mesh buffer.
+		//! \param Zero based index of the mesh buffer. The maximum value is
+		//! getMeshBufferCount() - 1;
+		//! \return Returns the pointer to the mesh buffer or 
+		//! NULL if there is no such mesh buffer.
+		virtual irr::scene::IMeshBuffer* getMeshBuffer(s32 nr);
+
+		//! Returns an axis aligned bounding box of the mesh.
+		//! \return A bounding box of this mesh is returned.
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+
+		//! Returns an axis aligned bounding box of the mesh.
+		//! \return A bounding box of this mesh is returned.
+		virtual irr::core::aabbox3d<f32>& getBoundingBox();
+
+		//! Sets a flag of all contained materials to a new value.
+		//! \param flag: Flag to set in all materials.
+		//! \param newvalue: New value to set in all materials.
+		virtual void setMaterialFlag(irr::video::E_MATERIAL_FLAG flag, bool newvalue);
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+
+	};
+
+
+} // end namespace scene
+} // end namespace irr
+
+

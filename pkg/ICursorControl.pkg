@@ -1,0 +1,64 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace gui
+{
+
+	//! Interface to manipulate the mouse cursor.
+	class ICursorControl : public irr::IUnknown
+	{
+	public:
+
+		//! Changes the visible state of the mouse cursor.
+		//! \param visible: The new visible state. If true, the cursor will be visible,
+		//! if false, it will be invisible.
+		virtual void setVisible(bool visible);
+
+		//! Returns if the cursor is currently visible.
+		//! \return Returns true if the cursor is visible, false if not.
+        virtual bool isVisible();
+
+		//! Sets the new position of the cursor.
+		//! \param pos: New position of the cursor. The position must be between
+		//! (0.0f, 0.0f) and (1.0f, 1.0f), where (0.0f, 0.0f) is 
+		//! the top left corner and (1.0f, 1.0f) is the bottom right corner of the
+		//! render window.
+		virtual void setPosition(irr::core::position2d<f32> &pos);
+
+		//! Sets the new position of the cursor.
+		//! \param pos: New position of the cursor. The position must be between
+		//! (0.0f, 0.0f) and (1.0f, 1.0f), where (0.0f, 0.0f) is 
+		//! the top left corner and (1.0f, 1.0f) is the bottom right corner of the
+		//! render window.
+		virtual void setPosition(f32 x, f32 y);
+
+		//! Sets the new position of the cursor.
+		//! \param pos: New position of the cursor. The coordinates are pixel units.
+		virtual void setPosition(irr::core::position2d<s32> &pos);
+
+		//! Sets the new position of the cursor.
+		//! \param pos: New position of the cursor. The coordinates are pixel units.
+		virtual void setPosition(s32 x, s32 y);
+
+		//! Returns the current position of the mouse cursor.
+		//! \return Returns the current position of the cursor. The returned position
+		//! is the position of the mouse cursor in pixel units.
+		virtual irr::core::position2d<s32> getPosition();
+
+		//! Returns the current position of the mouse cursor.
+		//! \return Returns the current position of the cursor. The returned position
+		//! is a value between (0.0f, 0.0f) and (1.0f, 1.0f), where (0.0f, 0.0f) is 
+		//! the top left corner and (1.0f, 1.0f) is the bottom right corner of the
+		//! render window.
+		virtual irr::core::position2d<f32> getRelativePosition();
+	};
+
+
+} // end namespace gui
+} // end namespace irr
+
+

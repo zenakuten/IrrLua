@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.10"
+	Name="CustomSceneNode"
+	ProjectGUID="{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}"
+	Keyword="Win32Proj">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory="Debug"
+			IntermediateDirectory="Debug"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua5.1\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;CUSTOMSCENENODE_EXPORTS;IRRLUA_API="
+				MinimalRebuild="TRUE"
+				BasicRuntimeChecks="3"
+				RuntimeLibrary="3"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="4"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="cd ..\..\src\CustomSceneNode
+..\..\tolua++\bin\tolua++ -H CustomSceneNode_imp.h -o CustomSceneNode_imp.cpp CustomSceneNode.pkg
+"
+				Outputs="..\..\src\CustomSceneNode\CustomSceneNode_imp.cpp"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="irrlicht.lib lua5.1.lib tolua++.lib"
+				OutputFile="..\..\bin\CustomSceneNode.dll"
+				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\..\lib;..\..\lua5.1\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile="$(OutDir)/CustomSceneNode.pdb"
+				SubSystem="2"
+				ImportLibrary="$(OutDir)/CustomSceneNode.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory="Release"
+			IntermediateDirectory="Release"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua5.1\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CUSTOMSCENENODE_EXPORTS;IRRLUA_API=extern __declspec(dllimport)"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="cd ..\..\src\CustomSceneNode
+..\..\tolua++\bin\tolua++ -H CustomSceneNode_imp.h -o CustomSceneNode_imp.cpp CustomSceneNode.pkg
+"
+				Outputs="..\..\src\CustomSceneNode\CustomSceneNode_imp.cpp"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="irrlicht.lib lua5.1.lib tolua++.lib"
+				OutputFile="..\..\bin\CustomSceneNode.dll"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib;..\..\lua5.1\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="$(OutDir)/CustomSceneNode.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release - LuaBinaries 5.1|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua5.1\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CUSTOMSCENENODE_EXPORTS;IRRLUA_API=extern __declspec(dllimport)"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"
+				CommandLine="cd ..\..\src\CustomSceneNode
+..\..\tolua++\bin\tolua++ -H CustomSceneNode_imp.h -o CustomSceneNode_imp.cpp CustomSceneNode.pkg
+"
+				Outputs="..\..\src\CustomSceneNode\CustomSceneNode_imp.cpp"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="irrlicht.lib lua5.1.lib tolua++.lib"
+				OutputFile="..\..\lib\LuaBinaries\5.1\CustomSceneNode.dll"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib\LuaBinaries\5.1;..\..\lua5.1\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="../../lib/LuaBinaries/5.1/CustomSceneNode.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release - LuaBinaries 5.0.r2|Win32"
+			OutputDirectory="$(ConfigurationName)"
+			IntermediateDirectory="$(ConfigurationName)"
+			ConfigurationType="2"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="3"
+				InlineFunctionExpansion="2"
+				EnableIntrinsicFunctions="TRUE"
+				FavorSizeOrSpeed="1"
+				OmitFramePointers="TRUE"
+				EnableFiberSafeOptimizations="TRUE"
+				AdditionalIncludeDirectories="..\..\include;..\..\lua50\include;&quot;..\..\tolua++\include&quot;;..\..\..\..\include;..\..\..\..\zlib"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;CUSTOMSCENENODE_EXPORTS;IRRLUA_API=extern __declspec(dllimport)"
+				RuntimeLibrary="2"
+				UsePrecompiledHeader="0"
+				WarningLevel="3"
+				Detect64BitPortabilityProblems="TRUE"
+				DebugInformationFormat="3"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalDependencies="irrlicht.lib lua50.lib tolua++.lib"
+				OutputFile="..\..\lib\LuaBinaries\5.0.r2\CustomSceneNode.dll"
+				LinkIncremental="1"
+				AdditionalLibraryDirectories="..\..\lib\LuaBinaries\5.0.r2;..\..\lua50\lib\dll;&quot;..\..\..\..\lib\Win32-VisualStudio&quot;"
+				GenerateDebugInformation="TRUE"
+				SubSystem="2"
+				OptimizeReferences="2"
+				EnableCOMDATFolding="2"
+				ImportLibrary="..\..\lib\LuaBinaries\5.0.r2\CustomSceneNode.lib"
+				TargetMachine="1"/>
+			<Tool
+				Name="VCMIDLTool"/>
+			<Tool
+				Name="VCPostBuildEventTool"/>
+			<Tool
+				Name="VCPreBuildEventTool"
+				Description="creating binding..."
+				CommandLine="cd ..\..\src\CustomSceneNode
+..\..\tolua++\bin\tolua++ -1 -H CustomSceneNode_imp.h -o CustomSceneNode_imp.cpp CustomSceneNode.pkg
+"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCXMLDataGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+			<Tool
+				Name="VCManagedWrapperGeneratorTool"/>
+			<Tool
+				Name="VCAuxiliaryManagedWrapperGeneratorTool"/>
+		</Configuration>
+	</Configurations>
+	<References>
+	</References>
+	<Files>
+		<Filter
+			Name="Source Files"
+			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
+			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
+			<File
+				RelativePath="..\..\src\CustomSceneNode\CustomSceneNode.cpp">
+			</File>
+		</Filter>
+		<Filter
+			Name="Header Files"
+			Filter="h;hpp;hxx;hm;inl;inc;xsd"
+			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath="..\..\src\CustomSceneNode\CustomSceneNode.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="Package Files">
+			<File
+				RelativePath="..\..\src\CustomSceneNode\CustomSceneNode.pkg">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cd ..\..\src\CustomSceneNode
+..\..\tolua++\bin\tolua++ -H CustomSceneNode_imp.h -o CustomSceneNode_imp.cpp CustomSceneNode.pkg
+"
+						Outputs="..\..\src\CustomSceneNode\CustomSceneNode_imp.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cd ..\..\src\CustomSceneNode
+..\..\tolua++\bin\tolua++ -H CustomSceneNode_imp.h -o CustomSceneNode_imp.cpp CustomSceneNode.pkg
+"
+						Outputs="..\..\src\CustomSceneNode\CustomSceneNode_imp.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release - LuaBinaries 5.1|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine="cd ..\..\src\CustomSceneNode
+..\..\tolua++\bin\tolua++ -H CustomSceneNode_imp.h -o CustomSceneNode_imp.cpp CustomSceneNode.pkg
+"
+						Outputs="..\..\src\CustomSceneNode\CustomSceneNode_imp.cpp"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release - LuaBinaries 5.0.r2|Win32">
+					<Tool
+						Name="VCCustomBuildTool"
+						CommandLine=""
+						Outputs=""/>
+				</FileConfiguration>
+			</File>
+		</Filter>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,90 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CustomSceneNode", "CustomSceneNode\CustomSceneNode.vcproj", "{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tolua++", "tolua++\tolua++.vcproj", "{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IrrLua", "IrrLua\IrrLua.vcproj", "{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}"
+	ProjectSection(ProjectDependencies) = postProject
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF} = {25418CD4-AE52-4BF7-A466-BA132D4F2AFF}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Examples", "Examples\Examples.vcproj", "{6A288C13-50FF-44FC-995A-6B26CECFFA5A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07} = {104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AnimatedSpriteSkin", "AnimatedSpriteSkin\AnimatedSpriteSkin.vcproj", "{C3BC26F0-8111-45F6-8582-F2553EB000A7}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "IrrLuaSpriteSkin", "IrrLuaSpriteSkin\IrrLuaSpriteSkin.vcproj", "{124DD51C-2AE0-41EB-9F66-9C69BF064399}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7} = {C3BC26F0-8111-45F6-8582-F2553EB000A7}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+		Release - LuaBinaries 5.0.r2 = Release - LuaBinaries 5.0.r2
+		Release - LuaBinaries 5.1 = Release - LuaBinaries 5.1
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Debug.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Debug.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Release.ActiveCfg = Release|Win32
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Release.Build.0 = Release|Win32
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Release - LuaBinaries 5.0.r2.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Release - LuaBinaries 5.0.r2.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Release - LuaBinaries 5.1.ActiveCfg = Release - LuaBinaries 5.1|Win32
+		{9DA3CE8D-5567-4E2F-A797-90C6A577C66B}.Release - LuaBinaries 5.1.Build.0 = Release - LuaBinaries 5.1|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Debug.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Debug.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Release.ActiveCfg = Release|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Release.Build.0 = Release|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Release - LuaBinaries 5.0.r2.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Release - LuaBinaries 5.0.r2.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Release - LuaBinaries 5.1.ActiveCfg = Release - LuaBinaries 5.1|Win32
+		{25418CD4-AE52-4BF7-A466-BA132D4F2AFF}.Release - LuaBinaries 5.1.Build.0 = Release - LuaBinaries 5.1|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Debug.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Debug.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Release.ActiveCfg = Release|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Release.Build.0 = Release|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Release - LuaBinaries 5.0.r2.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Release - LuaBinaries 5.0.r2.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Release - LuaBinaries 5.1.ActiveCfg = Release - LuaBinaries 5.1|Win32
+		{104BC31B-7F73-4F8B-AF1B-38A2A64C3A07}.Release - LuaBinaries 5.1.Build.0 = Release - LuaBinaries 5.1|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Debug.ActiveCfg = Debug|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Debug.Build.0 = Debug|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Release.ActiveCfg = Release|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Release.Build.0 = Release|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Release - LuaBinaries 5.0.r2.ActiveCfg = Release|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Release - LuaBinaries 5.0.r2.Build.0 = Release|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Release - LuaBinaries 5.1.ActiveCfg = Release|Win32
+		{6A288C13-50FF-44FC-995A-6B26CECFFA5A}.Release - LuaBinaries 5.1.Build.0 = Release|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Debug.ActiveCfg = Debug|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Debug.Build.0 = Debug|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Release.ActiveCfg = Release|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Release.Build.0 = Release|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Release - LuaBinaries 5.0.r2.ActiveCfg = Release|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Release - LuaBinaries 5.0.r2.Build.0 = Release|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Release - LuaBinaries 5.1.ActiveCfg = Release|Win32
+		{C3BC26F0-8111-45F6-8582-F2553EB000A7}.Release - LuaBinaries 5.1.Build.0 = Release|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Debug.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Debug.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Release.ActiveCfg = Release|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Release.Build.0 = Release|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Release - LuaBinaries 5.0.r2.ActiveCfg = Release - LuaBinaries 5.0.r2|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Release - LuaBinaries 5.0.r2.Build.0 = Release - LuaBinaries 5.0.r2|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Release - LuaBinaries 5.1.ActiveCfg = Release - LuaBinaries 5.1|Win32
+		{124DD51C-2AE0-41EB-9F66-9C69BF064399}.Release - LuaBinaries 5.1.Build.0 = Release - LuaBinaries 5.1|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

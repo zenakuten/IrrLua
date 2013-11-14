@@ -1,0 +1,26 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace core
+{
+
+//! Sinks an element into the heap.
+//template<class T>
+void heapsink(f32 *array, s32 element, s32 max);
+
+
+
+//! Sorts an array with size 'size' using heapsort.
+//template<class T>
+void heapsort(f32* array, s32 size);
+
+
+}
+} // end namespace irr
+
+
+
+

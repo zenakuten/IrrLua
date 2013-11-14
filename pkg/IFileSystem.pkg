@@ -1,0 +1,230 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace io
+{
+
+class IReadFile;
+class IWriteFile;
+class IFileList;
+class IXMLReader;
+class IXMLWriter;
+
+//! The FileSystem manages files and archives and provides access to them.
+/*!
+	It manages where files are, so that modules which
+	use the the IO do not need to know where every file is located. A file
+	could be in a .zip-Archive or as file on disk, using the IFileSystem
+	makes no difference to this.
+*/
+class IFileSystem : public irr::IUnknown
+{
+public:
+
+	//! destructor
+	virtual ~IFileSystem();
+
+	//! Opens a file for read access.
+	//! \param filename: Name of file to open.
+	//! \return Returns a pointer to the created file interface.
+	//! The returned pointer should be dropped when no longer needed.
+	//! See IUnknown::drop() for more information.
+	virtual irr::io::IReadFile* createAndOpenFile(c8* filename);
+
+	//! Opens a file for write access.
+	//! \param filename: Name of file to open.
+	//! \param append: If the file already exist, all write operations are 
+	//! appended to the file.
+	//! \return Returns a pointer to the created file interface. 0 is returned, if the
+	//! file could not created or opened for writing.
+	//! The returned pointer should be dropped when no longer needed.
+	//! See IUnknown::drop() for more information.
+	virtual irr::io::IWriteFile* createAndWriteFile(c8* filename, bool append);
+
+	//! Adds an zip archive to the file system.
+	//! \param filename: Filename of the zip archive to add to the file system.
+	//! \param ignoreCase: If set to true, files in the archive can be accessed without
+	//! writing all letters in the right case.
+	//! \param ignorePaths: If set to true, files in the added archive can be accessed
+	//! without its complete path.
+	//! \return Returns true if the archive was added successful, false if not.
+	virtual bool addZipFileArchive(c8* filename, bool ignoreCase, bool ignorePaths);
+	
+
+	//! Adds an pak archive to the file system.
+	/** After calling this, the Irrlicht Engine will search and open files directly from this archive too. 
+	 This is useful for hiding data from the end user, speeding up file access and making it possible to
+	 access for example Quake2/KingPin/Hexen2 .pak files
+	\param filename: Filename of the pak archive to add to the file system.
+	\param ignoreCase: If set to true, files in the archive can be accessed without
+	writing all letters in the right case.
+	\param ignorePaths: If set to true, files in the added archive can be accessed
+	without its complete path.(should not use with Quake2 paks
+	\return Returns true if the archive was added successful, false if not. */
+	virtual bool addPakFileArchive(c8* filename, bool ignoreCase, bool ignorePaths);
+
+
+	//! Returns the string of the current working directory.
+	virtual c8* getWorkingDirectory();
+
+	//! Changes the current Working Directory to the overgiven string.
+	//! \param
+	//! newDirectory is a string specifiing the new working directory.
+	//! The string is operating system dependent. Under Windows it has
+	//! the form "<drive>:\<directory>\<sudirectory>\<..>". An example would be: "C:\Windows\"
+	//! \return Returns true if successful, otherwise false.
+	virtual bool changeWorkingDirectoryTo(c8* newDirectory);
+
+	//! Creates a list of files and directories in the current working directory 
+	//! and returns it.
+	//! \return a Pointer to the created IFileList is returned. After the list has been used
+	//! it has to be deleted using its IFileList::drop() method.
+	//! See IUnknown::drop() for more information.
+	virtual irr::io::IFileList* createFileList();
+
+	//! determinates if a file exists and would be able to be opened.
+	//! \param filename is the string identifying the file which should be tested for existance.
+	//! \return Returns true if file exsits, and false if it does not exist or an error occured.
+	virtual bool existFile(c8* filename);
+
+	//! Creates a XML Reader from a file.
+	//! \return 0, if file could not be opened, otherwise a pointer to the created
+	//! IXMLReader is returned. After use, the reader
+	//! has to be deleted using its IXMLReader::drop() method.
+	//! See IUnknown::drop() for more information.
+	virtual irr::io::IXMLReader* createXMLReader(c8* filename);
+
+	//! Creates a XML Reader from a file.
+	//! \return 0, if file could not be opened, otherwise a pointer to the created
+	//! IXMLReader is returned. After use, the reader
+	//! has to be deleted using its IXMLReader::drop() method.
+	//! See IUnknown::drop() for more information.
+	virtual irr::io::IXMLReader* createXMLReader(irr::io::IReadFile* file);
+
+	//! Creates a XML Writer from a file.
+	//! \return 0, if file could not be opened, otherwise a pointer to the created
+	//! IXMLWriter is returned. After use, the reader
+	//! has to be deleted using its IXMLWriter::drop() method.
+	//! See IUnknown::drop() for more information.
+	virtual irr::io::IXMLWriter* createXMLWriter(c8* filename);
+
+	//! Creates a XML Writer from a file.
+	//! \return 0, if file could not be opened, otherwise a pointer to the created
+	//! IXMLWriter is returned. After use, the reader
+	//! has to be deleted using its IXMLWriter::drop() method.
+	//! See IUnknown::drop() for more information.
+	virtual irr::io::IXMLWriter* createXMLWriter(IWriteFile* file);
+	
+	//////////////////////////////////////////////////////////////////////////////////////	
+	//IUnknown
+	//////////////////////////////////////////////////////////////////////////////////////
+	
+	virtual void grab();
+	virtual bool drop();
+	c8* getDebugName();
+
+};
+
+} // end namespace io
+} // end namespace irr
+
+
+$[
+
+
+local _createAndOpenFile = irr.io.IFileSystem.createAndOpenFile
+function irr.io.IFileSystem:createAndOpenFile(filename)
+	filename = filename or ""
+	local name = irr.cast.to_c8_ptr(filename)
+	local ret  = _createAndOpenFile(self, name)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+local _createAndWriteFile = irr.io.IFileSystem.createAndWriteFile
+function irr.io.IFileSystem:createAndWriteFile(filename, append)
+	filename = filename or ""
+	local name = irr.cast.to_c8_ptr(filename)
+	local ret  = _createAndWriteFile(self, name, append)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+
+local _addZipFileArchive = irr.io.IFileSystem.addZipFileArchive 
+function irr.io.IFileSystem:addZipFileArchive(filename, ignoreCase, ignorePaths)
+	filename = filename or ""
+	ignoreCase = ignoreCase == nil
+	ignorePaths = ignorePaths == nil
+
+	local name = irr.cast.to_c8_ptr(filename)
+	local ret  = _addZipFileArchive(self, name, ignoreCase, ignorePaths)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+local _addPakFileArchive = irr.io.IFileSystem.addPakFileArchive 
+function irr.io.IFileSystem:addPakFileArchive(filename, ignoreCase, ignorePaths)
+	filename = filename or ""
+	ignoreCase = ignoreCase == nil
+	ignorePaths = ignorePaths == nil
+
+	local name = irr.cast.to_c8_ptr(filename)
+	local ret  = _addPakFileArchive(self, name, ignoreCase, ignorePaths)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+local _getWorkingDirectory = irr.io.IFileSystem.getWorkingDirectory
+function irr.io.IFileSystem:getWorkingDirectory()
+	return irr.cast.c8_ptr_to_std_string(_getWorkingDirectory(self))
+end
+
+local _changeWorkingDirectoryTo = irr.io.IFileSystem.changeWorkingDirectoryTo
+function irr.io.IFileSystem:changeWorkingDirectoryTo(newDirectory)
+	newDirectory = newDirectory or ""
+	local name = irr.cast.to_c8_ptr(newDirectory)
+	local ret  = _changeWorkingDirectoryTo(self, name)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+local _existFile = irr.io.IFileSystem.existFile
+function irr.io.IFileSystem:existFile(filename)
+	filename = filename or ""
+	local name = irr.cast.to_c8_ptr(filename)
+	local ret  = _existFile(self, name)
+	irr.cast.delete_c8_ptr(name)
+	return ret
+end
+
+local _createXMLReader = irr.io.IFileSystem.createXMLReader 
+function irr.io.IFileSystem:createXMLReader(arg1)
+	if tolua.type(arg1) == "string" then
+		local name = irr.cast.to_c8_ptr(arg1)
+		local ret  = _createXMLReader(self, name)
+		irr.cast.delete_c8_ptr(name)
+		return ret
+	else
+		return _createXMLReader(self, arg1)
+	end
+end
+
+local _createXMLWriter = irr.io.IFileSystem.createXMLWriter
+function irr.io.IFileSystem:createXMLWriter(arg1)
+	if tolua.type(arg1) == "string" then
+		local name = irr.cast.to_c8_ptr(arg1)
+		local ret  = _createXMLWriter(self, name)
+		irr.cast.delete_c8_ptr(name)
+		return ret
+	else
+		return _createXMLWriter(self, arg1)
+	end
+end
+
+irr.io.IFileSystem.getDebugName = irr.IUnknown.getDebugName
+
+$]

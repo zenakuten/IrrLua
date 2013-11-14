@@ -1,0 +1,77 @@
+// Copyright (C) 2002-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the "Irrlicht Engine".
+// For conditions of distribution and use, see copyright notice in irrlicht.h
+
+namespace irr
+{
+namespace scene
+{	
+	//!	Interface making it possible to dynamicly create scene nodes animators 
+	/** To be able to add custom scene node animators to Irrlicht and to make it possible for the 
+	scene manager to save and load those external animators, simply implement this
+	interface and register it in you scene manager via ISceneManager::registerSceneNodeAnimatorFactory.
+	Note: When implementing your own scene node factory, don't call ISceneNodeManager::grab() to
+	increase the reference counter of the scene node manager. This is not necessary because the
+	scene node manager will grab() the factory anyway, and otherwise cyclic references will
+	be created and the scene manager and all its nodes won't get deallocated.
+	*/
+	class ISceneNodeAnimatorFactory : public irr::IUnknown
+	{
+	public:
+
+		//! creates a scene node animator based on its type id
+		/** \param type: Type of the scene node animator to add.
+		\param target: Target scene node of the new animator.
+		\return Returns pointer to the new scene node animator or null if not successful. You need to
+		drop this pointer after calling this, see IUnknown::drop() for details. */
+		virtual irr::scene::ISceneNodeAnimator* createSceneNodeAnimator(irr::scene::ESCENE_NODE_ANIMATOR_TYPE type, irr::scene::ISceneNode* target);
+
+		//! creates a scene node animator based on its type name
+		/** \param typeName: Type of the scene node animator to add.
+		\param target: Target scene node of the new animator.
+		\return Returns pointer to the new scene node animator or null if not successful. You need to
+		drop this pointer after calling this, see IUnknown::drop() for details. */
+		virtual irr::scene::ISceneNodeAnimator* createSceneNodeAnimator(c8* typeName, irr::scene::ISceneNode* target);
+
+		//! returns amount of scene node animator types this factory is able to create
+		virtual s32 getCreatableSceneNodeAnimatorTypeCount();
+
+		//! returns type of a createable scene node animator type
+		/** \param idx: Index of scene node animator type in this factory. Must be a value between 0 and
+		getCreatableSceneNodeTypeCount() */
+		virtual irr::scene::ESCENE_NODE_ANIMATOR_TYPE getCreateableSceneNodeAnimatorType(s32 idx);
+
+		//! returns type name of a createable scene node animator type 
+		/** \param idx: Index of scene node animator type in this factory. Must be a value between 0 and
+		getCreatableSceneNodeAnimatorTypeCount() */
+		virtual c8* getCreateableSceneNodeAnimatorTypeName(s32 idx);
+
+		//! returns type name of a createable scene node animator type 
+		/** \param type: Type of scene node animator. 
+		\return: Returns name of scene node animator type if this factory can create the type, otherwise 0. */
+		virtual c8* getCreateableSceneNodeAnimatorTypeName(irr::scene::ESCENE_NODE_ANIMATOR_TYPE type);
+	};
+
+
+} // end namespace scene
+} // end namespace irr
+
+
+$[
+
+local _createSceneNodeAnimator = irr.scene.ISceneNodeAnimatorFactory.createSceneNodeAnimator
+function irr.scene.ISceneNodeAnimatorFactory:createSceneNodeAnimator(typeName, target)
+	local n = irr.cast.to_c8_ptr(typeName)
+	local ret = _createSceneNodeAnimator(self, n, target)
+	irr.cast.delete_c8_ptr(n)
+	return ret
+end
+
+local _getCreateableSceneNodeAnimatorTypeName = irr.scene.ISceneNodeAnimatorFactory.getCreateableSceneNodeAnimatorTypeName
+function irr.scene.ISceneNodeAnimatorFactory:getCreateableSceneNodeAnimatorTypeName(a)
+	return irr.cast.c8_ptr_to_std_string(_getCreateableSceneNodeAnimatorTypeName(self, a))
+end
+
+$]
+
+

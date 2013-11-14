@@ -1,0 +1,17 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace video
+{
+	//! for increasing rendering speed, this method can return quickly if a 
+	//! material is transparent or not.
+
+	
+} // end namespace video
+} // end namespace irr
+
+

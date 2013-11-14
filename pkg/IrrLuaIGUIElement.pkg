@@ -1,0 +1,237 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+TOLUA_PROPERTY_TYPE(default); 
+
+namespace irr
+{
+namespace gui
+{
+
+class IGUIEnvironment;
+
+//! Base class of all GUI elements.
+class IrrLuaIGUIElement : public IGUIElement
+{
+public:
+
+	//! Constructor
+	IrrLuaIGUIElement(irr::gui::EGUI_ELEMENT_TYPE Type, irr::gui::IGUIEnvironment* environment, irr::gui::IGUIElement* parent, s32 id, irr::core::rect<s32> rectangle);
+
+	//! Destructor
+	~IrrLuaIGUIElement();
+
+
+	//! Returns parent of this element.
+	irr::gui::IGUIElement* getParent();
+
+
+	//! Returns the relative rectangle of this element.
+	irr::core::rect<s32> getRelativePosition();
+	
+
+
+	//! Sets the relative rectangle of this element.
+	void setRelativePosition(irr::core::rect<s32>& r);
+
+
+	//! Returns the absolute rectangle of element.
+	irr::core::rect<s32> getAbsolutePosition();
+
+
+	//! Updates the absolute position.
+	void updateAbsolutePosition();
+	
+
+
+	//! Returns the child element, which is at the position of the point.
+	irr::gui::IGUIElement* getElementFromPoint(irr::core::position2d<s32>& point);
+	
+
+
+	//! Adds a GUI element as new child of this element.
+	void addChild(irr::gui::IGUIElement* child);
+	
+
+
+	//! Removes a child.
+	void removeChild(irr::gui::IGUIElement* child);
+	
+
+
+	//! Removes this element.
+	void remove();
+	
+
+
+	//! Draws the element and its children.
+	void draw();
+	
+
+
+	//! Moves this element.
+	 void move(irr::core::position2d<s32> absoluteMovement);
+	
+
+
+	//! Returns true if element is visible.
+	 bool isVisible();
+	
+
+
+
+	//! Sets the visible state of this element.
+	 void setVisible(bool visible);
+	
+
+
+	//! Returns true if element is enabled.
+	 bool isEnabled();
+	
+
+
+	//! Sets the enabled state of this element.
+	 void setEnabled(bool enabled);
+	
+
+
+	//! Sets the new caption of this element.
+	 void setText(wchar_t* text);
+	
+
+
+	//! Returns caption of this element.
+	 wchar_t* getText();
+	
+
+
+	//! Returns id. Can be used to identify the element.
+	 s32 getID();
+	
+
+	//! Sets the id of this element
+	 void setID(s32 id);
+	
+
+
+	//! Called if an event happened.
+	bool IrrLuaIGUIElement::OnEvent(SEvent event);
+	
+
+
+	//! Brings a child to front
+	//! \return Returns true if successful, false if not.
+	 bool bringToFront(IGUIElement* element);
+	
+
+	//! Returns list with children of this element
+	//irr::core::list<IGUIElement*>& getChildren();
+	
+
+	//! Finds the first element with the given id.
+	//! \param id: Id to search for.
+	//! \param searchchildren: Set this to true, if also children of this 
+	//! element may contain the element with the searched id and they 
+	//! should be searched too.
+	//! \return Returns the first element with the given id. If no element
+	//! with this id was found, 0 is returned.
+	irr:gui::IGUIElement* getElementFromId(s32 id, bool searchchildren) ;
+	
+	irr:gui::EGUI_ELEMENT_TYPE getType();
+	
+	//IUnknown
+	
+	 void grab();
+	 bool drop();
+	
+	//Irrlua stuff
+	
+	void *GetProxy();
+	
+	// property accesss
+	
+	irr::core::list<IGUIElement*> get_Children();
+	void set_Children(irr::core::list<IGUIElement*> c);
+
+	irr::gui::IGUIElement* get_Parent();
+	void set_Parent(IGUIElement *p);
+
+	irr::core::rect<s32> get_RelativeRect();
+	void set_RelativeRect(irr::core::rect<s32> r);
+
+	irr::core::rect<s32> get_AbsoluteRect();
+	void set_AbsoluteRect(irr::core::rect<s32> r);
+
+	irr::core::rect<s32> get_AbsoluteClippingRect();
+	void set_AbsoluteClippingRect(irr::core::rect<s32> r);
+
+	bool get_IsVisible();
+	void set_IsVisible(bool b);
+
+	bool get_IsEnabled();
+	void set_IsEnabled(bool b);
+
+	std::string get_Text();
+	void set_Text(std::string s);
+
+	s32 get_ID();
+	void set_ID(s32 id);
+
+	irr::gui::IGUIEnvironment* get_Environment();
+	void set_Environment(irr::gui::IGUIEnvironment *e);
+
+	irr::gui::EGUI_ELEMENT_TYPE get_Type();
+	void set_Type(irr::gui::EGUI_ELEMENT_TYPE t);
+
+	// property accesss
+	tolua_property core::list<irr::gui::IGUIElement*> Children;
+	tolua_property irr::gui::IGUIElement* Parent;
+	tolua_property irr::core::rect<s32> RelativeRect;
+	tolua_property irr::core::rect<s32> AbsoluteRect;
+	tolua_property irr::core::rect<s32> AbsoluteClippingRect;
+	tolua_property bool IsVisible;
+	tolua_property bool IsEnabled;
+	 
+	tolua_property std::string Text;
+	tolua_property s32 ID;
+	tolua_property irr::gui::IGUIEnvironment* Environment;
+	//tolua_property irr::gui::EGUI_ELEMENT_TYPE Type;
+
+};
+
+
+} // end namespace gui
+} // end namespace irr
+
+$[
+
+
+local _setText = irr.gui.IGUIElement.setText
+function irr.gui.IGUIElement:setText(text)
+	text = text or ""
+	local txt = irr.cast.to_wchar_t_ptr(text)
+	_setText(self, txt)
+	irr.cast.delete_wchar_t_ptr(txt)
+end
+
+local _getText = irr.gui.IGUIElement.getText
+function irr.gui.IGUIElement:getText()
+	return irr.cast.wchar_t_ptr_to_std_string(_getText(self))
+end
+
+irr.__iguielementproxy = {}
+
+function irr.gui.createIGUIElement(Type, environment, parent, id, rectangle, def)
+	local o = {}
+	for i,v in pairs(def) do o[i] = v end
+	o.__c_class = irr.gui.IrrLuaIGUIElement:new(Type, environment, parent, id, rectangle)
+	tolua.inherit(o, o.__c_class)
+	tolua.takeownership(o)
+	o.__index = function (t, k) return rawget(t,"__c_class")[k] end	
+	setmetatable(o, o)	
+	irr.__iguielementproxy[o:GetProxy()] = o
+	return o
+end
+
+$]

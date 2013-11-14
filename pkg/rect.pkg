@@ -1,0 +1,115 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+
+namespace irr
+{
+namespace core
+{
+
+	//!	Rectangle template.
+	/** Mostly used by 2D GUI elements and for 2D drawing methods.
+	    It has 2 positions instead of position and dimension
+		and a fast method for collision detection with other rectangles and points.
+	*/
+	//template <class T>
+	class rect
+	{
+		//$pfile "templatetypes.pkg"
+		TOLUA_TEMPLATE_BIND(T, s32)
+
+		rect();
+
+
+		rect(T x, T y, T x2, T y2);
+
+
+		rect(irr::core::position2d<T>& upperLeft, irr::core::position2d<T>& lowerRight);
+
+		rect(rect<T>& other);
+
+		rect(irr::core::position2d<T>& pos, irr::core::dimension2d<T>& size);
+
+
+		rect<T> operator+(irr::core::position2d<T>& pos);
+		
+
+		//rect<T>& operator+=(position2d<T>& pos);
+		
+
+        bool operator == (irr::core::rect<T>& other);
+		
+
+
+		//bool operator != (rect<T>& other) ;
+		
+
+		//rect<T>& operator = (rect<T>& other);
+		
+
+		//! Returns if a 2d point is within this rectangle.
+		//! \param pos: Position to test if it lies within this rectangle.
+		//! \return Returns true if the position is within the rectangle, false if not.
+		bool isPointInside(irr::core::position2d<T>& pos);
+		
+
+		//! Returns if the rectangle collides with an other rectangle.
+		bool isRectCollided(irr::core::rect<T>& other);
+		
+
+		//! Clips this rectangle with another one.
+		void clipAgainst(irr::core::rect<T>& other);
+		
+
+		//! Returns width of rectangle.
+		T getWidth();
+		
+
+		//! Returns height of rectangle.
+		T getHeight();
+
+		//! If the lower right corner of the rect is smaller then the upper left,
+		//! the points are swapped.
+		void repair();
+
+		//! Returns if the rect is valid to draw. It could be invalid, if
+		//! The UpperLeftCorner is lower or more right than the LowerRightCorner,
+		//! or if the area described by the rect is 0.
+		bool isValid();
+		
+
+		//! Returns the center of the rectangle
+		irr::core::position2d<T> getCenter();
+		
+		//! Returns the dimensions of the rectangle
+		irr::core::dimension2d<T> getSize();
+
+
+		
+
+		irr::core::position2d<T> UpperLeftCorner;
+		irr::core::position2d<T> LowerRightCorner;
+	};
+
+} // end namespace core
+} // end namespace irr
+
+
+$[
+
+function irr.core.rect(a,b,c,d)
+
+	if tolua.type(b) == "irr::core::dimension2d<f32>" then
+		b = irr.core.dimension2ds32(b.X, b.Y)
+	end
+		
+	local ret = irr.core.rect_s32_:new(unpack({a,b,c,d}))
+	tolua.takeownership(ret)
+	return ret
+end
+
+
+$]
+
+

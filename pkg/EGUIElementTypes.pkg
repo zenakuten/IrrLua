@@ -1,0 +1,39 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace gui
+{
+
+enum EGUI_ELEMENT_TYPE
+{
+	EGUIET_ELEMENT,
+	EGUIET_BUTTON,
+	EGUIET_CHECK_BOX,
+	EGUIET_COMBO_BOX,
+    EGUIET_CONTEXT_MENU,
+	EGUIET_EDIT_BOX,
+	EGUIET_FILE_OPEN_DIALOG,
+	EGUIET_IN_OUT_FADER,
+	EGUIET_IMAGE,
+	EGUIET_LIST_BOX,
+	EGUIET_MESH_VIEWER,
+	EGUIET_MODAL_SCREEN,
+	EGUIET_SCROLL_BAR,
+	EGUIET_STATIC_TEXT,
+	EGUIET_TAB,
+	EGUIET_TAB_CONTROL,
+	EGUIET_TOOL_BAR,
+	EGUIET_WINDOW,
+	EGUIET_COUNT
+};
+
+
+}
+}
+
+
+
+

@@ -1,0 +1,256 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+$#include "IrrLua.h"
+
+// Make sure to include pkg files in-order so that scripts execute correctly
+$pfile "irrTypes.pkg"
+$pfile "IrrLuaCast.pkg"
+
+$pfile "EDriverTypes.pkg"
+
+$pfile "Keycodes.pkg"
+$pfile "SKeyMap.pkg"
+
+$pfile "IUnknown.pkg"
+$pfile "IAttributeExchangingObject.pkg"
+$pfile "IAttributes.pkg"
+
+$pfile "vector2d.pkg"
+$pfile "vector3d.pkg"
+$pfile "dimension2d.pkg"
+$pfile "position2d.pkg"
+$pfile "line2d.pkg"
+$pfile "line3d.pkg"
+$pfile "plane3d.pkg"
+$pfile "aabbox3d.pkg"
+$pfile "triangle3d.pkg"
+$pfile "S3DVertex.pkg"
+$pfile "ITexture.pkg"
+$pfile "rect.pkg"
+$pfile "matrix4.pkg"
+$pfile "quaternion.pkg"
+$pfile "irrList.pkg"
+
+$pfile "SColor.pkg"
+$pfile "SLight.pkg"
+
+
+$pfile "SMaterial.pkg"
+$pfile "irrArray.pkg"
+$pfile "SViewFrustrum.pkg"
+
+$pfile "ITriangleSelector.pkg"
+$pfile "IrrLuaITriangleSelector.pkg"
+$pfile "IMetaTriangleSelector.pkg"
+$pfile "ICursorControl.pkg"
+
+$pfile "IVideoModeList.pkg"
+$pfile "IFileSystem.pkg"
+$pfile "ILogger.pkg"
+$pfile "ITimer.pkg"
+$pfile "IImage.pkg"
+
+$pfile "IImageLoader.pkg"
+$pfile "IImageWriter.pkg"
+
+$pfile "IMeshBuffer.pkg"
+$pfile "SMeshBuffer.pkg"
+$pfile "IMesh.pkg"
+$pfile "IrrLuaIMesh.pkg"
+$pfile "IMeshCache.pkg"
+$pfile "IMeshSceneNode.pkg"
+$pfile "SMesh.pkg"
+$pfile "IAnimatedMesh.pkg"
+$pfile "IrrLuaIAnimatedMesh.pkg"
+
+
+
+$pfile "IAnimatedMeshMD2.pkg"
+$pfile "IAnimatedMeshMS3D.pkg"
+$pfile "IAnimatedMeshX.pkg"
+$pfile "IAnimatedMeshB3d.pkg"
+$pfile "IMeshManipulator.pkg"
+$pfile "SAnimatedMesh.pkg"
+$pfile "SMeshBufferLightMap.pkg"
+$pfile "SMeshBufferTangents.pkg"
+
+$pfile "ISceneManager.pkg"
+$pfile "SceneParameters.pkg"
+$pfile "IrrLuaISceneNode.pkg"
+$pfile "IrrLuaISceneManager.pkg"
+$pfile "ISceneCollisionManager.pkg"
+$pfile "ISceneNode.pkg"
+$pfile "ISceneUserDataSerializer.pkg"
+
+
+
+
+$pfile "ESceneNodeTypes.pkg"
+$pfile "IAnimatedMeshSceneNode.pkg"
+$pfile "ESceneNodeAnimatorTypes.pkg"
+$pfile "IrrLuaIAnimatedMeshSceneNode.pkg"
+
+$pfile "IDummyTransformationSceneNode.pkg"
+$pfile "ICameraSceneNode.pkg"
+
+
+
+$pfile "ILightSceneNode.pkg"
+$pfile "ISceneNodeAnimator.pkg"
+
+
+$pfile "IrrLuaISceneNodeAnimator.pkg"
+$pfile "ISceneNodeAnimatorCollisionResponse.pkg"
+$pfile "IrrLuaISceneNodeAnimatorCollisionResponse.pkg"
+$pfile "IParticleEmitter.pkg"
+$pfile "IParticleAffector.pkg"
+$pfile "IrrLuaIParticleAffector.pkg"
+$pfile "IParticleSystemSceneNode.pkg"
+
+
+$pfile "ITerrainSceneNode.pkg"
+$pfile "ITextSceneNode.pkg"
+$pfile "IBillboardSceneNode.pkg"
+
+
+$pfile "ISceneNodeFactory.pkg"
+
+$pfile "ISceneNodeAnimatorFactory.pkg"
+
+$pfile "IGPUProgrammingServices.pkg"
+$pfile "IMaterialRenderer.pkg"
+$pfile "IMaterialRendererServices.pkg"
+$pfile "IShaderConstantSetCallBack.pkg"
+$pfile "IrrLuaIShaderConstantSetCallBack.pkg"
+
+
+
+
+$pfile "IReadFile.pkg"
+$pfile "IWriteFile.pkg"
+$pfile "IFileList.pkg"
+$pfile "IXMLReader.pkg"
+$pfile "IXMLWriter.pkg"
+
+$pfile "IGUIElement.pkg"
+$pfile "IGUICheckBox.pkg"
+$pfile "IGUIContextMenu.pkg"
+$pfile "IGUIComboBox.pkg"
+$pfile "IGUIEditBox.pkg"
+$pfile "IGUIFileOpenDialog.pkg"
+$pfile "IGUIImage.pkg"
+$pfile "IGUIInOutFader.pkg"
+$pfile "IGUIListBox.pkg"
+$pfile "IGUIMeshViewer.pkg"
+$pfile "IGUIScrollBar.pkg"
+$pfile "IGUIStaticText.pkg"
+$pfile "IGUITabControl.pkg"
+$pfile "IGUIWindow.pkg"
+$pfile "IGUIToolbar.pkg"
+$pfile "IGUIButton.pkg"
+$pfile "IGUIFont.pkg"
+$pfile "IGUISkin.pkg"
+$pfile "IrrLuaIGUISkin.pkg"
+
+$pfile "IEventReceiver.pkg"
+$pfile "IrrLuaEventReceiver.pkg"
+$pfile "IGUIEnvironment.pkg"
+$pfile "IrrLuaIGUIElement.pkg"
+
+$pfile "IVideoDriver.pkg"
+$pfile "IrrLuaIVideoDriver.pkg"
+$pfile "SIrrCreationParameters.pkg"
+$pfile "IrrlichtDevice.pkg"
+
+$pfile "IrrLuaDoFile.pkg"
+$pfile "EGUIElementTypes.pkg"
+
+
+/*
+//$pfile "heapsort.pkg"
+//$pfile "irrMath.pkg"
+//$pfile "irrString.pkg"
+//$pfile "irrXML.pkg"
+//$pfile "IStringParameters.pkg" <-- obsolete
+
+*/
+
+//! Everything in the Irrlicht Engine can be found in this namespace.
+namespace irr
+{
+	//! Creates an Irrlicht device. The Irrlicht device is the root object for using the engine.
+	/** \param deviceType: Type of the device. This can currently be video::EDT_NULL, 
+	video::EDT_SOFTWARE, video::EDT_DIRECTX8, video::EDT_DIRECTX9 and video::EDT_OPENGL.
+	\param windowSize: Size of the window or the video mode in fullscreen mode.
+	\param bits: Bits per pixel in fullscreen mode. Ignored if windowed mode.
+	\param fullscreen: Should be set to true if the device should run in fullscreen. Otherwise
+		the device runs in window mode.
+	\param stencilbuffer: Specifies if the stencil buffer should be enabled. Set this to true,
+	    if you want the engine be able to draw stencil buffer shadows. Note that not all
+		devices are able to use the stencil buffer. If they don't no shadows will be drawn.
+	\param vsync: Specifies vertical syncronisation: If set to true, the driver will wait 
+		for the vertical retrace period, otherwise not.
+	\param receiver: A user created event receiver.
+	\param sdk_version_do_not_use: Don't use or change this parameter. Always set it to
+	IRRLICHT_SDK_VERSION, which is done by default. This is needed for sdk version checks.
+	\return Returns pointer to the created IrrlichtDevice or null if the 
+	device could not be created.
+	*/
+	 	IrrlichtDevice* createDevice( irr::video::E_DRIVER_TYPE deviceType, irr::core::dimension2d<s32>& windowSize, u32 bits, bool fullscreen, bool stencilbuffer, bool vsync, IEventReceiver* receiver);
+		IrrlichtDevice *createDeviceEx(SIrrlichtCreationParameters& parameters);
+
+}
+
+$[
+
+
+irr.__devices = {}
+	
+local _createDevice = irr.createDevice
+function irr.createDevice(rendertype, dims, bits, fullscreen, stencilbuffer, vsync, receiver) 
+	rendertype = rendertype or irr.video.EDT_SOFTWARE
+
+	dims = dims or irr.core.dimension2ds32(640,480)
+	if tolua.type(dims) == "irr::core::dimension2d<f32>" then
+		dims = irr.core.dimension2ds32(dims.Width, dims.Height)
+		end
+
+	bits = bits or 16
+	vsync = vsync or false
+	
+	if rendertype == irr.video.EDT_DIRECT3D8 or rendertype == irr.video.EDT_DIRECT3D9 then
+		
+		local params = irr.SIrrlichtCreationParameters()
+
+		params.HighPrecisionFPU = true 
+
+		params.DriverType = rendertype
+		params.WindowSize = dims
+		params.Fullscreen = fullscreen
+		params.StencilBuffer = stencilbuffer
+		params.Vsync = vsync
+		params.EventReceiver = receiver		
+		
+		return irr.createDeviceEx(params)
+	end
+	
+	local dev = _createDevice(rendertype, dims, bits, fullscreen, stencilbuffer, vsync, receiver)
+	irr.__devices[dev] = dev
+	return dev
+end
+
+local _createDeviceEx = irr.createDeviceEx
+function irr.createDeviceEx(params)
+	params.HighPrecisionFPU = true
+	local dev = _createDeviceEx(params)
+	irr.__devices[dev] = dev
+	return dev
+end
+
+
+print("IrrLua 1.1 Copyright (C) 2005, 2006 Josh Turpen")
+	
+$]
+	

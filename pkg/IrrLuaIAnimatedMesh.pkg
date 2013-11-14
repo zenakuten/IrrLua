@@ -1,0 +1,47 @@
+// Copyright (C) 2005-2006 Josh Turpen
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace scene
+{
+class IrrLuaIAnimatedMesh : public IAnimatedMesh {
+	public:
+	IrrLuaIAnimatedMesh();
+	~IrrLuaIAnimatedMesh();
+
+	virtual s32 getFrameCount();
+	virtual IMesh* getMesh(s32 frame, s32 detailLevel, s32 startFrameLoop, s32 endFrameLoop);
+	virtual core::aabbox3d<f32>& getBoundingBox();
+	virtual E_ANIMATED_MESH_TYPE getMeshType();
+
+	virtual void grab();
+	virtual bool drop();
+
+	void *GetProxy();
+};
+}
+}
+
+$[
+
+irr.__ianimatedmeshproxy = {}
+
+
+function irr.scene.createIAnimatedMesh(def)
+	local o = {}
+	for i,v in pairs(def) do o[i] = v end
+	o.__c_class = irr.scene.IrrLuaIAnimatedMesh:new()
+	tolua.inherit(o, o.__c_class)
+	tolua.takeownership(o)
+	o.__index = function (t, k) return rawget(t,"__c_class")[k] end	
+	setmetatable(o, o)	
+	irr.__ianimatedmeshproxy[o.__c_class:GetProxy()] = o
+	return o
+end
+
+
+$]
+
+

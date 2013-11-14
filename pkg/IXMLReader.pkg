@@ -1,0 +1,192 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+namespace io
+{
+	//! Enumeration of all supported source text file formats 
+	enum ETEXT_FORMAT
+	{
+		//! ASCII, file without byte order mark, or not a text file
+		ETF_ASCII,
+
+		//! UTF-8 format
+		ETF_UTF8,
+
+		//! UTF-16 format, big endian
+		ETF_UTF16_BE,
+
+		//! UTF-16 format, little endian
+		ETF_UTF16_LE,
+
+		//! UTF-32 format, big endian
+		ETF_UTF32_BE,
+
+		//! UTF-32 format, little endian
+		ETF_UTF32_LE,
+	};
+
+
+	//! Enumeration for all xml nodes which are parsed by IrrXMLReader
+	enum EXML_NODE
+	{
+		//! No xml node. This is usually the node if you did not read anything yet.
+		EXN_NONE,
+
+		//! A xml element, like <foo>
+		EXN_ELEMENT,
+
+		//! End of an xml element, like </foo>
+		EXN_ELEMENT_END,
+
+		//! Text within a xml element: <foo> this is the text. </foo>
+		EXN_TEXT,
+
+		//! An xml comment like &lt;!-- I am a comment --&gt; or a DTD definition.
+		EXN_COMMENT,
+
+		//! An xml cdata section like &lt;![CDATA[ this is some CDATA ]]&gt;
+		EXN_CDATA,
+
+		//! Unknown element.
+		EXN_UNKNOWN
+	};
+
+
+	//! Interface providing easy read access to an XML file.
+	class IXMLReader : public irr::Unknown
+	{
+	public:
+
+		//! Destructor
+		virtual ~IXMLReader();
+
+		//! Reads forward to the next xml node. 
+		//! \return Returns false, if there was no further node. 
+		virtual bool read();
+
+		//! Returns the type of the current XML node.
+		virtual irr::io::EXML_NODE getNodeType();
+
+        //! Returns attribute count of the current XML node. This is usually
+		//! non null if the current node is EXN_ELEMENT, and the element has attributes.
+		//! \return Returns amount of attributes of this xml node.
+		virtual s32 getAttributeCount();
+
+		//! Returns name of an attribute. 
+		//! \param idx: Zero based index, should be something between 0 and getAttributeCount()-1.
+		//! \return Name of the attribute, 0 if an attribute with this index does not exist.
+		virtual wchar_t* getAttributeName(s32 idx);
+
+		//! Returns the value of an attribute. 
+		//! \param idx: Zero based index, should be something between 0 and getAttributeCount()-1.
+		//! \return Value of the attribute, 0 if an attribute with this index does not exist.
+		//virtual wchar_t* getAttributeValue(s32 idx);
+
+		//! Returns the value of an attribute. 
+		//! \param name: Name of the attribute.
+		//! \return Value of the attribute, 0 if an attribute with this name does not exist.
+		virtual wchar_t* getAttributeValue(wchar_t* name);
+
+		//! Returns the value of an attribute, like getAttributeValue(), but does not 
+		//! return 0 if the attribute does not exist. An empty string ("") is returned then.
+		//! \param name: Name of the attribute.
+		//! \return Value of the attribute, and "" if an attribute with this name does not exist
+		virtual wchar_t* getAttributeValueSafe(wchar_t* name);
+
+		//! Returns the value of an attribute as integer. 
+		//! \param name: Name of the attribute.
+		//! \return Value of the attribute as integer, and 0 if an attribute with this name does not exist or
+		//! the value could not be interpreted as integer.
+		virtual s32 getAttributeValueAsInt(wchar_t* name);
+
+		//! Returns the value of an attribute as float. 
+		//! \param name: Name of the attribute.
+		//! \return Value of the attribute as float, and 0 if an attribute with this name does not exist or
+		//! the value could not be interpreted as float.
+		virtual f32 getAttributeValueAsFloat(wchar_t* name);
+
+		//! Returns the name of the current node. Only non null, if the node type is
+		//! EXN_ELEMENT.
+		//! \return Name of the current node or 0 if the node has no name.
+		virtual wchar_t* getNodeName();
+
+		//! Returns data of the current node. Only non null if the node has some
+		//! data and it is of type EXN_TEXT or EXN_UNKNOWN.
+		virtual wchar_t* getNodeData();
+
+		//! Returns if an element is an empty element, like <foo />
+		virtual bool isEmptyElement();
+
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();
+
+
+	};
+
+	typedef IIrrXMLReader<wchar_t, IUnknown> IIrrXMLReader;
+	typedef IIrrXMLReader<c8, IUnknown> IXMLReaderUTF8;
+} // end namespace irr
+} // end namespace io
+
+$[
+
+
+local _getAttributeName = irr.io.IXMLReader.getAttributeName
+function irr.io.IXMLReader:getAttributeName(idx)
+	return irr.cast.wchar_t_ptr_to_std_string(_getAttributeName(self, idx))
+end
+		
+local _getAttributeValue = irr.io.IXMLReader.getAttributeValue
+function irr.io.IXMLReader:getAttributeValue(name)
+	local nm = irr.cast.to_wchar_t_ptr(name)
+	local ret = _getAttributeValue(self, nm)
+	irr.cast.delete_wchar_t_ptr(nm)
+	return irr.cast.wchar_t_ptr_to_std_string(ret)
+end
+	
+local _getAttributeValueSafe = irr.io.IXMLReader.getAttributeValueSafe
+function irr.io.IXMLReader:getAttributeValueSafe(name)
+	local nm = irr.cast.to_wchar_t_ptr(name)
+	local ret = _getAttributeValueSafe(self, nm)
+	irr.cast.delete_wchar_t_ptr(nm)
+	return irr.cast.wchar_t_ptr_to_std_string(ret)
+end
+	
+local _getAttributeValueAsInt = irr.io.IXMLReader.getAttributeValueAsInt
+function irr.io.IXMLReader:getAttributeValueAsInt(name)
+	local nm = irr.cast.to_wchar_t_ptr(name)
+	local ret = _getAttributeValueAsInt(self, nm)
+	irr.cast.delete_wchar_t_ptr(nm)
+	return ret
+end
+
+local _getAttributeValueAsFloat = irr.io.IXMLReader.getAttributeValueAsFloat
+function irr.io.IXMLReader:getAttributeValueAsFloat(name)
+	local nm = irr.cast.to_wchar_t_ptr(name)
+	local ret = _getAttributeValueAsFloat(self, nm)
+	irr.cast.delete_wchar_t_ptr(nm)
+	return ret
+end
+
+local _getNodeName = irr.io.IXMLReader.getNodeName
+function irr.io.IXMLReader:getNodeName()
+	return irr.cast.wchar_t_ptr_to_std_string(_getNodeName(self))
+end
+
+local _getNodeData = irr.io.IXMLReader.getNodeData
+function irr.io.IXMLReader:getNodeData()
+	return irr.cast.wchar_t_ptr_to_std_string(_getNodeData(self))
+end
+
+irr.io.IXMLReader.getDebugName = irr.IUnknown.getDebugName
+	
+$]
+

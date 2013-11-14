@@ -1,0 +1,130 @@
+// Copyright (C) 2005-2006 Josh Turpen, Nikolaus Gebhardt
+// This file is part of the IrrLua Lua binding for Irrlicht.
+// For conditions of distribution and use, see copyright notice in IrrLua.h
+
+namespace irr
+{
+	//! The Irrlicht device. You can create it with createDevice(). 
+	/** This is the most important class of the Irrlicht Engine. You can access everything
+	in the engine if you have a pointer to an instance of this class. 
+	*/
+	//class IrrlichtDevice : public irr::IUnknown
+	class IrrlichtDevice 
+	{
+	public:
+
+		//! destructor
+		virtual ~IrrlichtDevice();
+
+		//! Runs the device. Returns false if device wants to be deleted. Use it in this way:
+		//! \code
+		//! while(device->run())
+		//! {
+		//!		// draw everything here
+		//! }
+		//! \endcode
+		virtual bool run();
+
+		//! \return Returns a pointer the video driver.
+		virtual irr::video::IVideoDriver* getVideoDriver();
+
+		//! \return Returns a pointer to the file system.
+		virtual irr::io::IFileSystem* getFileSystem();
+
+		//! \return Returns a pointer to the gui environment.
+		virtual irr::gui::IGUIEnvironment* getGUIEnvironment();
+
+		//! \return Returns a pointer to the scene manager.
+		virtual irr::scene::ISceneManager* getSceneManager();
+
+		//! \return Returns a pointer to the mouse cursor control interface.
+		virtual irr::gui::ICursorControl* getCursorControl();
+
+		//! \return Returns a pointer to the logger.
+		virtual irr::ILogger* getLogger();
+
+		//! Gets a list with all video modes available. If you are confused 
+		//! now, because you think you have to create an Irrlicht Device with a video
+		//! mode before being able to get the video mode list, let me tell you that
+		//! there is no need to start up an Irrlicht Device with DT_DIRECTX8, DT_OPENGL or
+		//! DT_SOFTWARE: For this (and for lots of other reasons) the null device,
+		//! DT_NULL exists.
+		//! \return Returns a pointer to a list with all video modes supported
+		//! by the gfx adapter.
+		virtual irr::video::IVideoModeList* getVideoModeList();
+
+		//! Returns the operation system opertator object. It provides methods for
+		//! getting operation system specific informations and doing operation system
+		//! specific operations. Like for example exchanging data with the clipboard
+		//! or reading the operation system version.
+		virtual irr::IOSOperator* getOSOperator();
+
+		//! \return Returns a pointer to the ITimer object. With it the
+		//! current Time can be received.
+		virtual irr::ITimer* getTimer();
+
+		//! Sets the caption of the window.
+		//! \param text: New text of the window caption.
+		virtual void setWindowCaption(wchar_t* text);
+
+		//! \return Returns true if window is active. If the window is inactive,
+		//! nothing need to be drawn. So if you don't want to draw anything when
+		//! the window is inactive, create your drawing loop this way:
+		//! \code
+		//! while(device->run())
+		//!		if (device->isWindowActive())
+		//!		{
+		//!			// draw everything here
+		//!		}
+		//! \endcode
+		virtual bool isWindowActive();
+
+		//! Notifies the device that it should close itself.
+		//! IrrlichtDevice::run() will always return false after closeDevice() was called.
+		virtual void closeDevice();
+
+		//! Returns the version of the engine. The returned string
+		//! will look like this: "1.2.3" or this: "1.2". 
+		virtual c8* getVersion();
+
+		//! Sets a new event receiver to receive events.
+		virtual void setEventReceiver(IEventReceiver* receiver);
+
+		//! Returns poinhter to the current event receiver. Returns 0 if there is none.
+		virtual IEventReceiver* getEventReceiver();
+
+		//! Sets if the window should be resizeable in windowed mode. The default
+		//! is false. This method only works in windowed mode.
+		virtual void setResizeAble(bool resize);
+		
+		//////////////////////////////////////////////////////////////////////////////////////	
+		//IUnknown
+		//////////////////////////////////////////////////////////////////////////////////////
+		
+		virtual void grab();
+		virtual bool drop();
+		c8* getDebugName();		
+	};
+
+} // end namespace
+
+
+$[
+
+local _SetWindowCaption = irr.IrrlichtDevice.setWindowCaption 
+function irr.IrrlichtDevice:setWindowCaption(text) 
+	text = text or ""
+	local caption = irr.cast.to_wchar_t_ptr(text)
+	local ret = _SetWindowCaption(self, caption)
+	irr.cast.delete_wchar_t_ptr(caption)
+	return ret
+end
+
+local _getVersion = irr.IrrlichtDevice.getVersion
+function irr.IrrlichtDevice:getVersion()
+	return irr.cast.c8_ptr_to_std_string(_getVersion(self))
+end
+
+irr.IrrlichtDevice.getDebugName = irr.IUnknown.getDebugName
+
+$]
